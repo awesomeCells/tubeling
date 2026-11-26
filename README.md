@@ -8,7 +8,7 @@ I tried to keep it all-in-one, with no dependencies.
 
 ## Usage
 
-Open it online at https://awesomecells.github.io/Tubeling/, or download `tubeling.html` and open it in a web browser. 
+Open it online at https://awesomecells.github.io/tubeling/, or download `tubeling.html` and open it in a web browser. 
 Settings are stored in the browser and should survive reloading the page, but probably not a restart. 
 ## Tools
 
