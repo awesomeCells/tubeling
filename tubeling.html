@@ -1,0 +1,2106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tubeling</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f6f5f1'/%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 9H50' stroke='%2324231f' stroke-width='3.4'/%3E%3Cpath d='M18 14H46V31L36 55Q32 61 28 55L18 31Z' stroke='%2324231f' stroke-width='3'/%3E%3Cpath d='M32 55C30 48 34 42 32 35' stroke='%23d63a3a' stroke-width='5.5'/%3E%3Cpath d='M32 34C26 30 22 32 21 37' stroke='%23f0b72f' stroke-width='2.6'/%3E%3Cpath d='M32 34C27 26 24 22 23 19' stroke='%23ee7d2b' stroke-width='2.6'/%3E%3Cpath d='M32 34C31 27 32 22 33 18' stroke='%23d63a3a' stroke-width='2.6'/%3E%3Cpath d='M32 34C37 26 40 22 41 19' stroke='%23ee7d2b' stroke-width='2.6'/%3E%3Cpath d='M32 34C38 30 42 32 43 37' stroke='%23f0b72f' stroke-width='2.6'/%3E%3Cpath d='M32 47C36 45 38 43 39 40' stroke='%23ee7d2b' stroke-width='3.6'/%3E%3C/g%3E%3Ccircle cx='32' cy='34' r='3.4' fill='%2324231f'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#f6f5f1; --card:#ffffff; --ink:#24231f; --muted:#6f6d66; --faint:#b9b6ac;
+  --line:#dddbd3; --soft:#ecebe6; --accent:#24231f; --accent-ink:#f6f5f1; --accent-soft:#fbf3e2;
+  --warn:#d63a3a; --warn-soft:#fbe9e5; --edge:#fdf3dc; --work:#f8e2bd; --night:#ecebe6; --hl:#c25e14;
+  --y:#f0b72f; --o:#ee7d2b; --r:#d63a3a;
+  --radius:12px; --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1b1a17; --card:#24231f; --ink:#ecebe6; --muted:#a3a097; --faint:#6f6d66;
+    --line:#3a3a37; --soft:#2e2d29; --accent:#ecebe6; --accent-ink:#24231f; --accent-soft:#33291a;
+    --warn:#f0705f; --warn-soft:#3a211c; --edge:#2f281a; --work:#4a3a1c; --night:#211f1c; --hl:#f0a35a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1b1a17; --card:#24231f; --ink:#ecebe6; --muted:#a3a097; --faint:#6f6d66;
+  --line:#3a3a37; --soft:#2e2d29; --accent:#ecebe6; --accent-ink:#24231f; --accent-soft:#33291a;
+  --warn:#f0705f; --warn-soft:#3a211c; --edge:#2f281a; --work:#4a3a1c; --night:#211f1c; --hl:#f0a35a;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+header{max-width:1360px;margin:0 auto;padding:18px 20px 6px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+header h1{font-size:24px;font-weight:700;margin:0;letter-spacing:-.01em;font-family:"Helvetica Neue",Arial,sans-serif}
+.brand{display:flex;align-items:center;gap:8px;align-self:center}
+.brand .pale{color:var(--faint)}
+.brand svg{flex:none}
+header .spacer{flex:1}
+main{max-width:1360px;margin:0 auto;padding:10px 20px 30px;display:grid;grid-template-columns:minmax(300px,390px) minmax(0,1fr);gap:16px;align-items:start}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+@media (max-width:900px){main{grid-template-columns:1fr;padding:8px 16px 24px} header{padding:14px 16px 4px;flex-wrap:nowrap;gap:4px} header .ghost{padding:4px 5px;white-space:nowrap;font-size:12px} header h1{font-size:20px} .brand svg{width:30px;height:30px}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.card-h{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.card-h h2{font-size:13px;font-weight:650;margin:0;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.card-h .sp{flex:1}
+h3{font-size:13px;font-weight:650;margin:18px 0 8px;color:var(--ink)}
+h3:first-child{margin-top:0}
+button{font:inherit;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;line-height:1.3}
+button:hover{border-color:var(--faint)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+button.ghost{background:transparent;border-color:transparent;color:var(--muted);padding:4px 8px}
+button.ghost:hover{color:var(--ink);background:var(--soft)}
+button.small{padding:3px 9px;font-size:12.5px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+input,select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 9px;min-width:0}
+input[type=checkbox]{accent-color:var(--accent);padding:0}
+input::placeholder{color:var(--faint)}
+input.calc::placeholder{color:var(--hl);font-weight:600}
+select{padding-right:4px}
+label.chk{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:13px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+.hint{color:var(--muted);font-size:12.5px;margin-top:8px}
+.err{color:var(--warn);font-size:13px}
+kbd{font-family:var(--mono);font-size:11.5px;background:var(--soft);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px}
+details summary{cursor:pointer;color:var(--muted);font-size:13px;user-select:none}
+details[open] summary{margin-bottom:10px}
+
+/* segmented control / tabs */
+.seg{display:inline-flex;background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:2px;gap:2px;flex-wrap:wrap}
+.seg button{background:transparent;border:0;border-radius:7px;padding:5px 11px;color:var(--muted);font-size:13px}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08);font-weight:600}
+.tabs{display:flex;flex-wrap:wrap;gap:0 2px;border-bottom:1px solid var(--line);margin:-4px -4px 16px}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;border-radius:0;padding:8px 12px;color:var(--muted);white-space:nowrap}
+.tabs button.on{color:var(--ink);font-weight:600;background:linear-gradient(var(--y) 0 33.3%,var(--o) 33.3% 66.6%,var(--r) 66.6%) bottom/100% 4px no-repeat}
+.pane{display:none;container-type:inline-size}
+.pane.on{display:block}
+
+/* pomodoro */
+.pomo-body{display:flex;flex-direction:column;align-items:center;gap:12px}
+.ring{position:relative;width:200px;height:200px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .track{stroke:var(--soft)}
+.ring .b1{stroke:var(--y)}.ring .b2{stroke:var(--o)}.ring .b3{stroke:var(--r)}
+.ring.brk svg{filter:saturate(.35)}
+.ring .lbl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .t{font-size:44px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.ring .m{color:var(--muted);font-size:12.5px}
+.dots{display:flex;gap:5px;align-items:center;color:var(--muted);font-size:12.5px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.dot.on{background:var(--o)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
+.grid2 label{display:flex;flex-direction:column;gap:3px;font-size:12.5px;color:var(--muted)}
+
+/* timers */
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chips button{padding:3px 9px;font-size:12.5px;border-radius:20px}
+.timer{display:grid;grid-template-columns:1fr auto;gap:2px 8px;padding:9px 0;border-top:1px solid var(--line)}
+.timer:first-child{border-top:0}
+.timer .tl{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.timer .tt{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.timer .tb{grid-column:1/-1;height:6px;background:var(--soft);border-radius:2px;overflow:hidden}
+.timer .tb i{display:block;height:100%;width:0;background:linear-gradient(var(--y) 0 33.3%,var(--o) 33.3% 66.6%,var(--r) 66.6%)}
+.timer .ta{display:flex;gap:4px;align-items:center;justify-content:flex-end}
+.timer.ringing{background:var(--warn-soft);margin:0 -16px;padding:9px 16px;animation:pulse 1s ease-in-out infinite}
+.timer.ringing .tt{color:var(--warn)}
+.timer.finished .tt{color:var(--faint)}
+.timer.paused .tt{color:var(--muted)}
+@keyframes pulse{50%{background:transparent}}
+
+/* counter */
+.ctr-main{display:flex;flex-direction:column;align-items:center;padding:6px 0 12px;cursor:pointer;user-select:none;border-radius:10px}
+.ctr-main:active{background:var(--soft)}
+.ctr-main .big{font-size:64px;font-weight:650;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.ctr-main .big.bump{animation:bump .12s ease-out}
+@keyframes bump{from{transform:scale(1.07);color:var(--o)}}
+.ctr-main .nm{color:var(--muted);font-size:12.5px;margin-top:4px}
+.ctr{display:grid;grid-template-columns:22px 1fr auto auto;gap:8px;align-items:center;padding:5px 6px;border-radius:8px}
+.ctr.on{background:var(--accent-soft)}
+.ctr input{border:0;background:transparent;padding:3px 4px;width:100%}
+.ctr input:focus{background:var(--card)}
+.ctr .v{font-weight:600;font-size:16px;font-variant-numeric:tabular-nums;text-align:right;min-width:44px}
+.ctr .pc{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.ctr .k{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;border:1px solid var(--line);border-radius:4px}
+
+/* converter */
+.fields{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+.f{display:flex;flex-direction:column;gap:3px}
+.f > span{font-size:12px;color:var(--muted)}
+.f .in{display:flex;gap:4px}
+.f input{width:120px}
+.f input.w-s{width:80px}
+.f input.w-l{width:160px}
+.res{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px;margin-top:14px}
+.ri{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:copy;min-width:0}
+.ri:hover{border-color:var(--o)}
+.ri .rv{font-weight:600;font-variant-numeric:tabular-nums;flex-shrink:0}
+.ri .ru{color:var(--muted);font-size:12.5px;text-align:right}
+.ri.src{background:var(--accent-soft);border-color:transparent}
+.ri.na .rv{color:var(--faint);font-weight:400}
+.answer{margin-top:14px;padding:12px 14px;background:var(--accent-soft);border-radius:10px;font-size:15px}
+.answer b{font-variant-numeric:tabular-nums}
+.answer.bad{background:var(--warn-soft);color:var(--warn)}
+.answer .sub{font-size:12.5px;color:var(--muted);margin-top:4px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media (max-width:1100px){.split{grid-template-columns:1fr}}
+.sec{border-top:1px solid var(--line);margin-top:20px;padding-top:4px}
+table.t{border-collapse:collapse;margin-top:12px;font-variant-numeric:tabular-nums;font-size:13px}
+table.t td,table.t th{padding:4px 12px 4px 0;text-align:left;border-bottom:1px solid var(--line)}
+table.t th{color:var(--muted);font-weight:500;font-size:12px}
+table.t td:first-child,table.t th:first-child{padding-left:8px}
+.formula{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:10px}
+sup{font-size:.72em;line-height:0}
+
+/* time zones */
+.tz-ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-bottom:14px}
+.tz-list{display:flex;flex-direction:column}
+.tzr{display:grid;grid-template-columns:minmax(130px,1.4fr) 80px minmax(110px,1fr) minmax(120px,1.1fr) 64px 26px;gap:4px 12px;align-items:center;padding:9px 6px;border-top:1px solid var(--line)}
+.tzr:first-child{border-top:0}
+.tzr.ref{background:var(--accent-soft);border-radius:8px;border-top-color:transparent}
+.tzr.ref + .tzr{border-top-color:transparent}
+.tzr .n b{font-weight:600;display:block;cursor:pointer}
+.tzr .n small{color:var(--muted);font-size:11.5px}
+.tzr .tm{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.tzr .dt{font-size:13px}
+.tzr .dd{font-size:11px;color:var(--warn);font-weight:600;margin-left:3px}
+.tzr .of{font-size:12.5px;color:var(--muted)}
+.tzr .dl{font-weight:600;font-variant-numeric:tabular-nums;text-align:right;font-size:13px}
+.tzr .note{grid-column:1/-1;font-size:12px;color:var(--muted);padding-left:0}
+.tzr .note .w{color:var(--warn);font-weight:600}
+.badge{display:inline-block;font-size:10.5px;font-weight:650;letter-spacing:.03em;padding:0 5px;border-radius:4px;background:var(--edge);color:var(--ink);margin-left:4px;vertical-align:1px}
+@media (max-width:700px){
+  .tzr{grid-template-columns:1fr auto 26px}
+  .tzr .dt,.tzr .of{grid-column:1/2}
+  .tzr .dl{grid-column:2/3}
+}
+.plan{overflow-x:auto;margin-top:18px}
+.plan table{border-collapse:separate;border-spacing:2px;font-size:11.5px;font-variant-numeric:tabular-nums}
+.plan th{font-weight:500;color:var(--muted);text-align:right;padding-right:8px;white-space:nowrap;font-size:12px}
+.plan td{width:28px;min-width:28px;height:26px;text-align:center;border-radius:4px;cursor:pointer;background:var(--night);color:var(--faint)}
+.plan td.e{background:var(--edge);color:var(--ink)}
+.plan td.w{background:var(--work);color:var(--ink)}
+.plan td.mid{box-shadow:inset 2px 0 0 var(--warn)}
+.plan td.sel{outline:2px solid var(--accent);outline-offset:0}
+.plan td:hover{outline:1px solid var(--faint)}
+.plan td sup{font-size:8px;color:var(--muted)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:8px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px}
+
+@container (max-width:640px){
+  .tzr{grid-template-columns:minmax(0,1fr) auto auto 26px;gap:2px 10px}
+  .tzr .n{grid-column:1}.tzr .tm{grid-column:2}.tzr .dl{grid-column:3}.tzr [data-rmz]{grid-column:4}
+  .tzr .dt{grid-column:1/3;grid-row:2;font-size:12.5px}.tzr .of{grid-column:3/5;grid-row:2;text-align:right}
+  .tzr .note{grid-row:3}
+}
+
+/* stopwatch */
+.sw-t{font-size:40px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em;text-align:center;line-height:1.1}
+.sw-t small{font-size:22px;color:var(--muted)}
+.laps{max-height:150px;overflow:auto;margin-top:8px;font-size:13px;font-variant-numeric:tabular-nums}
+.laps div{display:grid;grid-template-columns:52px 1fr 1fr;padding:3px 2px;border-top:1px solid var(--line)}
+.laps .best{color:var(--o);font-weight:600}.laps .worst{color:var(--warn)}
+
+/* text + sequence */
+textarea{font:13px/1.45 var(--mono);color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;resize:vertical;min-height:150px}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px;margin:10px 0}
+.stat{padding:7px 10px;border:1px solid var(--line);border-radius:8px}
+.stat b{display:block;font-size:17px;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat span{font-size:11.5px;color:var(--muted)}
+.ops{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.ops button{font-size:12.5px;padding:4px 10px}
+.seqrec{border-top:1px solid var(--line);padding-top:12px;margin-top:14px}
+.seqrec h4{margin:0 0 4px;font-size:14px;font-weight:650;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:650;padding:1px 7px;border-radius:10px;background:var(--accent-soft);color:var(--ink)}
+.tag.bad{background:var(--warn-soft);color:var(--warn)}
+.seqout{font-family:var(--mono);font-size:12px;background:var(--soft);border-radius:8px;padding:8px 10px;word-break:break-all;max-height:110px;overflow:auto;margin-top:4px;cursor:copy}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:3px 14px;font-size:13px;margin-top:8px}
+.kv dt{color:var(--muted)}.kv dd{margin:0;font-variant-numeric:tabular-nums}
+.bars{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:6px 0 2px;max-width:420px}
+.bars i{display:block;height:100%}
+
+#tank{display:block;width:100%;height:200px;border-radius:9px;cursor:crosshair;touch-action:manipulation}
+table.mm input{width:100%;min-width:60px;padding:4px 6px}
+table.mm td{padding:3px 6px 3px 0;vertical-align:middle}
+table.mm td.tot{font-weight:600;white-space:nowrap;text-align:right;padding-left:8px}
+table.mm tfoot td{border-bottom:0;font-weight:600}
+.flag{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:10px;margin-right:4px}
+.flag.n{background:var(--warn-soft);color:var(--warn)}
+.flag.w{background:var(--edge);color:var(--ink)}
+.flag.o{background:var(--soft);color:var(--muted)}
+tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:7px 14px;border-radius:8px;font-size:13px;opacity:0;transition:.2s;pointer-events:none;z-index:9}
+.toast.show{opacity:1;transform:translateX(-50%)}
+</style>
+</head>
+<body>
+<header>
+  <h1 class="brand"><svg viewBox="0 0 64 64" width="38" height="38" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9H50" stroke="currentColor" stroke-width="3.4"/><path d="M18 14H46V31L36 55Q32 61 28 55L18 31Z" stroke="currentColor" stroke-width="3"/><path d="M32 55C30 48 34 42 32 35" stroke="#d63a3a" stroke-width="5.5"/><path d="M32 34C26 30 22 32 21 37" stroke="#f0b72f" stroke-width="2.6"/><path d="M32 34C27 26 24 22 23 19" stroke="#ee7d2b" stroke-width="2.6"/><path d="M32 34C31 27 32 22 33 18" stroke="#d63a3a" stroke-width="2.6"/><path d="M32 34C37 26 40 22 41 19" stroke="#ee7d2b" stroke-width="2.6"/><path d="M32 34C38 30 42 32 43 37" stroke="#f0b72f" stroke-width="2.6"/><path d="M32 47C36 45 38 43 39 40" stroke="#ee7d2b" stroke-width="3.6"/></g><circle cx="32" cy="34" r="3.4" fill="currentColor"/></svg><span><span class="pale">Tube</span>ling</span></h1>
+  <span class="spacer"></span>
+  <button class="ghost small" id="wakeBtn" title="Keep the screen from sleeping while this page is open">Keep awake: off</button>
+  <button class="ghost small" id="themeBtn" title="Switch colour theme">Theme: auto</button>
+</header>
+
+<main>
+<div class="col">
+  <!-- POMODORO -->
+  <section class="card" id="pomo">
+    <div class="card-h"><h2>Pomodoro</h2><span class="sp"></span><span class="small muted" id="pomoToday"></span></div>
+    <div class="pomo-body">
+      <div class="seg" id="pomoModes">
+        <button data-mode="focus">Focus</button><button data-mode="short">Short break</button><button data-mode="long">Long break</button>
+      </div>
+      <div class="ring" id="pomoRing">
+        <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="51" fill="none" stroke-width="13"/><circle class="bar b1" cx="60" cy="60" r="56" fill="none" stroke-width="3.4" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/><circle class="bar b2" cx="60" cy="60" r="51" fill="none" stroke-width="3.4" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/><circle class="bar b3" cx="60" cy="60" r="46" fill="none" stroke-width="3.4" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/></svg>
+        <div class="lbl"><div class="t" id="pomoTime">25:00</div><div class="m" id="pomoEnds">&nbsp;</div></div>
+      </div>
+      <div class="row">
+        <button class="primary" id="pomoStart" title="Start / pause (P)" style="min-width:90px">Start</button>
+        <button id="pomoReset">Reset</button>
+        <button id="pomoSkip" title="Skip to the next phase">Skip</button>
+      </div>
+      <div class="dots" id="pomoDots"></div>
+    </div>
+    <details style="margin-top:12px">
+      <summary>Settings</summary>
+      <div class="grid2">
+        <label>Focus (min)<input type="number" min="1" max="180" data-ps="focus"></label>
+        <label>Short break (min)<input type="number" min="1" max="60" data-ps="short"></label>
+        <label>Long break (min)<input type="number" min="1" max="90" data-ps="long"></label>
+        <label>Long break every<input type="number" min="2" max="12" data-ps="every"></label>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px">
+        <label class="chk"><input type="checkbox" data-ps="autoBreak"> Start breaks automatically</label>
+        <label class="chk"><input type="checkbox" data-ps="autoFocus"> Start focus automatically after a break</label>
+        <label class="chk"><input type="checkbox" data-ps="sound"> Sound</label>
+        <label class="chk"><input type="checkbox" data-ps="notify"> Desktop notification</label>
+      </div>
+    </details>
+  </section>
+
+  <!-- LAB TIMERS -->
+  <section class="card" id="timers">
+    <div class="card-h"><h2>Countdown timers</h2><span class="sp"></span><button class="ghost small" id="tmClear" title="Remove finished timers">Clear finished</button></div>
+    <div class="row">
+      <input id="tmLabel" placeholder="Label (e.g. wash 2)" style="flex:1 1 120px">
+      <input id="tmDur" placeholder="10, 1:30, 2h" style="width:92px" title="Minutes (10), m:ss (1:30), h:mm:ss, or with units: 90s, 15m, 2h">
+      <button class="primary" id="tmAdd">Add</button>
+    </div>
+    <div class="chips" style="margin-top:8px" id="tmPresets"></div>
+    <div id="tmList" style="margin-top:8px"></div>
+    <div class="hint" id="tmEmpty">Run as many as you need; they survive a reload.</div>
+  </section>
+
+  <!-- STOPWATCH -->
+  <section class="card" id="stopwatch">
+    <div class="card-h"><h2>Stopwatch</h2><span class="sp"></span><span class="small muted" id="swSince"></span></div>
+    <div class="sw-t" id="swT">00:00<small>.00</small></div>
+    <div class="row" style="justify-content:center;margin-top:10px">
+      <button class="primary" id="swGo" style="min-width:80px">Start</button>
+      <button id="swLap">Lap</button>
+      <button id="swReset">Reset</button>
+    </div>
+    <div class="laps" id="swLaps"></div>
+  </section>
+
+  <!-- COUNTER -->
+  <section class="card" id="counter">
+    <div class="card-h"><h2>Counter</h2><span class="sp"></span>
+      <button class="ghost small" id="cUndo" title="Undo (Backspace)">Undo</button>
+      <button class="ghost small" id="cReset">Reset</button>
+    </div>
+    <div class="ctr-main" id="cMain" title="Click or press Space to count">
+      <div class="big" id="cBig">0</div>
+      <div class="nm" id="cName">Space to count</div>
+    </div>
+    <div id="cList"></div>
+    <div class="row" style="margin-top:8px;justify-content:space-between">
+      <button class="small" id="cAdd">+ Add category</button>
+      <span class="small muted" id="cTotal"></span>
+    </div>
+    <details style="margin-top:12px">
+      <summary>Hemocytometer → cells/mL</summary>
+      <div class="fields">
+        <label class="f"><span>Total count</span><input id="hcCount" class="w-s" inputmode="decimal" placeholder="total"></label>
+        <label class="f"><span>Squares counted</span><input id="hcSq" class="w-s" inputmode="decimal" value="4"></label>
+        <label class="f"><span>Dilution factor</span><input id="hcDil" class="w-s" inputmode="decimal" value="2"></label>
+      </div>
+      <div class="row" style="margin-top:8px"><button class="small" id="hcUse">Use counter total</button><label class="chk"><input type="checkbox" id="hcViab"> first row = live, second = dead</label></div>
+      <div class="answer" id="hcOut" style="font-size:14px"></div>
+      <div class="formula">cells/mL = (count ÷ squares) × dilution × 10⁴ &nbsp;(Neubauer large square = 0.1 µL)</div>
+    </details>
+  </section>
+
+  <!-- HYDRA TANK -->
+  <section class="card" id="hydra">
+    <div class="card-h"><h2>Hydra tank</h2><span class="sp"></span>
+      <button class="ghost small" id="hyAdd" title="Add a polyp">+ polyp</button>
+      <button class="ghost small" id="hyReset">Reset</button>
+    </div>
+    <canvas id="tank" aria-label="Hydra fishbowl minigame"></canvas>
+    <div class="row" style="justify-content:space-between;margin-top:8px">
+      <span class="small muted" id="hyStats"></span>
+      <button class="small" id="hyFeed">Feed artemia</button>
+    </div>
+    <div class="hint">Click the water to feed, click a polyp to poke it.</div>
+  </section>
+</div>
+
+<div class="col">
+  <section class="card" id="tools">
+    <div class="tabs" id="tabs">
+      <button data-tab="units">Units</button>
+      <button data-tab="conc">Concentration</button>
+      <button data-tab="dil">Dilution</button>
+      <button data-tab="cfg">Centrifuge</button>
+      <button data-tab="na">DNA / RNA</button>
+      <button data-tab="mm">Master mix</button>
+      <button data-tab="seq">Sequence</button>
+      <button data-tab="text">Text</button>
+      <button data-tab="tz">Time zones</button>
+      <button data-tab="tp">Timepoints</button>
+    </div>
+
+    <!-- UNITS -->
+    <div class="pane" data-pane="units">
+      <div class="fields">
+        <label class="f"><span>Quantity</span><select id="uCat"></select></label>
+        <label class="f"><span>Value</span><input id="uVal" inputmode="decimal" value="1"></label>
+        <label class="f"><span>Unit</span><select id="uFrom"></select></label>
+      </div>
+      <div class="res" id="uOut"></div>
+    </div>
+
+    <!-- CONCENTRATION -->
+    <div class="pane" data-pane="conc">
+      <h3>Convert a concentration</h3>
+      <div class="fields">
+        <label class="f"><span>Value</span><input id="ccVal" inputmode="decimal" value="1"></label>
+        <label class="f"><span>Unit</span><select id="ccUnit"></select></label>
+        <label class="f"><span>MW (g/mol)</span><input id="ccMW" class="w-s" inputmode="decimal" placeholder="e.g. 58.44"></label>
+        <label class="f"><span>or pick a compound</span><select id="ccPick" style="width:190px"></select></label>
+      </div>
+      <div class="res" id="ccOut"></div>
+
+      <div class="sec">
+        <h3>How much do I weigh?</h3>
+        <div class="fields">
+          <label class="f"><span>Target concentration</span><span class="in"><input id="wC" inputmode="decimal" value="1" class="w-s"><select id="wCu"></select></span></label>
+          <label class="f"><span>Final volume</span><span class="in"><input id="wV" inputmode="decimal" value="100" class="w-s"><select id="wVu"></select></span></label>
+          <span class="small muted" style="padding-bottom:8px">uses the MW above</span>
+        </div>
+        <div class="answer" id="wOut"></div>
+      </div>
+      <div class="sec">
+        <h3>What concentration did I make?</h3>
+        <div class="fields">
+          <label class="f"><span>Mass dissolved</span><span class="in"><input id="rM" inputmode="decimal" class="w-s" placeholder="mass"><select id="rMu"></select></span></label>
+          <label class="f"><span>in volume</span><span class="in"><input id="rV" inputmode="decimal" class="w-s" placeholder="volume"><select id="rVu"></select></span></label>
+        </div>
+        <div class="answer" id="rOut"></div>
+      </div>
+      <div class="hint">Hydrates differ: check the formula weight on your bottle.</div>
+    </div>
+
+    <!-- DILUTION -->
+    <div class="pane" data-pane="dil">
+      <h3>C₁V₁ = C₂V₂ <span class="muted" style="font-weight:400">· leave one field empty</span></h3>
+      <div class="fields">
+        <label class="f"><span>Stock conc. C₁</span><span class="in"><input id="dC1" inputmode="decimal" class="w-s" value="10"><select id="dC1u"></select></span></label>
+        <label class="f"><span>Stock volume V₁</span><span class="in"><input id="dV1" inputmode="decimal" class="w-s calc"><select id="dV1u"></select></span></label>
+      </div>
+      <div class="fields" style="margin-top:8px">
+        <label class="f"><span>Final conc. C₂</span><span class="in"><input id="dC2" inputmode="decimal" class="w-s" value="1"><select id="dC2u"></select></span></label>
+        <label class="f"><span>Final volume V₂</span><span class="in"><input id="dV2" inputmode="decimal" class="w-s" value="1"><select id="dV2u"></select></span></label>
+        <button class="small ghost" id="dClear" style="margin-bottom:4px">Clear</button>
+      </div>
+      <div class="answer" id="dOut"></div>
+
+      <div class="sec">
+        <h3>Serial dilution</h3>
+        <div class="fields">
+          <label class="f"><span>Start conc.</span><input id="sC" inputmode="decimal" class="w-s" value="100"></label>
+          <label class="f"><span>Unit (label)</span><input id="sU" class="w-s" value="µM"></label>
+          <label class="f"><span>Fold per step</span><input id="sF" inputmode="decimal" class="w-s" value="10"></label>
+          <label class="f"><span>Steps</span><input id="sN" inputmode="numeric" class="w-s" value="6"></label>
+          <label class="f"><span>Volume per tube</span><span class="in"><input id="sV" inputmode="decimal" class="w-s" value="100"><select id="sVu"></select></span></label>
+        </div>
+        <div class="answer" id="sOut"></div>
+        <div id="sTable"></div>
+      </div>
+    </div>
+
+    <!-- CENTRIFUGE -->
+    <div class="pane" data-pane="cfg">
+      <h3>RPM ↔ RCF (× g)</h3>
+      <div class="fields">
+        <label class="f"><span>Rotor radius (cm)</span><input id="cfR" inputmode="decimal" class="w-s" value="8.4"></label>
+        <label class="f"><span>Speed (rpm)</span><input id="cfRpm" inputmode="decimal" class="w-l" value="13000"></label>
+        <span style="padding-bottom:8px" class="muted">↔</span>
+        <label class="f"><span>Force (× g)</span><input id="cfG" inputmode="decimal" class="w-l"></label>
+      </div>
+      <div class="chips" style="margin-top:10px" id="cfPresets"></div>
+      <div class="formula">RCF = 1.118 × 10⁻⁵ × r(cm) × rpm²</div>
+      <div class="hint">Radius: rotor axis to tube bottom (r<sub>max</sub>, in the rotor manual).</div>
+    </div>
+
+    <!-- NUCLEIC ACIDS -->
+    <div class="pane" data-pane="na">
+      <div class="fields">
+        <label class="f"><span>Molecule</span><select id="naType">
+          <option value="ds">dsDNA</option><option value="ss">ssDNA / oligo</option><option value="rna">ssRNA</option></select></label>
+        <label class="f"><span>Length (bp / nt)</span><input id="naLen" inputmode="decimal" value="1000"></label>
+        <span class="small muted" style="padding-bottom:8px" id="naMW"></span>
+      </div>
+      <div class="split">
+        <div>
+          <h3 style="margin-top:18px">Mass ↔ moles ↔ copies</h3>
+          <div class="fields">
+            <label class="f"><span>Amount</span><input id="naAmt" inputmode="decimal" value="100"></label>
+            <label class="f"><span>Unit</span><select id="naAmtU"></select></label>
+          </div>
+          <div class="res" id="naAmtOut" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr))"></div>
+        </div>
+        <div>
+          <h3 style="margin-top:18px">Concentration</h3>
+          <div class="fields">
+            <label class="f"><span>Value</span><input id="naC" inputmode="decimal" value="50"></label>
+            <label class="f"><span>Unit</span><select id="naCu"></select></label>
+          </div>
+          <div class="res" id="naCOut" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr))"></div>
+        </div>
+      </div>
+      <div class="split">
+        <div class="sec">
+          <h3>Concentration from A260</h3>
+          <div class="fields">
+            <label class="f"><span>A260</span><input id="aA" inputmode="decimal" class="w-s" placeholder="0.25"></label>
+            <label class="f"><span>A280 (opt.)</span><input id="aB" inputmode="decimal" class="w-s"></label>
+            <label class="f"><span>Dilution ×</span><input id="aD" inputmode="decimal" class="w-s" value="1"></label>
+            <label class="f"><span>Factor</span><input id="aF" inputmode="decimal" class="w-s" title="µg/mL per A260 unit: dsDNA 50, ssDNA 33, RNA 40, oligo ~20–33"></label>
+          </div>
+          <div class="answer" id="aOut"></div>
+        </div>
+        <div class="sec">
+          <h3>Ligation insert amount</h3>
+          <div class="fields">
+            <label class="f"><span>Vector (bp)</span><input id="lVb" inputmode="decimal" class="w-s" value="3000"></label>
+            <label class="f"><span>Vector (ng)</span><input id="lVn" inputmode="decimal" class="w-s" value="50"></label>
+            <label class="f"><span>Insert (bp)</span><input id="lIb" inputmode="decimal" class="w-s" value="1000"></label>
+            <label class="f"><span>Insert : vector</span><input id="lR" inputmode="decimal" class="w-s" value="3"></label>
+          </div>
+          <div class="answer" id="lOut"></div>
+        </div>
+      </div>
+      <div class="formula">MW: dsDNA = bp×617.96+36.04 · ssDNA = nt×303.7+79.0 · ssRNA = nt×320.5+159.0 g/mol (Thermo/NEB formulas, average composition)</div>
+    </div>
+
+    <!-- MASTER MIX -->
+    <div class="pane" data-pane="mm">
+      <div class="fields">
+        <label class="f"><span>Start from</span><select id="mmPreset"></select></label>
+        <label class="f"><span>Reactions</span><input id="mmN" class="w-s" inputmode="numeric"></label>
+        <label class="f"><span>Overage %</span><input id="mmOver" class="w-s" inputmode="decimal"></label>
+        <label class="f"><span>+ extra rxns</span><input id="mmExtra" class="w-s" inputmode="decimal"></label>
+        <label class="f"><span>Rxn volume µL</span><input id="mmVol" class="w-s" inputmode="decimal"></label>
+        <label class="f"><span>Template µL / rxn</span><input id="mmTpl" class="w-s" inputmode="decimal"></label>
+      </div>
+      <details style="margin-top:10px"><summary>Plate helper: (samples + controls) × replicates</summary>
+        <div class="fields">
+          <label class="f"><span>Samples</span><input id="mmS" class="w-s" value="8" inputmode="numeric"></label>
+          <label class="f"><span>Controls (NTC, −RT, std)</span><input id="mmC" class="w-s" value="2" inputmode="numeric"></label>
+          <label class="f"><span>Replicates</span><input id="mmR" class="w-s" value="3" inputmode="numeric"></label>
+          <button class="small" id="mmUse" style="margin-bottom:4px">Use → reactions</button>
+          <span class="small muted" id="mmPlate" style="padding-bottom:8px"></span>
+        </div>
+      </details>
+      <div style="overflow-x:auto"><table class="t mm" id="mmTable"></table></div>
+      <div class="row" style="margin-top:8px"><button class="small" id="mmAdd">+ Component</button><span class="small muted">Give stock + final (same units) and µL/rxn is calculated, or type µL directly. Type <b>fill</b> to top up to volume (water).</span></div>
+      <div class="answer" id="mmOut"></div>
+      <div class="row" style="margin-top:8px"><button class="small" id="mmCopy">Copy table</button></div>
+    </div>
+
+    <!-- TIMEPOINTS -->
+    <div class="pane" data-pane="tp">
+      <div class="fields">
+        <label class="f"><span>Cut / amputation</span><span class="in"><input type="date" id="tpDate"><input type="time" id="tpTime"></span></label>
+        <button class="small" id="tpNow" style="margin-bottom:4px">Now</button>
+        <label class="f" style="flex:1 1 240px"><span>Sampling points (hours; 2d = 48 h)</span><input id="tpHours" style="width:100%"></label>
+      </div>
+      <div class="chips" id="tpPresets" style="margin-top:8px"></div>
+      <details style="margin-top:10px"><summary>Working hours and night</summary>
+        <div class="fields">
+          <label class="f"><span>Work starts</span><input id="tpWs" class="w-s" type="number" min="0" max="23"></label>
+          <label class="f"><span>Work ends</span><input id="tpWe" class="w-s" type="number" min="1" max="24"></label>
+          <label class="f"><span>Night starts</span><input id="tpNs" class="w-s" type="number" min="0" max="23"></label>
+          <label class="f"><span>Night ends</span><input id="tpNe" class="w-s" type="number" min="0" max="23"></label>
+        </div>
+      </details>
+      <div id="tpOut"></div>
+      <div class="row" style="margin-top:8px"><button class="small" id="tpCopy">Copy table</button></div>
+      <div class="sec">
+        <h3>Best cut times (next 7 days)</h3>
+        <div class="chips" id="tpSuggest"></div>
+      </div>
+    </div>
+
+    <!-- SEQUENCE -->
+    <div class="pane" data-pane="seq">
+      <textarea id="sqIn" rows="7" spellcheck="false" placeholder="Paste a sequence: raw, FASTA (several records OK) or GenBank-style with numbers. DNA, RNA or protein is detected automatically."></textarea>
+      <div class="row" style="margin-top:8px">
+        <label class="f" style="flex-direction:row;align-items:center;gap:6px"><span>Find motif</span><input id="sqMotif" placeholder="e.g. GAATTC, TATAWAW, N[^P][ST]" style="width:230px" title="DNA: IUPAC codes allowed (R, Y, N …), both strands searched. Protein: letters, X = any, or a regular expression."></label>
+        <span class="sp" style="flex:1"></span>
+        <button class="small" id="sqExample">Example</button>
+        <button class="small ghost" id="sqClear">Clear</button>
+      </div>
+      <div id="sqOut"></div>
+    </div>
+
+    <!-- TEXT -->
+    <div class="pane" data-pane="text">
+      <textarea id="txIn" rows="9" spellcheck="false" placeholder="Paste or type text here. Counts update as you type; the buttons below edit the text in place (Undo goes back one step)."></textarea>
+      <div class="stats" id="txStats"></div>
+      <div class="small muted" style="margin:10px 0 4px">Clean up</div>
+      <div class="ops" id="txOps">
+        <button data-op="join">Join lines (space)</button>
+        <button data-op="nobr">Remove line breaks</button>
+        <button data-op="nows">Remove all whitespace</button>
+        <button data-op="nonum">Remove numbers + whitespace</button>
+        <button data-op="collapse">Collapse spaces / trim</button>
+        <button data-op="noempty">Remove empty lines</button>
+        <button data-op="fasta1">FASTA: one line per sequence</button>
+        <button data-op="wrap60">FASTA: wrap at 60</button>
+        <button data-op="upper">UPPER</button>
+        <button data-op="lower">lower</button>
+        <button data-op="sort">Sort lines</button>
+        <button data-op="uniq">Unique lines</button>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <button class="primary small" id="txCopy">Copy text</button>
+        <button class="small" id="txUndo">Undo</button>
+        <button class="small ghost" id="txClear">Clear</button>
+        <span class="small muted" id="txMsg"></span>
+      </div>
+    </div>
+
+    <!-- TIME ZONES -->
+    <div class="pane" data-pane="tz">
+      <div class="tz-ctrl">
+        <label class="f"><span>Reference zone</span><select id="tzRef" style="width:200px"></select></label>
+        <label class="f"><span>Date</span><input type="date" id="tzDate"></label>
+        <label class="f"><span>Time</span><input type="time" id="tzTime"></label>
+        <button id="tzNow" style="margin-bottom:1px">Now</button>
+        <span class="sp" style="flex:1"></span>
+        <button class="ghost small" id="tzCopy" title="Copy all times as text" style="margin-bottom:4px">Copy as text</button>
+      </div>
+      <div class="err" id="tzWarn"></div>
+      <div class="tz-list" id="tzList"></div>
+      <div class="row" style="margin-top:12px">
+        <input id="tzAdd" list="tzAll" placeholder="Add zone: city or region (e.g. Berlin, Asia/Tokyo)" style="flex:1 1 260px">
+        <datalist id="tzAll"></datalist>
+        <button id="tzAddBtn">Add</button>
+      </div>
+      <div class="plan" id="tzPlan"></div>
+      <div class="legend"><span><i style="background:var(--accent-soft)"></i>08–18</span><span><i style="background:var(--edge)"></i>07–08, 18–22</span><span><i style="background:var(--night)"></i>night</span><span><i style="box-shadow:inset 2px 0 0 var(--warn);background:var(--night)"></i>midnight (date changes)</span></div>
+    </div>
+  </section>
+</div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script id="core">
+// LabCore: all calculations, no DOM access (also loadable under Node).
+const LabCore = (() => {
+"use strict";
+const AVOGADRO = 6.02214076e23;
+// Reads a number typed by a person. Commas: "13,000" / "1,500,000" / "13,000.5" = thousands separators;
+// "0,25" / "2,5" / "1,25" = decimal comma. A comma followed by exactly 3 digits counts as thousands unless the
+// number starts with 0 ("0,250" = 0.25).
+function num(s) {
+  if (s == null) return NaN;
+  s = String(s).trim().replace(/[\s\u00a0\u2009\u202f']/g, '').replace(/×10\^?/, 'e');
+  if (s === '') return NaN;
+  if (s.includes(',') && s.includes('.')) s = s.replace(/,/g, '');
+  else if (/^[-+]?[1-9]\d{0,2}(,\d{3})+$/.test(s)) s = s.replace(/,/g, '');
+  else if ((s.match(/,/g) || []).length === 1) s = s.replace(',', '.');
+  s = s.replace(/^([-+]?)\./, '$10.');
+  return Number(s);
+}
+
+/* ---- durations ---- */
+function parseDur(s) { // -> ms
+  s = String(s).trim().toLowerCase().replace(',', '.');
+  if (!s) return NaN;
+  if (/^\d+(:\d{1,2}){1,2}$/.test(s)) { const p = s.split(':').map(Number); return (p.length === 2 ? p[0] * 60 + p[1] : p[0] * 3600 + p[1] * 60 + p[2]) * 1000; }
+  if (/^\d*\.?\d+$/.test(s)) return Number(s) * 60000;
+  let total = 0, rest = s;
+  rest = rest.replace(/(\d*\.?\d+)\s*(hours?|hrs?|h|minutes?|mins?|m|seconds?|secs?|s)(?![a-z])/g, (_, n, u) => { total += Number(n) * (u[0] === 'h' ? 3600 : u[0] === 'm' ? 60 : 1); return ''; });
+  return rest.trim() === '' && total > 0 ? total * 1000 : NaN;
+}
+
+/* ---- units ---- */
+const lin = (u, f) => ({ u, f });
+const UNITS = {
+  Mass: [lin('kg', 1e3), lin('g', 1), lin('mg', 1e-3), lin('µg', 1e-6), lin('ng', 1e-9), lin('pg', 1e-12), lin('lb', 453.59237), lin('oz', 28.349523125)],
+  Volume: [lin('L', 1), lin('mL', 1e-3), lin('µL', 1e-6), lin('nL', 1e-9), lin('m³', 1e3), lin('cm³ (cc)', 1e-3), lin('mm³', 1e-6), lin('gal (US)', 3.785411784), lin('fl oz (US)', 0.0295735295625)],
+  Length: [lin('km', 1e3), lin('m', 1), lin('cm', 1e-2), lin('mm', 1e-3), lin('µm', 1e-6), lin('nm', 1e-9), lin('Å', 1e-10), lin('in', 0.0254), lin('ft', 0.3048)],
+  Temperature: [
+    { u: '°C', to: x => x, from: x => x },
+    { u: '°F', to: x => (x - 32) * 5 / 9, from: x => x * 9 / 5 + 32 },
+    { u: 'K', to: x => x - 273.15, from: x => x + 273.15 }],
+  Time: [lin('ms', 1e-3), lin('s', 1), lin('min', 60), lin('h', 3600), lin('day', 86400), lin('week', 604800), lin('year (365.25 d)', 31557600)],
+  Pressure: [lin('Pa', 1), lin('kPa', 1e3), lin('MPa', 1e6), lin('bar', 1e5), lin('mbar', 100), lin('atm', 101325), lin('psi', 6894.757293168), lin('mmHg', 133.322387415), lin('Torr', 101325 / 760)],
+  'Amount (mol)': [lin('mol', 1), lin('mmol', 1e-3), lin('µmol', 1e-6), lin('nmol', 1e-9), lin('pmol', 1e-12), lin('fmol', 1e-15), lin('molecules', 1 / AVOGADRO)],
+  Radioactivity: [lin('Ci', 3.7e10), lin('mCi', 3.7e7), lin('µCi', 3.7e4), lin('Bq', 1), lin('kBq', 1e3), lin('MBq', 1e6), lin('GBq', 1e9), lin('dpm', 1 / 60)],
+  Energy: [lin('J', 1), lin('kJ', 1e3), lin('cal', 4.184), lin('kcal', 4184), lin('eV', 1.602176634e-19), lin('Wh', 3600)],
+  Area: [lin('m²', 1), lin('cm²', 1e-4), lin('mm²', 1e-6), lin('µm²', 1e-12), lin('in²', 0.00064516)],
+  'Light (wavelength ↔ energy)': [
+    { u: 'nm', to: x => x, from: x => x },
+    { u: 'eV', to: x => 1239.841984 / x, from: x => 1239.841984 / x },
+    { u: 'THz', to: x => 299792.458 / x, from: x => 299792.458 / x },
+    { u: 'cm⁻¹', to: x => 1e7 / x, from: x => 1e7 / x }]
+};
+const toBase = (d, x) => d.to ? d.to(x) : x * d.f;
+const fromBase = (d, x) => d.from ? d.from(x) : x / d.f;
+function convertUnit(cat, x, from) {
+  const list = UNITS[cat], src = list.find(d => d.u === from), b = toBase(src, x);
+  return Object.fromEntries(list.map(d => [d.u, fromBase(d, b)]));
+}
+
+/* ---- concentration ---- */
+const CONC = [
+  { u: 'M', k: 'mol', f: 1 }, { u: 'mM', k: 'mol', f: 1e-3 }, { u: 'µM', k: 'mol', f: 1e-6 }, { u: 'nM', k: 'mol', f: 1e-9 }, { u: 'pM', k: 'mol', f: 1e-12 },
+  { u: 'g/L', k: 'g', f: 1 }, { u: 'mg/mL', k: 'g', f: 1 }, { u: 'µg/µL', k: 'g', f: 1 },
+  { u: 'mg/L', k: 'g', f: 1e-3 }, { u: 'µg/mL', k: 'g', f: 1e-3 }, { u: 'ng/µL', k: 'g', f: 1e-3 },
+  { u: 'ng/mL', k: 'g', f: 1e-6 }, { u: 'pg/mL', k: 'g', f: 1e-9 }, { u: '% (w/v)', k: 'g', f: 10 }
+];
+const CONC_OUT = [
+  { u: 'M', k: 'mol', f: 1 }, { u: 'mM', k: 'mol', f: 1e-3 }, { u: 'µM', k: 'mol', f: 1e-6 }, { u: 'nM', k: 'mol', f: 1e-9 }, { u: 'pM', k: 'mol', f: 1e-12 },
+  { u: 'g/L = mg/mL', k: 'g', f: 1 }, { u: 'µg/mL = ng/µL', k: 'g', f: 1e-3 }, { u: 'ng/mL', k: 'g', f: 1e-6 }, { u: 'pg/mL', k: 'g', f: 1e-9 }, { u: '% (w/v)', k: 'g', f: 10 }
+];
+// Formula weights (g/mol) of common reagents, for the form named. Values: PubChem / supplier labels.
+const REAGENTS = [
+  ['NaCl', 58.44], ['KCl', 74.55], ['MgCl₂ · 6H₂O', 203.30], ['MgCl₂ (anhydrous)', 95.21], ['MgSO₄ · 7H₂O', 246.47], ['CaCl₂ · 2H₂O', 147.01], ['CaCl₂ (anhydrous)', 110.98],
+  ['NaHCO₃', 84.01], ['NaOH', 40.00], ['KOH', 56.11], ['KH₂PO₄', 136.09], ['K₂HPO₄', 174.18], ['Na₂HPO₄ (anhydrous)', 141.96], ['Na₂HPO₄ · 7H₂O', 268.07], ['NaH₂PO₄ · H₂O', 137.99],
+  ['Tris base', 121.14], ['Tris-HCl', 157.60], ['HEPES', 238.30], ['MOPS', 209.26], ['PIPES', 302.37], ['EDTA disodium · 2H₂O', 372.24], ['EGTA', 380.35],
+  ['Glycine', 75.07], ['Glucose', 180.16], ['Sucrose', 342.30], ['Urea', 60.06], ['Glycerol', 92.09], ['SDS', 288.38], ['DTT', 154.25], ['β-Mercaptoethanol', 78.13],
+  ['Sodium acetate (anhydrous)', 82.03], ['Sodium acetate · 3H₂O', 136.08], ['Ammonium acetate', 77.08], ['Sodium citrate · 2H₂O', 294.10], ['Guanidine HCl', 95.53], ['Guanidine thiocyanate', 118.16],
+  ['Formaldehyde (from PFA)', 30.03], ['Ethanol', 46.07], ['Methanol', 32.04], ['DMSO', 78.13], ['IPTG', 238.30], ['Ampicillin sodium', 371.39], ['Kanamycin sulfate', 582.58],
+  ['Hydroxyurea', 76.05], ['Colchicine', 399.44], ['Alsterpaullone', 293.28], ['Linalool', 154.25], ['Urethane', 89.09], ['Levamisole HCl', 240.75], ['NBT', 817.6], ['BCIP (toluidine salt)', 433.6]
+];
+function concToBase(x, unit, mw) { // -> {mol: mol/L, g: g/L}; one of them NaN without MW
+  const c = CONC.find(d => d.u === unit);
+  if (c.k === 'mol') { const mol = x * c.f; return { mol, g: mol * mw }; }
+  const g = x * c.f; return { g, mol: g / mw };
+}
+function convertConc(x, unit, mw) {
+  const b = concToBase(x, unit, mw > 0 ? mw : NaN);
+  return Object.fromEntries(CONC_OUT.map(d => [d.u, (d.k === 'mol' ? b.mol : b.g) / d.f]));
+}
+const massToWeigh = (x, unit, volL, mw) => concToBase(x, unit, mw > 0 ? mw : NaN).g * volL; // g
+function concFromMass(g, volL, mw) { const gL = g / volL; return { gL, M: mw > 0 ? gL / mw : NaN, pct: gL / 10 }; }
+
+/* ---- dilution ---- */
+// C1V1 = C2V2. Pass base-unit numbers; exactly one of the four must be null/NaN.
+function solveDilution(v) {
+  const keys = ['C1', 'V1', 'C2', 'V2'], miss = keys.filter(k => v[k] == null || Number.isNaN(v[k]));
+  if (miss.length !== 1) return { error: 'one-blank' };
+  const { C1, V1, C2, V2 } = v, k = miss[0];
+  const r = k === 'V1' ? C2 * V2 / C1 : k === 'V2' ? C1 * V1 / C2 : k === 'C1' ? C2 * V2 / V1 : C1 * V1 / V2;
+  if (!isFinite(r) || r <= 0) return { error: 'invalid' };
+  const out = Object.assign({}, v, { [k]: r });
+  if (out.C2 > out.C1 * (1 + 1e-9)) return { error: 'concentrate', key: k, value: r };
+  return { key: k, value: r, diluent: out.V2 - out.V1, fold: out.C1 / out.C2, all: out };
+}
+function serialDilution(c0, F, N, V) { // V = final volume per tube
+  const transfer = V / F, diluent = V - transfer, rows = [];
+  for (let i = 0; i <= N; i++) rows.push({ i, conc: c0 / F ** i, fold: F ** i });
+  return { transfer, diluent, rows };
+}
+
+/* ---- centrifuge ---- */
+const RCF_K = 1.118e-5;
+const rcfFromRpm = (rCm, rpm) => RCF_K * rCm * rpm * rpm;
+const rpmFromRcf = (rCm, g) => Math.sqrt(g / (RCF_K * rCm));
+
+/* ---- nucleic acids ---- */
+const NA = { // average MW formulas (Thermo Fisher / NEB)
+  ds: { mw: n => n * 617.96 + 36.04, a260: 50, unit: 'bp' },
+  ss: { mw: n => n * 303.7 + 79.0, a260: 33, unit: 'nt' },
+  rna: { mw: n => n * 320.5 + 159.0, a260: 40, unit: 'nt' }
+};
+const naMW = (type, len) => len > 0 ? NA[type].mw(len) : NaN;
+const a260Conc = (A, factor, dil = 1) => A * factor * dil; // ng/µL
+const ligationInsertNg = (vecBp, vecNg, insBp, ratio) => ratio * vecNg * insBp / vecBp;
+
+/* ---- sequence analysis ---- */
+const IUPAC = { A: 'A', C: 'C', G: 'G', T: 'T', U: 'T', R: '[AG]', Y: '[CT]', S: '[GC]', W: '[AT]', K: '[GT]', M: '[AC]', B: '[CGT]', D: '[AGT]', H: '[ACT]', V: '[ACG]', N: '[ACGTN]' };
+const COMP = { A: 'T', T: 'A', U: 'A', G: 'C', C: 'G', R: 'Y', Y: 'R', S: 'S', W: 'W', K: 'M', M: 'K', B: 'V', V: 'B', D: 'H', H: 'D', N: 'N' };
+const CODE = 'FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'; // standard code, TCAG order
+const ENZYMES = [
+  ['AatII', 'GACGTC'], ['AflII', 'CTTAAG'], ['AgeI', 'ACCGGT'], ['ApaI', 'GGGCCC'], ['AscI', 'GGCGCGCC'], ['BamHI', 'GGATCC'], ['BglII', 'AGATCT'],
+  ['BsaI', 'GGTCTC'], ['BsmBI', 'CGTCTC'], ['ClaI', 'ATCGAT'], ['EcoRI', 'GAATTC'], ['EcoRV', 'GATATC'], ['HindIII', 'AAGCTT'], ['HpaI', 'GTTAAC'],
+  ['KpnI', 'GGTACC'], ['MluI', 'ACGCGT'], ['NcoI', 'CCATGG'], ['NdeI', 'CATATG'], ['NheI', 'GCTAGC'], ['NotI', 'GCGGCCGC'], ['NsiI', 'ATGCAT'],
+  ['PacI', 'TTAATTAA'], ['PstI', 'CTGCAG'], ['SacI', 'GAGCTC'], ['SalI', 'GTCGAC'], ['SapI', 'GCTCTTC'], ['SmaI', 'CCCGGG'], ['SpeI', 'ACTAGT'],
+  ['SphI', 'GCATGC'], ['XbaI', 'TCTAGA'], ['XhoI', 'CTCGAG']
+];
+const AA_MASS = { A: 71.0788, R: 156.1875, N: 114.1038, D: 115.0886, C: 103.1388, E: 129.1155, Q: 128.1307, G: 57.0519, H: 137.1411, I: 113.1594, L: 113.1594, K: 128.1741, M: 131.1926, F: 147.1766, P: 97.1167, S: 87.0782, T: 101.1051, W: 186.2132, Y: 163.1760, V: 99.1326, U: 150.0388, O: 237.3018 };
+const KD = { A: 1.8, R: -4.5, N: -3.5, D: -3.5, C: 2.5, Q: -3.5, E: -3.5, G: -0.4, H: -3.2, I: 4.5, L: 3.8, K: -3.9, M: 1.9, F: 2.8, P: -1.6, S: -0.8, T: -0.7, W: -0.9, Y: -1.3, V: 4.2 };
+// Bjellqvist pKa set as in ExPASy Compute pI: N-terminal pKa depends on the first residue, C-terminal pKa is
+// 3.55 for every residue (D/E-specific C-terminal values used elsewhere do not reproduce ExPASy).
+const PKA = { Nt: 7.5, Ct: 3.55, K: 10.0, R: 12.0, H: 5.98, D: 4.05, E: 4.45, C: 9.0, Y: 10.0 };
+const PKA_NT = { A: 7.59, M: 7.0, S: 6.93, P: 8.36, T: 6.82, V: 7.44, E: 7.7 };
+
+function parseSeqInput(text) {
+  text = String(text || '').replace(/\r/g, '');
+  if (/^ORIGIN/m.test(text)) { // GenBank flat file
+    const name = (text.match(/^LOCUS\s+(\S+)/m) || [])[1] || 'GenBank record';
+    const body = text.split(/^ORIGIN.*$/m)[1].split(/^\/\//m)[0];
+    return [cleanRec(name, body)];
+  }
+  const recs = []; let cur = null;
+  for (const line of text.split('\n')) {
+    if (line.startsWith('>')) { cur = { name: line.slice(1).trim() || '(no name)', raw: '' }; recs.push(cur); }
+    else if (line.startsWith(';')) continue;
+    else { if (!cur) { if (!line.trim()) continue; cur = { name: 'sequence', raw: '' }; recs.push(cur); } cur.raw += line + '\n'; }
+  }
+  return recs.map(r => cleanRec(r.name, r.raw));
+}
+function cleanRec(name, raw) {
+  const up = raw.toUpperCase(), noWs = up.replace(/[\s\d]/g, ''), seq = noWs.replace(/[-.]/g, '');
+  return { name, seq, gaps: noWs.length - seq.length };
+}
+function classify(seq) {
+  if (!seq) return { type: 'empty' };
+  const strict = (seq.match(/[ACGTUN]/g) || []).length / seq.length;
+  if (/^[ACGTURYSWKMBDHVN]+$/.test(seq) && strict >= 0.75) {
+    const U = seq.includes('U'), T = seq.includes('T');
+    return { type: U && !T ? 'RNA' : 'DNA', mixedTU: U && T };
+  }
+  if (/^[ACDEFGHIKLMNPQRSTVWYBZXJUO*]+$/.test(seq)) return { type: 'protein' };
+  return { type: 'invalid', bad: [...new Set(seq.replace(/[ACDEFGHIKLMNPQRSTVWYBZXJUO*]/g, ''))].join('') };
+}
+const toDna = s => s.replace(/U/g, 'T');
+function revcomp(seq, rna = false) {
+  let out = '';
+  for (let i = seq.length - 1; i >= 0; i--) out += COMP[seq[i]] || 'N';
+  return rna ? out.replace(/T/g, 'U') : out;
+}
+function ntStats(seq) {
+  const s = toDna(seq), c = { A: 0, C: 0, G: 0, T: 0 }; let amb = 0;
+  for (const ch of s) if (ch in c) c[ch]++; else amb++;
+  const acgt = c.A + c.C + c.G + c.T;
+  let run = 0, best = 0, bestCh = '', prev = '';
+  for (const ch of s) { run = ch === prev ? run + 1 : 1; prev = ch; if (run > best) { best = run; bestCh = ch; } }
+  const cpg = (s.match(/CG/g) || []).length;
+  return { len: s.length, counts: c, ambiguous: amb, gc: acgt ? (c.G + c.C) / acgt * 100 : NaN, cpg, cpgOE: c.C && c.G ? cpg * s.length / (c.C * c.G) : NaN, homopolymer: { base: bestCh, len: best } };
+}
+function tmBasic(seq) { // simple Tm (°C); no salt / nearest-neighbour correction
+  const s = toDna(seq), gc = (s.match(/[GC]/g) || []).length, at = (s.match(/[AT]/g) || []).length, n = gc + at;
+  if (!n) return NaN;
+  return n < 14 ? 2 * at + 4 * gc : 64.9 + 41 * (gc - 16.4) / n;
+}
+function oligoMW(seq, rna = false) { // Thermo Fisher formulas; DNA without 5' phosphate, RNA with 5' triphosphate
+  const k = ch => (seq.match(new RegExp(ch, 'g')) || []).length;
+  return rna ? k('A') * 329.21 + k('U') * 306.17 + k('C') * 305.18 + k('G') * 345.21 + 159.0
+             : k('A') * 313.21 + k('T') * 304.2 + k('C') * 289.18 + k('G') * 329.21 - 61.96;
+}
+function translate(nt, frame = 0) {
+  const s = toDna(nt), idx = { T: 0, C: 1, A: 2, G: 3 }; let p = '';
+  for (let i = frame; i + 3 <= s.length; i += 3) {
+    const a = idx[s[i]], b = idx[s[i + 1]], c = idx[s[i + 2]];
+    p += a == null || b == null || c == null ? 'X' : CODE[16 * a + 4 * b + c];
+  }
+  return p;
+}
+function findOrfs(nt, minAa = 30) { // ATG..stop, longest per start region, both strands; coords 1-based on the given strand's forward sequence
+  const s = toDna(nt), L = s.length, rc = revcomp(s), out = [];
+  for (const [strand, seq] of [['+', s], ['−', rc]]) for (let f = 0; f < 3; f++) {
+    const aa = translate(seq, f); let start = -1;
+    for (let i = 0; i <= aa.length; i++) {
+      if (start < 0 && aa[i] === 'M') start = i;
+      if (start >= 0 && (aa[i] === '*' || i === aa.length)) {
+        const complete = aa[i] === '*', len = i - start;
+        if (len >= minAa) {
+          const a = f + start * 3, b = f + i * 3 + (complete ? 3 : 0); // [a,b) on this strand
+          out.push({ strand, frame: f + 1, start: strand === '+' ? a + 1 : L - b + 1, end: strand === '+' ? b : L - a, aaLen: len, complete, protein: aa.slice(start, i) });
+        }
+        start = -1;
+      }
+    }
+  }
+  return out.sort((x, y) => y.aaLen - x.aaLen);
+}
+function motifRegex(pattern, isNt) {
+  pattern = String(pattern).trim();
+  if (!pattern) return null;
+  const up = pattern.toUpperCase();
+  if (isNt && /^[ACGTURYSWKMBDHVN]+$/.test(up)) return { re: up.split('').map(c => IUPAC[c]).join(''), iupac: toDna(up) };
+  if (!isNt && /^[A-Z*]+$/.test(up)) return { re: up.replace(/X/g, '.').replace(/\*/g, '\\*') };
+  // free regular expression: keep escapes like \w \d intact, match case-insensitively; on DNA/RNA an
+  // unescaped U means T (sequences are searched in their T form)
+  const re = isNt ? pattern.replace(/(\\.)|[Uu]/g, (m, esc) => esc || 'T') : pattern;
+  try { new RegExp(re, 'i'); return { re, flags: 'i' }; } catch { return { error: 'Not a valid pattern' }; }
+}
+function findMotif(seq, pattern, isNt, max = 2000) {
+  const m = motifRegex(pattern, isNt); if (!m || m.error) return m;
+  const s = isNt ? toDna(seq) : seq, hits = [];
+  const scan = (str, strand) => {
+    const re = new RegExp('(?=(' + m.re + '))', 'g' + (m.flags || '')); let x;
+    while ((x = re.exec(str)) && hits.length < max) {
+      const len = x[1].length || 1;
+      hits.push({ strand, pos: strand === '+' ? x.index + 1 : str.length - x.index - len + 1, match: x[1] });
+      re.lastIndex = x.index + 1;
+    }
+  };
+  scan(s, '+');
+  if (isNt && !(m.iupac && revcomp(m.iupac) === m.iupac)) scan(revcomp(s), '−');
+  return { hits: hits.sort((a, b) => a.pos - b.pos), capped: hits.length >= max };
+}
+function restrictionSites(seq) {
+  const s = toDna(seq);
+  return ENZYMES.map(([name, site]) => {
+    const r = findMotif(s, site, true); return { name, site, n: r.hits.length, pos: r.hits.map(h => h.pos) };
+  });
+}
+function proteinStats(seq) {
+  const p = seq.replace(/\*+$/, ''), c = {};
+  for (const ch of p) c[ch] = (c[ch] || 0) + 1;
+  let mw = 18.01528, unk = 0, kd = 0, kdn = 0;
+  for (const ch of p) { if (ch === '*') continue; if (AA_MASS[ch]) mw += AA_MASS[ch]; else { mw += 110; unk++; } if (KD[ch] != null) { kd += KD[ch]; kdn++; } }
+  const n = ch => c[ch] || 0;
+  const charge = pH => {
+    const pos = (pk, k) => k / (1 + 10 ** (pH - pk)), neg = (pk, k) => k / (1 + 10 ** (pk - pH));
+    return pos(PKA_NT[p[0]] ?? PKA.Nt, 1) + pos(PKA.K, n('K')) + pos(PKA.R, n('R')) + pos(PKA.H, n('H'))
+      - neg(PKA.Ct, 1) - neg(PKA.D, n('D')) - neg(PKA.E, n('E')) - neg(PKA.C, n('C')) - neg(PKA.Y, n('Y'));
+  };
+  let lo = 0, hi = 14;
+  for (let i = 0; i < 60; i++) { const m = (lo + hi) / 2; if (charge(m) > 0) lo = m; else hi = m; }
+  const epsRed = n('W') * 5500 + n('Y') * 1490, epsOx = epsRed + Math.floor(n('C') / 2) * 125;
+  const glyc = (p.match(/(?=N[^P][ST][^P])/g) || []).length;
+  return { len: p.length, mw, pI: (lo + hi) / 2, charge7: charge(7), epsOx, epsRed, abs01: epsOx / mw, gravy: kdn ? kd / kdn : NaN, counts: c, unknown: unk, internalStops: (p.match(/\*/g) || []).length, nGlyc: glyc, startsM: p[0] === 'M' };
+}
+
+/* ---- text ---- */
+function textStats(t) {
+  t = String(t);
+  const lines = t === '' ? [] : t.split(/\r\n|\r|\n/);
+  return {
+    chars: [...t].length, charsNoWs: [...t.replace(/\s/g, '')].length,
+    words: (t.match(/\S+/g) || []).length, lines: lines.length, nonEmptyLines: lines.filter(l => l.trim()).length,
+    paragraphs: t.trim() ? t.trim().split(/\n\s*\n/).length : 0, sentences: (t.match(/[^.!?\s][^.!?]*[.!?]+(?=\s|$)/g) || []).length
+  };
+}
+function fastaMap(t, fn) { // apply fn to the sequence part of each FASTA record (or to all text if no headers)
+  const out = [], lines = t.replace(/\r/g, '').split('\n'); let buf = [];
+  const flush = () => { if (buf.length) { const s = fn(buf.join('').replace(/\s/g, '')); if (s) out.push(s); buf = []; } };
+  for (const l of lines) { if (l.startsWith('>')) { flush(); out.push(l.trim()); } else buf.push(l); }
+  flush(); return out.join('\n');
+}
+const TEXT_OPS = {
+  join: t => t.split(/\r?\n/).map(l => l.trim()).filter(Boolean).join(' '),
+  nobr: t => t.replace(/\r?\n/g, ''),
+  nows: t => t.replace(/\s+/g, ''),
+  nonum: t => /^>/m.test(t) ? fastaMap(t, x => x.replace(/\d+/g, '')) : t.replace(/[\s\d]+/g, ''),
+  collapse: t => t.split(/\r?\n/).map(l => l.replace(/[ \t ]+/g, ' ').trim()).join('\n'),
+  noempty: t => t.split(/\r?\n/).filter(l => l.trim()).join('\n'),
+  fasta1: t => fastaMap(t, s => s),
+  wrap60: t => fastaMap(t, s => s.match(/.{1,60}/g)?.join('\n') || ''),
+  upper: t => t.toUpperCase(),
+  lower: t => t.toLowerCase(),
+  sort: t => t.split(/\r?\n/).sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).join('\n'),
+  uniq: t => [...new Set(t.split(/\r?\n/))].join('\n')
+};
+
+/* ---- time zones ---- */
+const dtfCache = {};
+function dtf(tz) { return dtfCache[tz] || (dtfCache[tz] = new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', weekday: 'short' })); }
+function parts(tz, ms) {
+  const o = {}; for (const p of dtf(tz).formatToParts(new Date(ms))) o[p.type] = p.value;
+  return { y: +o.year, mo: +o.month, d: +o.day, h: +o.hour % 24, mi: +o.minute, s: +o.second, wd: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(o.weekday) };
+}
+function offsetMin(tz, ms) { ms = Math.floor(ms / 1000) * 1000; const p = parts(tz, ms); return Math.round((Date.UTC(p.y, p.mo - 1, p.d, p.h, p.mi, p.s) - ms) / 60000); }
+function zonedToUtc(tz, y, mo, d, h, mi) { // wall-clock time in tz -> epoch ms; exact=false if that wall time doesn't exist (DST gap)
+  const guess = Date.UTC(y, mo - 1, d, h, mi), o1 = offsetMin(tz, guess);
+  let t = guess - o1 * 60000; const o2 = offsetMin(tz, t);
+  if (o2 !== o1) t = guess - o2 * 60000;
+  const p = parts(tz, t);
+  return { t, exact: p.y === y && p.mo === mo && p.d === d && p.h === h && p.mi === mi };
+}
+function isDst(tz, ms) {
+  const y = parts(tz, ms).y, jan = offsetMin(tz, Date.UTC(y, 0, 15)), jul = offsetMin(tz, Date.UTC(y, 6, 15));
+  return jan !== jul && offsetMin(tz, ms) === Math.max(jan, jul);
+}
+// first instant after t0 at which fn(t) changes and stays changed for > 1 day (ignores the few-hour blips
+// when two zones change on the same day at different UTC times)
+function nextChange(fn, t0, days = 400) {
+  const DAY = 864e5, f0 = fn(t0);
+  for (let i = 1; i <= days; i++) {
+    const t = t0 + i * DAY;
+    if (fn(t) !== f0 && fn(t + DAY) !== f0) {
+      let lo = t - DAY, hi = t;
+      while (hi - lo > 60000) { const m = Math.floor((lo + hi) / 2 / 60000) * 60000; if (fn(m) === f0) lo = m; else hi = m; }
+      return { t: hi, from: f0, to: fn(hi) };
+    }
+  }
+  return null;
+}
+function tzLabel(tz) { if (tz === 'UTC' || tz === 'Etc/UTC') return 'UTC'; const s = tz.split('/'); return s[s.length - 1].replace(/_/g, ' '); }
+
+/* ---- regeneration timepoints ---- */
+function parseHours(str) { // "0, 6, 12h, 1d, 1.5d" -> [0,6,12,24,36]
+  const out = [];
+  for (const tok of String(str).replace(/(\d)\s+(?=[a-z])/gi, '$1').split(/[\s,;]+/).filter(Boolean)) {
+    const m = tok.toLowerCase().match(/^(\d*\.?\d+)\s*(h|hpa|hpi|hr|hrs|d|dpa|dpi|days?|m|min)?$/);
+    if (!m) return { error: tok };
+    const v = Number(m[1]), u = m[2] || 'h';
+    out.push(u[0] === 'd' ? v * 24 : u[0] === 'm' ? v / 60 : v);
+  }
+  return out;
+}
+// opts: {tz, nightStart:22, nightEnd:7, workStart:8, workEnd:18}
+function planTimepoints(cutMs, hours, o) {
+  const cutOff = offsetMin(o.tz, cutMs);
+  return hours.map(h => {
+    const t = cutMs + h * 3600e3, p = parts(o.tz, t), hd = p.h + p.mi / 60;
+    const night = o.nightStart > o.nightEnd ? (hd >= o.nightStart || hd < o.nightEnd) : (hd >= o.nightStart && hd < o.nightEnd);
+    const weekend = p.wd === 0 || p.wd === 6;
+    const outside = !night && (hd < o.workStart || hd >= o.workEnd);
+    return { hpa: h, t, p, night, weekend, outside, dstShift: offsetMin(o.tz, t) - cutOff };
+  });
+}
+const tpScore = rows => rows.reduce((s, r) => s + (r.night ? 4 : 0) + (r.weekend ? 2 : 0) + (r.outside ? 1 : 0), 0);
+// best cut times over the next `days` days, in 30-min steps between the work hours
+function suggestCuts(fromMs, hours, o, days = 7, limit = 4) {
+  const p0 = parts(o.tz, fromMs), res = [];
+  for (let d = 0; d < days; d++) for (let m = o.workStart * 60; m <= (o.workEnd - 1) * 60; m += 30) {
+    const day = new Date(Date.UTC(p0.y, p0.mo - 1, p0.d + d));
+    const r = zonedToUtc(o.tz, day.getUTCFullYear(), day.getUTCMonth() + 1, day.getUTCDate(), Math.floor(m / 60), m % 60);
+    if (!r.exact || r.t < fromMs) continue;
+    const rows = planTimepoints(r.t, hours, o);
+    res.push({ t: r.t, score: tpScore(rows), rows });
+  }
+  return res.sort((a, b) => a.score - b.score || a.t - b.t).slice(0, limit);
+}
+
+/* ---- master mix ---- */
+// comps: [{name, stock, final, vol, fill}] (vol in µL per reaction; if vol empty and stock+final given: vol = final/stock*rxnVol;
+// one row with fill=true takes up the remainder of rxnVol - templateVol)
+function masterMix({ n, extra = 0, overagePct = 10, rxnVol, templateVol = 0, comps }) {
+  const nEff = (n + extra) * (1 + overagePct / 100), warnings = [];
+  const rows = comps.map(c => {
+    let per = c.vol;
+    if (!(per >= 0) && c.stock > 0 && c.final >= 0 && rxnVol > 0) per = c.final / c.stock * rxnVol;
+    return { name: c.name, per: c.fill ? NaN : per, fill: !!c.fill, computed: !(c.vol >= 0) && per >= 0 && !c.fill };
+  });
+  if (!(rxnVol > 0) && (rows.some(r => r.fill) || comps.some(c => !(c.vol >= 0) && c.stock > 0))) warnings.push('Enter the reaction volume.');
+  const fixed = rows.filter(r => !r.fill && r.per >= 0).reduce((s, r) => s + r.per, 0);
+  const fillRows = rows.filter(r => r.fill);
+  if (fillRows.length > 1) warnings.push('Only one row can fill up to volume.');
+  if (fillRows.length && rxnVol > 0) {
+    const rest = rxnVol - templateVol - fixed;
+    fillRows[0].per = rest;
+    if (rest < 0) warnings.push(`Components add up to more than the reaction volume (${(fixed + templateVol).toFixed(2)} > ${rxnVol} µL).`);
+  } else if (rxnVol > 0 && Math.abs(fixed + templateVol - rxnVol) > 1e-6) warnings.push(`Components + template = ${+(fixed + templateVol).toFixed(3)} µL, not ${rxnVol} µL.`);
+  rows.forEach(r => { r.total = r.per * nEff; });
+  const mixPer = rows.reduce((s, r) => s + (r.per > 0 ? r.per : 0), 0);
+  return { nEff, rows, mixPer, mixTotal: mixPer * nEff, templateVol, warnings };
+}
+
+return { AVOGADRO, num, parseDur, UNITS, toBase, fromBase, convertUnit, CONC, CONC_OUT, REAGENTS, concToBase, convertConc, massToWeigh, concFromMass,
+  solveDilution, serialDilution, RCF_K, rcfFromRpm, rpmFromRcf, NA, naMW, a260Conc, ligationInsertNg,
+  IUPAC, ENZYMES, parseSeqInput, classify, revcomp, ntStats, tmBasic, oligoMW, translate, findOrfs, findMotif, restrictionSites, proteinStats,
+  textStats, TEXT_OPS, parts, offsetMin, zonedToUtc, isDst, nextChange, tzLabel, parseHours, planTimepoints, suggestCuts, tpScore, masterMix };
+})();
+if (typeof module !== 'undefined') module.exports = LabCore;
+</script>
+
+<script>
+"use strict";
+const { num, parseDur, UNITS, toBase, fromBase, CONC, CONC_OUT, REAGENTS, concToBase, NA, parts, offsetMin, zonedToUtc, isDst, nextChange, tzLabel } = LabCore;
+/* ---------- helpers ---------- */
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('labhelper.' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('labhelper.' + k, JSON.stringify(v)); } catch {} }
+};
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const blank = el => String(el.value).trim() === '';
+const pad = n => String(n).padStart(2, '0');
+function plain(x, sig = 4) {
+  if (x == null || !isFinite(x)) return '';
+  if (x === 0) return '0';
+  const a = Math.abs(x);
+  if (a >= 1e6 || a < 1e-3) return x.toExponential(sig - 1).replace(/\.?0+e/, 'e').replace('e+', 'e');
+  return String(Number(x.toPrecision(sig)));
+}
+function fmt(x, sig = 4) {
+  if (x == null || !isFinite(x)) return '—';
+  if (x === 0) return '0';
+  const a = Math.abs(x);
+  if (a >= 1e6 || a < 1e-3) {
+    const [m, e] = x.toExponential(sig - 1).split('e');
+    return `${m.replace(/\.?0+$/, '')}×10<sup>${+e}</sup>`;
+  }
+  const v = Number(x.toPrecision(sig));
+  return a >= 1e4 ? v.toLocaleString('en-US', { maximumFractionDigits: 6 }) : String(v);
+}
+// pick the unit that gives a value between 1 and 1000
+function auto(x, units) { // units: [[label, factor]] in descending factor order
+  if (!isFinite(x)) return { v: NaN, u: units[0][0] };
+  const a = Math.abs(x);
+  for (const [u, f] of units) if (a / f >= 1) return { v: x / f, u };
+  const [u, f] = units[units.length - 1];
+  return { v: x / f, u };
+}
+const MASS_AUTO = [['kg', 1e3], ['g', 1], ['mg', 1e-3], ['µg', 1e-6], ['ng', 1e-9], ['pg', 1e-12]];
+const VOLS = [['L', 1], ['mL', 1e-3], ['µL', 1e-6], ['nL', 1e-9]];
+const MOL_AUTO = [['M', 1], ['mM', 1e-3], ['µM', 1e-6], ['nM', 1e-9], ['pM', 1e-12]];
+const fmtAuto = (x, units, sig = 4) => { const r = auto(x, units); return `${fmt(r.v, sig)} ${r.u}`; };
+const plainAuto = (x, units, sig = 4) => { const r = auto(x, units); return `${plain(r.v, sig)} ${r.u}`; };
+
+let toastT;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 1400); }
+async function copy(text) {
+  try { await navigator.clipboard.writeText(text); }
+  catch { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch {} ta.remove(); }
+  toast('Copied: ' + (text.length > 60 ? text.slice(0, 57) + '…' : text));
+}
+document.addEventListener('click', e => { const el = e.target.closest('[data-copy]'); if (el) copy(el.dataset.copy); });
+function fillSelect(sel, items, value) { sel.innerHTML = items.map(([v, l]) => `<option value="${esc(v)}">${esc(l ?? v)}</option>`).join(''); if (value != null) sel.value = value; }
+function mmss(ms, withH = true) {
+  const s = Math.max(0, Math.ceil(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), ss = s % 60;
+  return (h && withH ? h + ':' + String(m).padStart(2, '0') : String(m + (withH ? 0 : h * 60)).padStart(2, '0')) + ':' + String(ss).padStart(2, '0');
+}
+function persistInputs(ids, key) {
+  const saved = store.get(key, {});
+  for (const id of ids) { const el = document.getElementById(id); if (saved[id] != null) el.value = saved[id]; el.addEventListener('input', save); el.addEventListener('change', save); }
+  function save() { const o = {}; for (const id of ids) o[id] = document.getElementById(id).value; store.set(key, o); }
+}
+
+/* ---------- sound & notifications ---------- */
+let actx;
+function audio() {
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === 'suspended') actx.resume().then(() => syncSched()).catch(() => {});
+  } catch {}
+  return actx;
+}
+document.addEventListener('pointerdown', audio, { once: true });
+document.addEventListener('keydown', audio, { once: true });
+// when = seconds from now, or an absolute AudioContext time if abs = true; returns the oscillator so it can be cancelled
+function tone(freq, dur, when = 0, vol = 0.18, type = 'sine', abs = false) {
+  const a = audio(); if (!a) return null;
+  const t = abs ? when : a.currentTime + when, o = a.createOscillator(), g = a.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g).connect(a.destination); o.start(t); o.stop(t + dur + 0.03);
+  return o;
+}
+const chime = (at = 0, abs = false) => [tone(659, .22, at, .18, 'sine', abs), tone(880, .22, at + .22, .18, 'sine', abs), tone(1175, .4, at + .44, .18, 'sine', abs)];
+const alarm = (at = 0, abs = false) => [0, 1, 2].map(i => tone(988, .12, at + i * .2, .22, 'square', abs));
+// Background tabs throttle setInterval (down to once a minute), but not the audio clock, so end sounds of
+// running timers and pomodoro phases are scheduled on the audio clock in advance.
+const SCHED = new Map(); // key -> {at: epoch ms, nodes: [osc]}
+const ALARM_SPAN = 12000; // the pre-scheduled alarm covers the first 12 s of ringing
+function stopSched(k) { const e = SCHED.get(k); if (e) { e.nodes.forEach(o => { try { o && o.stop(0); } catch {} }); SCHED.delete(k); } }
+function syncSched() {
+  const a = actx; if (!a || a.state !== 'running') return; // no audio before the first click/keypress
+  const now = Date.now(), want = new Map();
+  for (const t of T) if (t.state === 'running') want.set('t' + t.id, t.endAt);
+  if (P.st.running && P.s.sound) want.set('p', P.st.endAt);
+  for (const [k, e] of [...SCHED]) {
+    if (want.get(k) === e.at) continue;
+    if (e.at > now) stopSched(k); // paused, removed or changed before it rang
+    else if (now - e.at > ALARM_SPAN + 2000) SCHED.delete(k);
+  }
+  for (const [k, at] of want) {
+    if (SCHED.has(k) || at <= now) continue;
+    const start = a.currentTime + (at - now) / 1000, nodes = [];
+    if (k === 'p') nodes.push(...chime(start, true));
+    else for (let r = 0; r < ALARM_SPAN / 1500; r++) nodes.push(...alarm(start + r * 1.5, true));
+    SCHED.set(k, { at, nodes });
+  }
+}
+const tick = () => tone(1400, .03, 0, .05, 'triangle');
+function notify(title, body) {
+  try { if ('Notification' in window && Notification.permission === 'granted') new Notification(title, { body, silent: true }); } catch {}
+}
+
+/* ---------- header clock & theme ---------- */
+(function theme() {
+  const modes = ['auto', 'light', 'dark']; let m = store.get('theme', 'auto');
+  const apply = () => { if (m === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', m); $('#themeBtn').textContent = 'Theme: ' + m; };
+  $('#themeBtn').onclick = () => { m = modes[(modes.indexOf(m) + 1) % 3]; store.set('theme', m); apply(); };
+  apply();
+})();
+
+(function wakeLock() {
+  const btn = $('#wakeBtn'); let on = store.get('wake', false), lock = null;
+  if (!('wakeLock' in navigator)) { btn.style.display = 'none'; return; }
+  const render = () => { btn.textContent = on ? 'Keep awake: on' : 'Keep awake: off'; btn.style.color = on ? 'var(--hl)' : ''; };
+  async function acquire() {
+    if (!on || document.hidden || lock) return;
+    try { lock = await navigator.wakeLock.request('screen'); lock.addEventListener('release', () => { lock = null; }); }
+    catch { on = false; store.set('wake', false); toast('This browser would not keep the screen on'); }
+    render();
+  }
+  btn.onclick = async () => { on = !on; store.set('wake', on); if (on) await acquire(); else { try { await lock?.release(); } catch {} lock = null; } render(); };
+  document.addEventListener('visibilitychange', acquire); // the lock is dropped when the tab is hidden; take it back
+  render(); acquire();
+})();
+
+/* ---------- POMODORO ---------- */
+const P = {
+  s: Object.assign({ focus: 25, short: 5, long: 15, every: 4, autoBreak: true, autoFocus: false, sound: true, notify: false }, store.get('pomoSettings', {})),
+  st: Object.assign({ mode: 'focus', running: false, endAt: 0, remaining: null, cycle: 0 }, store.get('pomoState', {})),
+  today: store.get('pomoToday', { date: '', n: 0 })
+};
+const POMO_LABEL = { focus: 'Focus', short: 'Short break', long: 'Long break' };
+const todayKey = () => new Date().toLocaleDateString('en-CA');
+const pDur = m => P.s[m] * 60000;
+if (P.st.remaining == null) P.st.remaining = pDur(P.st.mode);
+function pSave() { store.set('pomoState', P.st); syncSched(); }
+function pRemaining() { return P.st.running ? Math.max(0, P.st.endAt - Date.now()) : P.st.remaining; }
+function pSetMode(mode) { P.st.mode = mode; P.st.running = false; P.st.remaining = pDur(mode); pSave(); pRender(); }
+function pStart() {
+  if (P.st.running) return;
+  if (P.s.notify && 'Notification' in window && Notification.permission === 'default') { try { Notification.requestPermission(); } catch {} }
+  P.st.endAt = Date.now() + P.st.remaining; P.st.running = true; pSave(); pRender();
+}
+function pPause() { if (!P.st.running) return; P.st.remaining = pRemaining(); P.st.running = false; pSave(); pRender(); }
+function pToggle() { P.st.running ? pPause() : pStart(); }
+function pComplete(skipped) {
+  const was = P.st.mode, oldEnd = P.st.endAt, overrun = skipped ? 0 : Date.now() - oldEnd; let next;
+  if (was === 'focus') {
+    if (!skipped) {
+      if (P.today.date !== todayKey()) P.today = { date: todayKey(), n: 0 };
+      P.today.n++; store.set('pomoToday', P.today);
+    }
+    P.st.cycle++;
+    next = P.st.cycle % P.s.every === 0 ? 'long' : 'short';
+  } else next = 'focus';
+  if (!skipped) {
+    const pre = SCHED.get('p'); // chime already pre-scheduled on the audio clock and playing?
+    if (pre && pre.at <= Date.now() + 250) SCHED.delete('p'); else if (P.s.sound && overrun < 5 * 60000) chime();
+    if (P.s.notify) notify(was === 'focus' ? 'Focus session done' : 'Break over', was === 'focus' ? `Time for a ${POMO_LABEL[next].toLowerCase()}.` : 'Back to work.');
+    toast(was === 'focus' ? 'Focus done: take a break' : 'Break over');
+  }
+  pSetMode(next);
+  // auto-start the next phase from the moment the last one ended (not from when we noticed, which can be late
+  // in a background tab or after a reload); skip auto-start if that phase would already be over
+  if (!skipped && ((next === 'focus' && P.s.autoFocus) || (next !== 'focus' && P.s.autoBreak)) && overrun < pDur(next)) {
+    P.st.endAt = oldEnd + pDur(next); P.st.running = true; pSave(); pRender();
+  }
+}
+function pRender() {
+  $$('#pomoModes button').forEach(b => b.classList.toggle('on', b.dataset.mode === P.st.mode));
+  $('#pomoStart').textContent = P.st.running ? 'Pause' : (P.st.remaining < pDur(P.st.mode) ? 'Resume' : 'Start');
+  $('#pomoRing').classList.toggle('brk', P.st.mode !== 'focus');
+  const every = P.s.every, inCycle = P.st.cycle % every;
+  $('#pomoDots').innerHTML = Array.from({ length: every }, (_, i) => `<span class="dot ${i < inCycle ? 'on' : ''}"></span>`).join('') + `<span style="margin-left:6px">until long break</span>`;
+  if (P.today.date !== todayKey()) P.today = { date: todayKey(), n: 0 };
+  $('#pomoToday').textContent = P.today.n ? `${P.today.n} focus session${P.today.n > 1 ? 's' : ''} today` : '';
+  pTick();
+}
+function pTick() {
+  const rem = pRemaining(), tot = pDur(P.st.mode);
+  if (P.st.running && rem <= 0) { pComplete(false); return; }
+  $('#pomoTime').textContent = mmss(rem, false);
+  const prog = Math.max(0, Math.min(1, (tot - rem) / tot)) * 100;
+  $$('#pomoRing .bar').forEach(b => { b.setAttribute('stroke-dasharray', `${prog} 100`); b.style.opacity = prog > 0.05 ? 1 : 0; });
+  $('#pomoEnds').textContent = P.st.running ? 'ends ' + new Date(P.st.endAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : POMO_LABEL[P.st.mode];
+}
+$$('#pomoModes button').forEach(b => b.onclick = () => pSetMode(b.dataset.mode));
+$('#pomoStart').onclick = pToggle;
+$('#pomoReset').onclick = () => pSetMode(P.st.mode);
+$('#pomoSkip').onclick = () => pComplete(true);
+$$('[data-ps]').forEach(el => {
+  const k = el.dataset.ps;
+  if (el.type === 'checkbox') el.checked = !!P.s[k]; else el.value = P.s[k];
+  el.addEventListener('change', () => {
+    const wasFull = P.st.remaining === pDur(P.st.mode);
+    if (el.type === 'checkbox') P.s[k] = el.checked;
+    else { const v = Math.round(num(el.value)); if (v > 0) P.s[k] = v; el.value = P.s[k]; }
+    store.set('pomoSettings', P.s);
+    if (k === 'notify' && el.checked && 'Notification' in window && Notification.permission !== 'granted') {
+      try { Notification.requestPermission().then(p => { if (p !== 'granted') toast('Notifications blocked by the browser'); }); } catch {}
+    }
+    if (!P.st.running && wasFull && ['focus', 'short', 'long'].includes(k) && P.st.mode === k) P.st.remaining = pDur(k);
+    pSave(); pRender();
+  });
+});
+
+/* ---------- LAB TIMERS ---------- */
+let T = store.get('timers', []);
+const tSave = () => { store.set('timers', T); syncSched(); };
+function durLabel(ms) { const s = Math.round(ms / 1000); if (s < 60) return s + ' s'; if (s % 3600 === 0) return s / 3600 + ' h'; if (s % 60 === 0) return s / 60 + ' min'; return mmss(ms); }
+function tAdd(label, ms) {
+  if (!(ms > 0)) { toast('Could not read that duration'); return; }
+  T.push({ id: Date.now() + Math.random(), label: label || durLabel(ms), dur: ms, endAt: Date.now() + ms, remaining: ms, state: 'running' });
+  tSave(); tRender();
+}
+const tRem = t => t.state === 'running' ? Math.max(0, t.endAt - Date.now()) : t.state === 'paused' ? t.remaining : 0;
+function tRender() {
+  $('#tmList').innerHTML = T.map(t => `
+    <div class="timer ${t.state}" data-id="${t.id}">
+      <div class="tl" title="${esc(t.label)}">${esc(t.label)} <span class="muted small">· ${durLabel(t.dur)}</span></div>
+      <div class="ta">${
+        t.state === 'ringing' ? `<button class="small primary" data-a="dismiss">Dismiss</button>` :
+        t.state === 'finished' ? `<button class="small" data-a="restart">Restart</button><button class="ghost small" data-a="rm" title="Remove">✕</button>` :
+        `<button class="small" data-a="toggle">${t.state === 'running' ? 'Pause' : 'Resume'}</button><button class="small ghost" data-a="plus" title="Add 1 minute">+1m</button><button class="ghost small" data-a="rm" title="Remove">✕</button>`}</div>
+      <div class="tt" data-tt></div><div class="small muted" data-te style="text-align:right;align-self:end"></div>
+      <div class="tb"><i data-tb></i></div>
+    </div>`).join('');
+  $('#tmEmpty').style.display = T.length ? 'none' : '';
+  tTick();
+}
+let lastAlarm = 0;
+function tTick() {
+  let changed = false;
+  for (const t of T) if (t.state === 'running' && t.endAt <= Date.now()) {
+    t.state = 'ringing'; t.rangAt = Date.now(); changed = true;
+    notify('Timer done: ' + t.label, 'Finished at ' + new Date(t.endAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }));
+  }
+  if (changed) { tSave(); tRender(); return; }
+  const ringing = T.filter(t => t.state === 'ringing');
+  for (const t of ringing) if (Date.now() - t.rangAt > 5 * 60000) { t.state = 'finished'; changed = true; } // stop beeping after 5 min
+  if (changed) { tSave(); tRender(); return; }
+  const covered = ringing.some(t => { const e = SCHED.get('t' + t.id); return e && Date.now() < e.at + ALARM_SPAN; });
+  if (ringing.length && !covered && Date.now() - lastAlarm > 1500) { lastAlarm = Date.now(); alarm(); }
+  for (const el of $$('#tmList .timer')) {
+    const t = T.find(x => String(x.id) === el.dataset.id); if (!t) continue;
+    const r = tRem(t);
+    $('[data-tt]', el).textContent = t.state === 'ringing' ? 'Done!' : t.state === 'finished' ? 'done' : mmss(r);
+    $('[data-te]', el).textContent = t.state === 'running' ? 'at ' + new Date(t.endAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : t.state === 'paused' ? 'paused' : '';
+    $('[data-tb]', el).style.width = (t.state === 'ringing' || t.state === 'finished' ? 100 : 100 * (1 - r / t.dur)) + '%';
+  }
+}
+$('#tmList').addEventListener('click', e => {
+  const b = e.target.closest('button[data-a]'); if (!b) return;
+  const id = b.closest('.timer').dataset.id, t = T.find(x => String(x.id) === id); if (!t) return;
+  const a = b.dataset.a;
+  if (a === 'rm' || a === 'dismiss') stopSched('t' + t.id);
+  if (a === 'rm') T = T.filter(x => x !== t);
+  else if (a === 'dismiss') t.state = 'finished';
+  else if (a === 'restart') { t.state = 'running'; t.endAt = Date.now() + t.dur; }
+  else if (a === 'plus') { if (t.state === 'running') t.endAt += 60000; else t.remaining += 60000; t.dur += 60000; }
+  else if (a === 'toggle') {
+    if (t.state === 'running') { t.remaining = tRem(t); t.state = 'paused'; }
+    else { t.endAt = Date.now() + t.remaining; t.state = 'running'; }
+  }
+  tSave(); tRender();
+});
+const TM_PRESETS = [['30 s', 30e3], ['1 min', 60e3], ['2 min', 120e3], ['5 min', 300e3], ['10 min', 600e3], ['15 min', 900e3], ['20 min', 1200e3], ['30 min', 1800e3], ['45 min', 2700e3], ['1 h', 3600e3], ['2 h', 7200e3]];
+$('#tmPresets').innerHTML = TM_PRESETS.map(([l, ms]) => `<button data-ms="${ms}">${l}</button>`).join('');
+$('#tmPresets').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; tAdd($('#tmLabel').value.trim(), +b.dataset.ms); $('#tmLabel').value = ''; });
+function tAddFromInputs() { const ms = parseDur($('#tmDur').value); tAdd($('#tmLabel').value.trim(), ms); if (ms > 0) { $('#tmLabel').value = ''; $('#tmDur').value = ''; } }
+$('#tmAdd').onclick = tAddFromInputs;
+['#tmDur', '#tmLabel'].forEach(s => $(s).addEventListener('keydown', e => { if (e.key === 'Enter') tAddFromInputs(); }));
+$('#tmClear').onclick = () => { T.filter(t => t.state === 'finished').forEach(t => stopSched('t' + t.id)); T = T.filter(t => t.state !== 'finished'); tSave(); tRender(); };
+
+/* ---------- COUNTER ---------- */
+const C = Object.assign({ list: [{ name: 'Count', n: 0 }], active: 0, hist: [] }, store.get('counter', {}));
+const cSave = () => store.set('counter', { list: C.list, active: C.active, hist: C.hist.slice(-500) });
+function cBump(i, d = 1) {
+  if (i < 0 || i >= C.list.length) return;
+  if (d < 0 && C.list[i].n + d < 0) return;
+  C.list[i].n += d; C.hist.push([i, d]); C.active = i; cSave(); cRender(true); if (d > 0) tick();
+}
+function cUndo() { const h = C.hist.pop(); if (!h) { toast('Nothing to undo'); return; } C.list[h[0]].n -= h[1]; C.active = h[0]; cSave(); cRender(); }
+function cRender(bump) {
+  if (C.active >= C.list.length) C.active = 0;
+  const a = C.list[C.active], total = C.list.reduce((s, c) => s + c.n, 0), multi = C.list.length > 1;
+  const big = $('#cBig'); big.textContent = a.n;
+  if (bump) { big.classList.remove('bump'); void big.offsetWidth; big.classList.add('bump'); }
+  $('#cName').textContent = multi ? a.name : 'Space or click to count';
+  $('#cTotal').textContent = multi ? `Total ${total}` : '';
+  const list = $('#cList');
+  // rebuild rows only when their number changes, so name inputs keep focus
+  if (list.children.length !== (multi ? C.list.length : 0)) {
+    list.innerHTML = multi ? C.list.map((c, i) => `
+      <div class="ctr" data-i="${i}">
+        <span class="k">${i < 9 ? i + 1 : ''}</span>
+        <input value="${esc(c.name)}" aria-label="Category name">
+        <span class="v"></span>
+        <span class="row" style="gap:3px;flex-wrap:nowrap"><button class="small ghost" data-d="-1">−</button><button class="small ghost" data-d="1">+</button><button class="small ghost" data-d="x" title="Remove category">✕</button></span>
+      </div>`).join('') : '';
+  }
+  $$('#cList .ctr').forEach((row, i) => {
+    const c = C.list[i]; row.classList.toggle('on', i === C.active);
+    $('.v', row).innerHTML = `${c.n} <span class="pc">${total ? Math.round(100 * c.n / total) + '%' : ''}</span>`;
+  });
+  hcUpdate();
+}
+$('#cMain').onclick = () => cBump(C.active, 1);
+$('#cUndo').onclick = cUndo;
+$('#cReset').onclick = () => { if (!C.list.some(c => c.n)) return; if (!confirm('Reset all counts to 0?')) return; C.list.forEach(c => c.n = 0); C.hist = []; cSave(); cRender(); };
+$('#cAdd').onclick = () => {
+  if (C.list.length >= 12) return;
+  if (C.list.length === 1 && C.list[0].name === 'Count') C.list[0].name = 'Category 1';
+  C.list.push({ name: 'Category ' + (C.list.length + 1), n: 0 }); cSave(); cRender();
+};
+$('#cList').addEventListener('click', e => {
+  const row = e.target.closest('.ctr'); if (!row) return; const i = +row.dataset.i;
+  const b = e.target.closest('button');
+  if (!b) { if (e.target.tagName !== 'INPUT') { C.active = i; cSave(); cRender(); } return; }
+  if (b.dataset.d === 'x') {
+    if (C.list[i].n && !confirm(`Remove "${C.list[i].name}" (${C.list[i].n} counts)?`)) return;
+    C.list.splice(i, 1); C.hist = C.hist.filter(h => h[0] !== i).map(h => [h[0] > i ? h[0] - 1 : h[0], h[1]]);
+    if (C.list.length === 1 && /^Category \d+$/.test(C.list[0].name)) C.list[0].name = 'Count';
+    C.active = Math.min(C.active, C.list.length - 1); $('#cList').innerHTML = ''; cSave(); cRender();
+  } else cBump(i, +b.dataset.d);
+});
+$('#cList').addEventListener('input', e => { const row = e.target.closest('.ctr'); if (row) { C.list[+row.dataset.i].name = e.target.value; cSave(); $('#cName').textContent = C.list[C.active].name; } });
+$('#cList').addEventListener('focusin', e => { const row = e.target.closest('.ctr'); if (row) { C.active = +row.dataset.i; $$('#cList .ctr').forEach((r, i) => r.classList.toggle('on', i === C.active)); $('#cBig').textContent = C.list[C.active].n; $('#cName').textContent = C.list[C.active].name; } });
+$('#cList').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === 'Escape') e.target.blur(); });
+
+// hemocytometer
+function hcUpdate() {
+  const out = $('#hcOut');
+  const n = num($('#hcCount').value), sq = num($('#hcSq').value), dil = num($('#hcDil').value);
+  if (!(n >= 0) || !(sq > 0) || !(dil > 0)) { out.innerHTML = '<span class="muted">Enter a count (or use the counter total).</span>'; return; }
+  const perMl = n / sq * dil * 1e4;
+  let s = `<b>${fmt(perMl, 3)}</b> cells/mL <span class="muted small">= ${fmt(perMl / 1e3, 3)} cells/µL</span>`;
+  if ($('#hcViab').checked && C.list.length >= 2) {
+    const live = C.list[0].n, dead = C.list[1].n;
+    if (live + dead) s += `<div class="sub">Viability ${(100 * live / (live + dead)).toFixed(1)}% · live ${fmt(live / sq * dil * 1e4, 3)} cells/mL</div>`;
+  }
+  out.innerHTML = s;
+}
+['#hcCount', '#hcSq', '#hcDil'].forEach(s => $(s).addEventListener('input', hcUpdate));
+$('#hcViab').addEventListener('change', hcUpdate);
+$('#hcUse').onclick = () => { $('#hcCount').value = C.list.reduce((s, c) => s + c.n, 0); hcUpdate(); };
+
+/* ---------- global keys ---------- */
+const typing = el => el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
+document.addEventListener('keydown', e => {
+  if (e.metaKey || e.ctrlKey || e.altKey || typing(e.target)) return;
+  if (e.code === 'Space' || e.key === ' ') { e.preventDefault(); if (!e.repeat) cBump(C.active, 1); return; }
+  if (e.key === 'Backspace') { e.preventDefault(); cUndo(); return; }
+  if (e.key === '-' || e.key === '_') { cBump(C.active, -1); return; }
+  if (/^[1-9]$/.test(e.key) && +e.key <= C.list.length) { cBump(+e.key - 1, 1); return; }
+  if (e.key === 'ArrowDown' && C.list.length > 1) { e.preventDefault(); C.active = (C.active + 1) % C.list.length; cSave(); cRender(); return; }
+  if (e.key === 'ArrowUp' && C.list.length > 1) { e.preventDefault(); C.active = (C.active - 1 + C.list.length) % C.list.length; cSave(); cRender(); return; }
+  if (e.key === 'p' || e.key === 'P') { pToggle(); return; }
+});
+// stop the space bar from also "clicking" whichever button has focus
+document.addEventListener('keyup', e => { if ((e.code === 'Space' || e.key === ' ') && !typing(e.target)) e.preventDefault(); });
+
+/* ---------- tabs ---------- */
+function setTab(t) { $$('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t)); $$('.pane').forEach(p => p.classList.toggle('on', p.dataset.pane === t)); store.set('tab', t); if (t === 'tz') tzRender(true); }
+$$('#tabs button').forEach(b => b.onclick = () => setTab(b.dataset.tab));
+
+/* ---------- UNITS ---------- */
+fillSelect($('#uCat'), Object.keys(UNITS).map(k => [k]));
+function uCatChange(keepUnit) {
+  const list = UNITS[$('#uCat').value];
+  fillSelect($('#uFrom'), list.map(d => [d.u]), keepUnit && list.some(d => d.u === keepUnit) ? keepUnit : list[list.findIndex(d => d.f === 1 || d.u === '°C' || d.u === 'nm')]?.u ?? list[0].u);
+}
+function uUpdate() {
+  const list = UNITS[$('#uCat').value], src = list.find(d => d.u === $('#uFrom').value), x = num($('#uVal').value);
+  const base = toBase(src, x);
+  $('#uOut').innerHTML = list.map(d => {
+    const v = fromBase(d, base), ok = isFinite(v);
+    return `<div class="ri ${d === src ? 'src' : ''}" ${ok ? `data-copy="${plain(v, 6)}"` : ''} title="Click to copy"><span class="rv">${fmt(v, 5)}</span><span class="ru">${d.u}</span></div>`;
+  }).join('');
+  store.set('units', { cat: $('#uCat').value, unit: $('#uFrom').value, val: $('#uVal').value });
+}
+{ const s = store.get('units', null); if (s && UNITS[s.cat]) { $('#uCat').value = s.cat; uCatChange(s.unit); $('#uVal').value = s.val; } else { $('#uCat').value = 'Mass'; uCatChange(); } }
+$('#uCat').onchange = () => { uCatChange(); uUpdate(); };
+$('#uFrom').onchange = uUpdate; $('#uVal').oninput = uUpdate;
+
+/* ---------- CONCENTRATION ---------- */
+fillSelect($('#ccUnit'), CONC.map(c => [c.u]), 'mM');
+fillSelect($('#ccPick'), [['', 'pick a compound…'], ...REAGENTS.map(([n, mw]) => [mw + '|' + n, `${n} (${mw})`])]);
+$('#ccPick').onchange = () => { const v = $('#ccPick').value; if (!v) return; $('#ccMW').value = v.split('|')[0]; ccUpdate(); wUpdate(); rUpdate(); store.set('ccPick', v); };
+function ccUpdate() {
+  const c = CONC.find(d => d.u === $('#ccUnit').value), x = num($('#ccVal').value), mw = num($('#ccMW').value);
+  const b = concToBase(x, c.u, mw > 0 ? mw : NaN);
+  $('#ccOut').innerHTML = CONC_OUT.map(d => {
+    const v = (d.k === 'mol' ? b.mol : b.g) / d.f, ok = isFinite(v);
+    const isSrc = d.u.split(' = ').includes(c.u) || d.u === c.u;
+    return `<div class="ri ${isSrc ? 'src' : ''} ${ok ? '' : 'na'}" ${ok ? `data-copy="${plain(v, 6)}"` : ''}><span class="rv">${ok ? fmt(v, 5) : 'needs MW'}</span><span class="ru">${d.u}</span></div>`;
+  }).join('');
+}
+const MASSES = [['kg', 1e3], ['g', 1], ['mg', 1e-3], ['µg', 1e-6], ['ng', 1e-9]];
+fillSelect($('#wCu'), CONC.map(c => [c.u]), 'mM');
+fillSelect($('#wVu'), VOLS.map(([u]) => [u]), 'mL');
+fillSelect($('#rMu'), MASSES.map(([u]) => [u]), 'mg');
+fillSelect($('#rVu'), VOLS.map(([u]) => [u]), 'mL');
+function wUpdate() {
+  const c = CONC.find(d => d.u === $('#wCu').value), x = num($('#wC').value), mw = num($('#ccMW').value);
+  const V = num($('#wV').value) * VOLS.find(v => v[0] === $('#wVu').value)[1];
+  const out = $('#wOut');
+  if (!(x >= 0) || !(V > 0)) { out.className = 'answer bad'; out.textContent = 'Enter a concentration and a volume.'; return; }
+  if (c.k === 'mol' && !(mw > 0)) { out.className = 'answer bad'; out.textContent = 'Enter the MW (above) for molar concentrations.'; return; }
+  const m = LabCore.massToWeigh(x, c.u, V, mw), gL = m / V;
+  out.className = 'answer';
+  const [pickMw, pickName] = $('#ccPick').value.split('|'), name = pickName && Math.abs(+pickMw - mw) < 1e-9 ? ' ' + esc(pickName) : '';
+  out.innerHTML = `Weigh <b data-copy="${plainAuto(m, MASS_AUTO)}" style="cursor:copy">${fmtAuto(m, MASS_AUTO)}</b>${name}, dissolve in less than ${fmtAuto(V, VOLS)}, then fill up to ${fmtAuto(V, VOLS)}.` +
+    (c.k === 'mol' ? `<div class="sub">${fmt(x * c.f * V * 1e3, 4)} mmol at ${mw} g/mol</div>` : '');
+}
+function rUpdate() {
+  const m = num($('#rM').value) * MASSES.find(v => v[0] === $('#rMu').value)[1];
+  const V = num($('#rV').value) * VOLS.find(v => v[0] === $('#rVu').value)[1], mw = num($('#ccMW').value), out = $('#rOut');
+  if (!(m > 0) || !(V > 0)) { out.className = 'answer'; out.innerHTML = '<span class="muted">Enter the mass you dissolved and the final volume.</span>'; return; }
+  const { gL, M } = LabCore.concFromMass(m, V, mw);
+  out.className = 'answer';
+  out.innerHTML = (mw > 0 ? `<b>${fmtAuto(M, MOL_AUTO)}</b> · ` : '') + `${fmt(gL, 4)} mg/mL · ${fmt(gL / 10, 4)} % (w/v)` + (mw > 0 ? '' : `<div class="sub">Enter the MW above to get molarity.</div>`);
+}
+['#ccVal', '#ccMW'].forEach(s => $(s).addEventListener('input', () => { ccUpdate(); wUpdate(); rUpdate(); }));
+$('#ccMW').addEventListener('input', () => { $('#ccPick').value = ''; });
+$('#ccUnit').onchange = ccUpdate;
+['#wC', '#wV', '#wCu', '#wVu'].forEach(s => $(s).addEventListener('input', wUpdate));
+['#rM', '#rV', '#rMu', '#rVu'].forEach(s => $(s).addEventListener('input', rUpdate));
+persistInputs(['ccVal', 'ccUnit', 'ccMW', 'wC', 'wCu', 'wV', 'wVu', 'rMu', 'rVu'], 'conc');
+{ const p = store.get('ccPick', ''); if (p && $('#ccMW').value === p.split('|')[0]) $('#ccPick').value = p; }
+
+/* ---------- DILUTION ---------- */
+const DCONC = [
+  ['X', 'x', 1], ['M', 'mol', 1], ['mM', 'mol', 1e-3], ['µM', 'mol', 1e-6], ['nM', 'mol', 1e-9], ['pM', 'mol', 1e-12],
+  ['mg/mL', 'g', 1], ['µg/mL', 'g', 1e-3], ['ng/µL', 'g', 1e-3], ['ng/mL', 'g', 1e-6], ['%', 'pct', 1], ['U/mL', 'U', 1], ['U/µL', 'U', 1e3], ['cells/mL', 'cell', 1]
+];
+['#dC1u', '#dC2u'].forEach(s => fillSelect($(s), DCONC.map(d => [d[0]]), 'mM'));
+['#dV1u', '#dV2u'].forEach(s => fillSelect($(s), VOLS.map(([u]) => [u]), 'mL'));
+fillSelect($('#sVu'), VOLS.map(([u]) => [u]), 'µL');
+const dcu = s => DCONC.find(d => d[0] === $(s).value);
+const vf = s => VOLS.find(v => v[0] === $(s).value)[1];
+function dUpdate() {
+  const ids = ['dC1', 'dV1', 'dC2', 'dV2'], out = $('#dOut');
+  ids.forEach(id => { $('#' + id).placeholder = ''; });
+  const empty = ids.filter(id => blank($('#' + id)));
+  const u1 = dcu('#dC1u'), u2 = dcu('#dC2u');
+  const bad = msg => { out.className = 'answer bad'; out.innerHTML = msg; };
+  if (u1[1] !== u2[1]) return bad(`C₁ and C₂ must be the same kind of unit (${u1[0]} vs ${u2[0]}). Use the Concentration tab to convert first.`);
+  if (empty.length !== 1) return bad(empty.length ? 'Leave exactly one field empty; it will be calculated.' : 'Clear one of the four fields to calculate it.');
+  const val = id => blank($('#' + id)) ? null : num($('#' + id).value);
+  const sol = LabCore.solveDilution({ C1: val('dC1') == null ? null : val('dC1') * u1[2], V1: val('dV1') == null ? null : val('dV1') * vf('#dV1u'),
+                                      C2: val('dC2') == null ? null : val('dC2') * u2[2], V2: val('dV2') == null ? null : val('dV2') * vf('#dV2u') });
+  if (sol.error === 'invalid' || sol.error === 'one-blank') return bad('Check the numbers (all must be positive).');
+  const miss = 'd' + sol.key, r = sol.value;
+  const fill = { dV1: () => r / vf('#dV1u'), dV2: () => r / vf('#dV2u'), dC1: () => r / u1[2], dC2: () => r / u2[2] }[miss]();
+  $('#' + miss).placeholder = plain(fill, 4);
+  if (sol.error === 'concentrate') return bad('Final concentration is higher than the stock; that is not a dilution.');
+  const { C1: c1, C2: c2, V1: v1, V2: v2 } = sol.all;
+  out.className = 'answer';
+  const cu = u2[0], c2show = fmt(c2 / u2[2], 4), fold = c1 / c2;
+  out.innerHTML = `Add <b data-copy="${plainAuto(v1, VOLS)}" style="cursor:copy">${fmtAuto(v1, VOLS)}</b> stock + <b data-copy="${plainAuto(v2 - v1, VOLS)}" style="cursor:copy">${fmtAuto(v2 - v1, VOLS)}</b> diluent → ${fmtAuto(v2, VOLS)} at ${c2show} ${cu}` +
+    `<div class="sub">${fmt(fold, 4)}× dilution (1:${fmt(fold, 4)})${miss.startsWith('dC') ? ` · calculated ${miss === 'dC1' ? 'C₁' : 'C₂'} = ${fmt(fill, 4)} ${miss === 'dC1' ? u1[0] : u2[0]}` : ''}</div>`;
+}
+['dC1', 'dV1', 'dC2', 'dV2', 'dC1u', 'dV1u', 'dC2u', 'dV2u'].forEach(id => $('#' + id).addEventListener('input', dUpdate));
+$('#dClear').onclick = () => { ['dC1', 'dV1', 'dC2', 'dV2'].forEach(id => $('#' + id).value = ''); dUpdate(); store.set('dil', {}); };
+persistInputs(['dC1', 'dV1', 'dC2', 'dV2', 'dC1u', 'dV1u', 'dC2u', 'dV2u'], 'dil');
+
+function sUpdate() {
+  const c0 = num($('#sC').value), F = num($('#sF').value), N = Math.round(num($('#sN').value)), V = num($('#sV').value) * vf('#sVu'), unit = $('#sU').value, out = $('#sOut');
+  if (!(c0 > 0) || !(F > 1) || !(N >= 1 && N <= 30) || !(V > 0)) { out.className = 'answer bad'; out.textContent = 'Need start > 0, fold > 1, 1–30 steps, volume > 0.'; $('#sTable').innerHTML = ''; return; }
+  const { transfer: vt, diluent: vd } = LabCore.serialDilution(c0, F, N, V);
+  out.className = 'answer';
+  out.innerHTML = `Put <b>${fmtAuto(vd, VOLS)}</b> diluent in each of ${N} tubes, then transfer <b>${fmtAuto(vt, VOLS)}</b> from tube to tube (mix each time).` +
+    `<div class="sub">Each tube ends with ${fmtAuto(vd, VOLS)}; the last one has ${fmtAuto(V, VOLS)} unless you discard ${fmtAuto(vt, VOLS)}. You need ≥ ${fmtAuto(vt, VOLS)} of the start solution.</div>`;
+  let rows = `<tr><th>Tube</th><th>Concentration</th><th>Dilution</th></tr><tr><td>start</td><td>${fmt(c0, 4)} ${esc(unit)}</td><td>1</td></tr>`;
+  for (let i = 1; i <= N; i++) rows += `<tr><td>${i}</td><td>${fmt(c0 / F ** i, 4)} ${esc(unit)}</td><td>1:${fmt(F ** i, 4)}</td></tr>`;
+  $('#sTable').innerHTML = `<table class="t">${rows}</table>`;
+}
+['sC', 'sU', 'sF', 'sN', 'sV', 'sVu'].forEach(id => $('#' + id).addEventListener('input', sUpdate));
+persistInputs(['sC', 'sU', 'sF', 'sN', 'sV', 'sVu'], 'serial');
+
+/* ---------- CENTRIFUGE ---------- */
+const CF_PRESETS = [['Microfuge (r ≈ 8.4 cm)', 8.4], ['Mini centrifuge (≈ 4.5 cm)', 4.5], ['15/50 mL swing (≈ 18 cm)', 18], ['Plate rotor (≈ 14 cm)', 14]];
+$('#cfPresets').innerHTML = CF_PRESETS.map(([l, r]) => `<button data-r="${r}">${l}</button>`).join('');
+$('#cfPresets').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; $('#cfR').value = b.dataset.r; cfFrom(cfLast); persistCf(); });
+let cfLast = 'rpm';
+function cfFrom(which) {
+  cfLast = which; const r = num($('#cfR').value);
+  if (which === 'rpm') { const rpm = num($('#cfRpm').value); $('#cfG').value = r > 0 && rpm >= 0 ? Math.round(LabCore.rcfFromRpm(r, rpm)) : ''; }
+  else { const g = num($('#cfG').value); $('#cfRpm').value = r > 0 && g >= 0 ? Math.round(LabCore.rpmFromRcf(r, g)) : ''; }
+}
+const persistCf = () => store.set('cfg', { r: $('#cfR').value, rpm: $('#cfRpm').value, g: $('#cfG').value, last: cfLast });
+$('#cfRpm').oninput = () => { cfFrom('rpm'); persistCf(); };
+$('#cfG').oninput = () => { cfFrom('g'); persistCf(); };
+$('#cfR').oninput = () => { cfFrom(cfLast); persistCf(); };
+{ const s = store.get('cfg', null); if (s) { $('#cfR').value = s.r; $('#cfRpm').value = s.rpm; $('#cfG').value = s.g; cfLast = s.last || 'rpm'; } cfFrom(cfLast); }
+
+/* ---------- NUCLEIC ACIDS ---------- */
+const NA_AMT = [['µg', 'g', 1e-6], ['ng', 'g', 1e-9], ['pg', 'g', 1e-12], ['nmol', 'mol', 1e-9], ['pmol', 'mol', 1e-12], ['fmol', 'mol', 1e-15], ['copies', 'mol', 1 / LabCore.AVOGADRO]];
+const NA_CONC = [['µg/µL', 'g', 1], ['ng/µL', 'g', 1e-3], ['pg/µL', 'g', 1e-6], ['µM', 'mol', 1e-6], ['nM', 'mol', 1e-9], ['pM', 'mol', 1e-12], ['copies/µL', 'mol', 1e6 / LabCore.AVOGADRO]];
+fillSelect($('#naAmtU'), NA_AMT.map(d => [d[0]]), 'ng');
+fillSelect($('#naCu'), NA_CONC.map(d => [d[0]]), 'ng/µL');
+let lastType = null;
+function naUpdate() {
+  const type = NA[$('#naType').value], L = num($('#naLen').value), mw = L > 0 ? type.mw(L) : NaN;
+  $('#naMW').innerHTML = isFinite(mw) ? `MW ≈ <b>${fmt(mw, 5)}</b> g/mol (${fmt(mw / 1000, 4)} kDa)` : 'enter a length';
+  if (lastType !== $('#naType').value) { if (lastType !== null || blank($('#aF'))) $('#aF').value = type.a260; lastType = $('#naType').value; }
+  const conv = (val, unitDef, table) => {
+    const base = val * unitDef[2]; // g or mol (per L for concentrations)
+    const g = unitDef[1] === 'g' ? base : base * mw, mol = unitDef[1] === 'mol' ? base : base / mw;
+    return table.map(d => { const v = (d[1] === 'g' ? g : mol) / d[2], ok = isFinite(v); return `<div class="ri ${d === unitDef ? 'src' : ''} ${ok ? '' : 'na'}" ${ok ? `data-copy="${plain(v, 6)}"` : ''}><span class="rv">${ok ? fmt(v, 4) : '—'}</span><span class="ru">${d[0]}</span></div>`; }).join('');
+  };
+  $('#naAmtOut').innerHTML = conv(num($('#naAmt').value), NA_AMT.find(d => d[0] === $('#naAmtU').value), NA_AMT);
+  $('#naCOut').innerHTML = conv(num($('#naC').value), NA_CONC.find(d => d[0] === $('#naCu').value), NA_CONC);
+  aUpdate(mw); lUpdate();
+}
+function aUpdate(mw) {
+  const A = num($('#aA').value), B = num($('#aB').value), D = num($('#aD').value) || 1, F = num($('#aF').value), out = $('#aOut');
+  if (!(A >= 0) || !(F > 0)) { out.className = 'answer'; out.innerHTML = '<span class="muted">Enter an A260 reading.</span>'; return; }
+  const ngul = LabCore.a260Conc(A, F, D);
+  let s = `<b data-copy="${plain(ngul, 4)}" style="cursor:copy">${fmt(ngul, 4)}</b> ng/µL`;
+  if (isFinite(mw)) s += ` <span class="muted">≈ ${fmtAuto(ngul * 1e-3 / mw, MOL_AUTO, 3)}</span>`;
+  if (B > 0) { const r = A / B, rna = $('#naType').value === 'rna', ok = rna ? r >= 1.9 : r >= 1.75; s += `<div class="sub">A260/280 = ${r.toFixed(2)} ${ok ? '(looks clean)' : `(expected ~${rna ? '2.0' : '1.8'}; possible protein/phenol carry-over)`}</div>`; }
+  if (A > 0 && (A < 0.1 || A > 1.5)) s += `<div class="sub">A260 outside ~0.1–1.5 is less reliable on most cuvette spectrophotometers.</div>`;
+  out.className = 'answer'; out.innerHTML = s;
+}
+function lUpdate() {
+  const vb = num($('#lVb').value), vn = num($('#lVn').value), ib = num($('#lIb').value), r = num($('#lR').value), out = $('#lOut');
+  if (!(vb > 0 && vn > 0 && ib > 0 && r > 0)) { out.className = 'answer bad'; out.textContent = 'Fill in all four fields.'; return; }
+  const ins = LabCore.ligationInsertNg(vb, vn, ib, r), vfmol = vn * 1e-9 / NA.ds.mw(vb) * 1e15;
+  out.className = 'answer';
+  out.innerHTML = `Use <b data-copy="${plain(ins, 3)}" style="cursor:copy">${fmt(ins, 3)} ng</b> insert<div class="sub">vector ${fmt(vfmol, 3)} fmol · insert ${fmt(vfmol * r, 3)} fmol (${r}:1 molar)</div>`;
+}
+['naType', 'naLen', 'naAmt', 'naAmtU', 'naC', 'naCu', 'aA', 'aB', 'aD', 'aF', 'lVb', 'lVn', 'lIb', 'lR'].forEach(id => $('#' + id).addEventListener('input', naUpdate));
+persistInputs(['naType', 'naLen', 'naAmt', 'naAmtU', 'naC', 'naCu', 'aD', 'aF', 'lVb', 'lVn', 'lIb', 'lR'], 'na');
+lastType = blank($('#aF')) ? null : $('#naType').value;
+
+/* ---------- TIME ZONES ---------- */
+const LOCAL_TZ = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch { return 'UTC'; } })();
+const ALL_TZ = (() => { try { const l = Intl.supportedValuesOf('timeZone'); return l.includes('UTC') ? l : [...l, 'UTC']; } catch { return ['UTC', 'Europe/London', 'Europe/Berlin', 'America/New_York', 'America/Los_Angeles', 'Asia/Tokyo']; } })();
+const validTz = tz => { try { new Intl.DateTimeFormat('en-US', { timeZone: tz }); return true; } catch { return false; } };
+function offStr(min) { if (min === 0) return 'UTC±0'; const s = min < 0 ? '−' : '+', a = Math.abs(min); return `UTC${s}${Math.floor(a / 60)}${a % 60 ? ':' + String(a % 60).padStart(2, '0') : ''}`; }
+function deltaStr(min) { if (min === 0) return '±0h'; const s = min < 0 ? '−' : '+', a = Math.abs(min); return `${s}${Math.floor(a / 60)}${a % 60 ? ':' + String(a % 60).padStart(2, '0') : ''}h`; }
+function abbr(tz, ms) {
+  const get = loc => { try { return new Intl.DateTimeFormat(loc, { timeZone: tz, timeZoneName: 'short' }).formatToParts(new Date(ms)).find(p => p.type === 'timeZoneName')?.value; } catch { return ''; } };
+  let a = get('en-US'); if (/^(GMT|UTC)/.test(a || '')) { const b = get('en-GB'); if (b && !/^(GMT|UTC)[+-]/.test(b)) a = b; }
+  return a && !/^(GMT|UTC)[+-]/.test(a) ? a : '';
+}
+const TZ = {
+  zones: (store.get('tzZones', null) || [LOCAL_TZ, 'America/New_York', 'Europe/London', 'Europe/Berlin', 'Asia/Tokyo', 'UTC']).filter((z, i, a) => validTz(z) && a.indexOf(z) === i),
+  ref: store.get('tzRef', LOCAL_TZ), live: true, t: Date.now(), lastKey: '', infoKey: '', info: {}
+};
+if (!TZ.zones.includes(LOCAL_TZ)) TZ.zones.unshift(LOCAL_TZ);
+if (!TZ.zones.includes(TZ.ref)) TZ.ref = TZ.zones[0];
+$('#tzAll').innerHTML = ALL_TZ.map(z => `<option value="${z}">${tzLabel(z)}</option>`).join('');
+const tzSave = () => { store.set('tzZones', TZ.zones); store.set('tzRef', TZ.ref); };
+function tzFillRef() { fillSelect($('#tzRef'), TZ.zones.map(z => [z, `${tzLabel(z)}${z === LOCAL_TZ ? ' (here)' : ''}`]), TZ.ref); }
+function tzSyncInputs() { const p = parts(TZ.ref, TZ.t); $('#tzDate').value = `${p.y}-${pad(p.mo)}-${pad(p.d)}`; $('#tzTime').value = `${pad(p.h)}:${pad(p.mi)}`; }
+function tzFromInputs() {
+  const [y, mo, d] = ($('#tzDate').value || '').split('-').map(Number), [h, mi] = ($('#tzTime').value || '').split(':').map(Number);
+  if (!y || isNaN(h)) return;
+  const r = zonedToUtc(TZ.ref, y, mo, d, h, mi || 0);
+  TZ.t = r.t; TZ.live = false;
+  $('#tzWarn').textContent = r.exact ? '' : `${pad(h)}:${pad(mi || 0)} does not exist in ${tzLabel(TZ.ref)} on that date (clocks jump forward); showing ${pad(parts(TZ.ref, r.t).h)}:${pad(parts(TZ.ref, r.t).mi)} instead.`;
+  tzRender(true);
+}
+const fmtDay = (tz, ms, opt = {}) => new Intl.DateTimeFormat('en-GB', Object.assign({ timeZone: tz, weekday: 'short', day: 'numeric', month: 'short' }, opt)).format(new Date(ms));
+function tzInfo() {
+  // next DST change and gap-to-reference change per zone; cached per reference day
+  const p = parts(TZ.ref, TZ.t), key = `${p.y}-${p.mo}-${p.d}|${TZ.ref}|${TZ.zones.join(',')}`;
+  if (key === TZ.infoKey) return TZ.info;
+  const t0 = zonedToUtc(TZ.ref, p.y, p.mo, p.d, 0, 0).t, info = {};
+  for (const z of TZ.zones) {
+    const own = nextChange(t => offsetMin(z, t), t0);
+    let gap = null, unusual = false;
+    if (z !== TZ.ref) {
+      const diff = t => offsetMin(z, t) - offsetMin(TZ.ref, t);
+      gap = nextChange(diff, t0);
+      const dJan = diff(Date.UTC(p.y, 0, 15)), dJul = diff(Date.UTC(p.y, 6, 15)), dNow = diff(TZ.t);
+      unusual = dNow !== dJan && dNow !== dJul;
+    }
+    info[z] = { own, gap, unusual };
+  }
+  TZ.infoKey = key; TZ.info = info; return info;
+}
+function tzRender(force) {
+  if (TZ.live) TZ.t = Date.now();
+  const refP = parts(TZ.ref, TZ.t), key = `${TZ.t / 60000 | 0}|${TZ.ref}|${TZ.zones.join(',')}|${TZ.live}`;
+  if (!force && key === TZ.lastKey) return;
+  TZ.lastKey = key;
+  if (!$('[data-pane="tz"]').classList.contains('on') && !force) return;
+  if (TZ.live || document.activeElement !== $('#tzDate') && document.activeElement !== $('#tzTime')) tzSyncInputs();
+  $('#tzNow').className = TZ.live ? 'primary' : '';
+  $('#tzNow').textContent = TZ.live ? 'Now (live)' : 'Back to now';
+  const info = tzInfo(), refOff = offsetMin(TZ.ref, TZ.t);
+  const refDay = Date.UTC(refP.y, refP.mo - 1, refP.d);
+  const sorted = [...TZ.zones].sort((a, b) => offsetMin(a, TZ.t) - offsetMin(b, TZ.t));
+  $('#tzList').innerHTML = sorted.map(z => {
+    const p = parts(z, TZ.t), off = offsetMin(z, TZ.t), dDays = Math.round((Date.UTC(p.y, p.mo - 1, p.d) - refDay) / 864e5);
+    const ab = abbr(z, TZ.t), dst = isDst(z, TZ.t), inf = info[z] || {};
+    // only mention changes coming up within 30 days (or an out-of-sync gap right now)
+    const soon = x => x && x.t - TZ.t < 30 * 864e5, notes = [];
+    if (soon(inf.own)) {
+      const ch = inf.own.to - inf.own.from;
+      notes.push(`clocks ${ch > 0 ? 'forward' : 'back'} ${Math.abs(ch) === 60 ? '1h' : deltaStr(Math.abs(ch)).replace('+', '')} on ${fmtDay(z, inf.own.t)} → ${offStr(inf.own.to)}`);
+    }
+    if (inf.unusual || soon(inf.gap)) notes.push(`${inf.unusual ? '<span class="w">⚠ temporary gap (DST out of sync)</span>' : ''}${inf.unusual && inf.gap ? '; ' : ''}${inf.gap ? `gap to ${esc(tzLabel(TZ.ref))} becomes ${deltaStr(inf.gap.to)} on ${fmtDay(TZ.ref, inf.gap.t)}` : ''}`);
+    return `<div class="tzr ${z === TZ.ref ? 'ref' : ''}" data-z="${z}">
+      <div class="n"><b data-setref title="Make this the reference">${esc(tzLabel(z))}${z === LOCAL_TZ ? ' <span class="muted" style="font-weight:400">· here</span>' : ''}</b><small>${z}</small></div>
+      <div class="tm">${pad(p.h)}:${pad(p.mi)}</div>
+      <div class="dt">${fmtDay(z, TZ.t)}${dDays ? `<span class="dd">${dDays > 0 ? '+' : ''}${dDays}d</span>` : ''}</div>
+      <div class="of">${offStr(off)}${ab ? ' · ' + ab : ''}${dst ? '<span class="badge" title="Daylight-saving / summer time in effect">DST</span>' : ''}</div>
+      <div class="dl" title="Difference to the reference zone">${z === TZ.ref ? 'ref' : deltaStr(off - refOff)}</div>
+      <button class="ghost small" data-rmz title="Remove">✕</button>
+      ${notes.length ? `<div class="note">${notes.join(' · ')}</div>` : ''}
+    </div>`;
+  }).join('');
+  tzPlan(sorted, refP);
+}
+function tzPlan(sorted, refP) {
+  const hours = [];
+  for (let h = 0; h < 24; h++) { const r = zonedToUtc(TZ.ref, refP.y, refP.mo, refP.d, h, 0); if (r.exact) hours.push({ h, t: r.t }); }
+  let html = '<table><tbody>';
+  for (const z of sorted) {
+    html += `<tr><th>${esc(tzLabel(z))}</th>`;
+    for (const { h, t } of hours) {
+      const p = parts(z, t), lh = p.h;
+      const cls = (lh >= 8 && lh < 18) ? 'w' : (lh >= 7 && lh < 22) ? 'e' : '';
+      html += `<td class="${cls}${lh === 0 && p.mi === 0 || (lh === 0 && h === 0) ? ' mid' : ''}${h === refP.h ? ' sel' : ''}" data-h="${h}" title="${tzLabel(z)}: ${fmtDay(z, t)} ${pad(lh)}:${pad(p.mi)}">${lh}${p.mi ? `<sup>${pad(p.mi)}</sup>` : ''}</td>`;
+    }
+    html += '</tr>';
+  }
+  $('#tzPlan').innerHTML = html + '</tbody></table>';
+}
+$('#tzPlan').addEventListener('click', e => {
+  const td = e.target.closest('td[data-h]'); if (!td) return;
+  const p = parts(TZ.ref, TZ.t), r = zonedToUtc(TZ.ref, p.y, p.mo, p.d, +td.dataset.h, 0);
+  TZ.t = r.t; TZ.live = false; $('#tzWarn').textContent = ''; tzRender(true);
+});
+$('#tzList').addEventListener('click', e => {
+  const row = e.target.closest('.tzr'); if (!row) return; const z = row.dataset.z;
+  if (e.target.closest('[data-rmz]')) {
+    if (TZ.zones.length <= 1) return;
+    TZ.zones = TZ.zones.filter(x => x !== z); if (TZ.ref === z) TZ.ref = TZ.zones[0];
+  } else if (e.target.closest('[data-setref]')) { TZ.ref = z; } else return;
+  tzSave(); tzFillRef(); tzRender(true);
+});
+$('#tzRef').onchange = () => { TZ.ref = $('#tzRef').value; tzSave(); tzRender(true); };
+$('#tzDate').addEventListener('change', tzFromInputs);
+$('#tzTime').addEventListener('change', tzFromInputs);
+$('#tzNow').onclick = () => { TZ.live = true; $('#tzWarn').textContent = ''; tzRender(true); };
+function tzAddZone() {
+  const q = $('#tzAdd').value.trim(); if (!q) return;
+  const norm = s => s.toLowerCase().replace(/[_\s]+/g, ' ');
+  let z = ALL_TZ.find(x => x.toLowerCase() === q.toLowerCase()) || ALL_TZ.find(x => norm(tzLabel(x)) === norm(q)) || ALL_TZ.find(x => norm(x).includes(norm(q)));
+  if (!z && validTz(q)) z = q;
+  if (!z) { toast(`No time zone found for "${q}". Try a nearby big city.`); return; }
+  if (!TZ.zones.includes(z)) TZ.zones.push(z);
+  $('#tzAdd').value = ''; tzSave(); tzFillRef(); tzRender(true); toast('Added ' + tzLabel(z));
+}
+$('#tzAddBtn').onclick = tzAddZone;
+$('#tzAdd').addEventListener('keydown', e => { if (e.key === 'Enter') tzAddZone(); });
+$('#tzCopy').onclick = () => {
+  const sorted = [...TZ.zones].sort((a, b) => offsetMin(a, TZ.t) - offsetMin(b, TZ.t));
+  const ordered = [TZ.ref, ...sorted.filter(z => z !== TZ.ref)];
+  copy(ordered.map(z => { const p = parts(z, TZ.t), ab = abbr(z, TZ.t); return `${pad(p.h)}:${pad(p.mi)} ${tzLabel(z)} (${ab || offStr(offsetMin(z, TZ.t))}), ${fmtDay(z, TZ.t)}`; }).join('\n'));
+};
+tzFillRef();
+
+/* ---------- STOPWATCH ---------- */
+const SW = Object.assign({ running: false, start: 0, acc: 0, laps: [] }, store.get('sw', {}));
+const swEl = () => SW.acc + (SW.running ? Date.now() - SW.start : 0);
+function swFmt(ms) { const h = Math.floor(ms / 3600e3), m = Math.floor(ms / 60e3) % 60, s = Math.floor(ms / 1e3) % 60, c = Math.floor(ms / 10) % 100; return [(h ? h + ':' + pad(m) : pad(m)) + ':' + pad(s), '.' + pad(c)]; }
+let swRaf = 0;
+function swDraw() { const [a, b] = swFmt(swEl()); $('#swT').innerHTML = `${a}<small>${b}</small>`; if (SW.running) swRaf = requestAnimationFrame(swDraw); else swRaf = 0; }
+function swRender() {
+  $('#swGo').textContent = SW.running ? 'Stop' : (SW.acc ? 'Resume' : 'Start');
+  $('#swGo').classList.toggle('primary', !SW.running);
+  $('#swLap').disabled = !SW.running;
+  $('#swSince').textContent = SW.running ? 'since ' + new Date(SW.start - SW.acc).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
+  const laps = SW.laps.map((t, i) => ({ i: i + 1, t, d: t - (SW.laps[i - 1] || 0) }));
+  const ds = laps.map(l => l.d), best = Math.min(...ds), worst = Math.max(...ds);
+  $('#swLaps').innerHTML = laps.reverse().map(l => `<div class="${laps.length > 2 && l.d === best ? 'best' : laps.length > 2 && l.d === worst ? 'worst' : ''}"><span class="muted">Lap ${l.i}</span><span>${swFmt(l.d).join('')}</span><span class="muted">${swFmt(l.t).join('')}</span></div>`).join('');
+  store.set('sw', SW);
+  if (!swRaf) swDraw();
+}
+$('#swGo').onclick = () => { if (SW.running) { SW.acc = swEl(); SW.running = false; } else { SW.start = Date.now(); SW.running = true; } swRender(); };
+$('#swLap').onclick = () => { if (SW.running) { SW.laps.push(swEl()); swRender(); } };
+$('#swReset').onclick = () => { SW.running = false; SW.acc = 0; SW.laps = []; swRender(); };
+
+/* ---------- TEXT ---------- */
+const txUndoStack = [];
+const TX_LABEL = { join: 'Joined lines', nobr: 'Removed line breaks', nows: 'Removed whitespace', nonum: 'Removed numbers + whitespace', collapse: 'Collapsed spaces', noempty: 'Removed empty lines', fasta1: 'FASTA one-line', wrap60: 'Wrapped at 60', upper: 'Upper case', lower: 'Lower case', sort: 'Sorted lines', uniq: 'Removed duplicate lines' };
+function txRender() {
+  const v = $('#txIn').value, s = LabCore.textStats(v);
+  const items = [['Characters', s.chars], ['No whitespace', s.charsNoWs], ['Words', s.words], ['Lines', s.lines], ['Non-empty lines', s.nonEmptyLines], ['Paragraphs', s.paragraphs], ['Sentences', s.sentences]];
+  $('#txStats').innerHTML = items.map(([k, n]) => `<div class="stat" data-copy="${n}"><b>${n.toLocaleString('en-US')}</b><span>${k}</span></div>`).join('');
+  if (v.length < 200000) store.set('text', v);
+}
+$('#txIn').addEventListener('input', () => { $('#txMsg').textContent = ''; txRender(); });
+$('#txOps').addEventListener('click', e => {
+  const b = e.target.closest('button[data-op]'); if (!b) return;
+  const prev = $('#txIn').value, next = LabCore.TEXT_OPS[b.dataset.op](prev);
+  if (next === prev) { $('#txMsg').textContent = 'No change.'; return; }
+  txUndoStack.push(prev); if (txUndoStack.length > 30) txUndoStack.shift();
+  $('#txIn').value = next; $('#txMsg').textContent = `${TX_LABEL[b.dataset.op]}: ${prev.length.toLocaleString('en-US')} → ${next.length.toLocaleString('en-US')} characters.`; txRender();
+});
+$('#txUndo').onclick = () => { if (!txUndoStack.length) { $('#txMsg').textContent = 'Nothing to undo.'; return; } $('#txIn').value = txUndoStack.pop(); $('#txMsg').textContent = 'Undone.'; txRender(); };
+$('#txCopy').onclick = () => copy($('#txIn').value);
+$('#txClear').onclick = () => { if ($('#txIn').value) txUndoStack.push($('#txIn').value); $('#txIn').value = ''; txRender(); };
+$('#txIn').value = store.get('text', '');
+
+/* ---------- SEQUENCE ---------- */
+const SQ_EXAMPLES = [
+  '>example_dna  GFP-like ORF with an EcoRI site\nGAATTCGCCACCATGGTGAGCAAGGGCGAGGAGCTGTTCACCGGGGTGGTGCCCATCCTGGTCGAGCTGGACGGCGACGTAAACGGCCACAAGTTCAGCGTGTCCGGCGAGGGCGAGGGCGATGCCACCTACGGCAAGCTGACCCTGAAGTTCATCTGCACCACCGGCAAGCTGCCCGTGCCCTGGCCCACCCTCGTGACCACCCTGACCTACGGCGTGCAGTGCTTCAGCCGCTACCCCGACCACATGAAGCAGCACGACTTCTTCAAGTCCGCCATGCCCGAAGGCTACGTCCAGGAGCGCACCATCTTCTTCAAGGACGACGGCAACTACAAGACCCGCGCCGAGGTGAAGTTCGAGGGCGACACCCTGGTGAACCGCATCGAGCTGAAGGGCATCGACTTCAAGGAGGACGGCAACATCCTGGGGCACAAGCTGGAGTACAACTACAACAGCCACAACGTCTATATCATGGCCGACAAGCAGAAGAACGGCATCAAGGTGAACTTCAAGATCCGCCACAACATCGAGGACGGCAGCGTGCAGCTCGCCGACCACTACCAGCAGAACACCCCCATCGGCGACGGCCCCGTGCTGCTGCCCGACAACCACTACCTGAGCACCCAGTCCGCCCTGAGCAAAGACCCCAACGAGAAGCGCGATCACATGGTCCTGCTGGAGTTCGTGACCGCCGCCGGGATCACTCTCGGCATGGACGAGCTGTACAAGTAAGCGGCCGC',
+  '>ubiquitin  human, 76 aa\nMQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQQRLIFAGKQLEDGRTLSDYNIQKESTLHLVLRLRGG',
+  '>primer_F\nTGCACCACCGGCAAGCTGCC'
+];
+let sqEx = 0, sqCache = [];
+const NT_COL = { A: '#5aa469', C: '#4a7fc1', G: '#d1a03b', T: '#c8553d' };
+function sqRender() {
+  const text = $('#sqIn').value; if (text.length < 300000) store.set('seq', text);
+  const recs = LabCore.parseSeqInput(text), out = $('#sqOut'), motif = $('#sqMotif').value.trim();
+  sqCache = [];
+  if (!recs.length) { out.innerHTML = '<div class="hint">Nothing analysed yet. Paste a sequence above or click Example.</div>'; return; }
+  const shown = recs.slice(0, 20);
+  out.innerHTML = (recs.length > 20 ? `<div class="hint">${recs.length} records; showing the first 20.</div>` : '') + shown.map((r, ri) => {
+    const cls = LabCore.classify(r.seq), seq = r.seq;
+    let h = `<div class="seqrec"><h4>${esc(r.name.slice(0, 80))}<span class="tag ${cls.type === 'invalid' || cls.type === 'empty' ? 'bad' : ''}">${cls.type}</span><span class="muted small">${seq.length.toLocaleString('en-US')} ${cls.type === 'protein' ? 'aa' : cls.type === 'DNA' ? 'bp / nt' : cls.type === 'RNA' ? 'nt' : 'chars'}</span></h4>`;
+    if (r.gaps) h += `<div class="small muted">${r.gaps} gap characters (-/.) ignored.</div>`;
+    if (cls.type === 'empty') return h + '<div class="small muted">No sequence characters.</div></div>';
+    if (cls.type === 'invalid') return h + `<div class="err">Not a DNA, RNA or protein sequence: unexpected characters <b>${esc(cls.bad)}</b>.</div></div>`;
+    if (seq.length < 12) h += `<div class="small muted">Very short: type detection may be wrong.</div>`;
+    if (cls.type === 'protein') {
+      const p = LabCore.proteinStats(seq);
+      const comp = Object.entries(p.counts).filter(([k]) => k !== '*').sort((a, b) => b[1] - a[1]).slice(0, 8).map(([k, n]) => `${k} ${(100 * n / p.len).toFixed(1)}%`).join(' · ');
+      h += `<dl class="kv">
+        <dt>Length</dt><dd>${p.len} aa${p.startsM ? '' : ' <span class="muted">(does not start with M)</span>'}</dd>
+        <dt>Mass</dt><dd data-copy="${p.mw.toFixed(1)}" style="cursor:copy">${fmt(p.mw / 1000, 4)} kDa <span class="muted">(${p.mw.toFixed(1)} Da, average)</span></dd>
+        <dt>pI (estimate)</dt><dd>${isFinite(p.pI) ? p.pI.toFixed(2) : '—'} <span class="muted">· net charge at pH 7 ≈ ${p.charge7.toFixed(1)}</span></dd>
+        <dt>ε280</dt><dd>${p.epsOx.toLocaleString('en-US')} M⁻¹cm⁻¹${p.epsOx !== p.epsRed ? ` <span class="muted">(${p.epsRed.toLocaleString('en-US')} if Cys reduced)</span>` : ''} · A280 of 1 mg/mL ≈ ${p.abs01.toFixed(3)}</dd>
+        <dt>GRAVY</dt><dd>${isFinite(p.gravy) ? `${p.gravy.toFixed(3)} <span class="muted">(${p.gravy > 0 ? 'hydrophobic' : 'hydrophilic'} on average)</span>` : '—'}</dd>
+        <dt>N-glyc. motifs</dt><dd>${p.nGlyc} <span class="muted">(N-x-S/T, x ≠ P)</span></dd>
+        <dt>Composition</dt><dd>${comp}</dd>
+        ${p.internalStops ? `<dt>Warning</dt><dd class="err">${p.internalStops} internal stop (*)</dd>` : ''}
+        ${p.unknown ? `<dt>Note</dt><dd class="muted">${p.unknown} ambiguous residues counted as 110 Da</dd>` : ''}
+      </dl>`;
+    } else {
+      const rna = cls.type === 'RNA', st = LabCore.ntStats(seq), c = st.counts, tot = c.A + c.C + c.G + c.T || 1;
+      const rc = LabCore.revcomp(seq, rna);
+      const minAa = seq.length < 600 ? 20 : 50, orfs = LabCore.findOrfs(seq, minAa);
+      const prot = LabCore.translate(seq, 0);
+      sqCache.push({ id: `rc${ri}`, s: rc }, { id: `tr${ri}`, s: prot });
+      orfs.slice(0, 3).forEach((o, k) => sqCache.push({ id: `orf${ri}_${k}`, s: o.protein }));
+      const bars = ['A', 'C', 'G', 'T'].map(b => `<i style="width:${100 * c[b] / tot}%;background:${NT_COL[b]}" title="${rna && b === 'T' ? 'U' : b} ${(100 * c[b] / tot).toFixed(1)}%"></i>`).join('');
+      const tm = LabCore.tmBasic(seq);
+      h += `<dl class="kv">
+        <dt>Length</dt><dd>${seq.length.toLocaleString('en-US')} ${rna ? 'nt' : 'bp / nt'}${cls.mixedTU ? ' <span class="err">· contains both T and U</span>' : ''}</dd>
+        <dt>GC content</dt><dd><b>${isFinite(st.gc) ? st.gc.toFixed(1) + '%' : '—'}</b> <span class="muted">· A ${c.A} · C ${c.C} · G ${c.G} · ${rna ? 'U' : 'T'} ${c.T}${st.ambiguous ? ` · ambiguous ${st.ambiguous}` : ''}</span><div class="bars">${bars}</div></dd>
+        <dt>CpG</dt><dd>${st.cpg} <span class="muted">· observed/expected ${isFinite(st.cpgOE) ? st.cpgOE.toFixed(2) : '—'}</span></dd>
+        <dt>Longest run</dt><dd>${st.homopolymer.len} × ${rna && st.homopolymer.base === 'T' ? 'U' : st.homopolymer.base}${st.homopolymer.len >= 6 ? ' <span class="muted">(homopolymer: can cause sequencing / synthesis trouble)</span>' : ''}</dd>
+        <dt>MW</dt><dd>${seq.length <= 200 ? `${fmt(LabCore.oligoMW(seq, rna), 6)} g/mol <span class="muted">(single strand, from composition)</span>` : `${fmt(LabCore.naMW(rna ? 'rna' : 'ds', seq.length) / 1000, 4)} kDa <span class="muted">(${rna ? 'ssRNA' : 'dsDNA'}, average)</span>`}</dd>
+        ${seq.length <= 80 && !rna && isFinite(tm) ? `<dt>Tm (basic)</dt><dd>${tm.toFixed(1)} °C <span class="muted">(${seq.length < 14 ? 'Wallace 2(A+T)+4(G+C)' : '64.9 + 41(GC−16.4)/N'}; no salt correction; use a nearest-neighbour tool for real primer design)</span></dd>` : ''}
+      </dl>`;
+      h += `<div class="row small" style="margin-top:10px"><span class="muted">Reverse complement</span><button class="small ghost" data-sqc="rc${ri}">copy</button></div><div class="seqout" data-sqc="rc${ri}">${esc(rc.slice(0, 3000))}${rc.length > 3000 ? '…' : ''}</div>`;
+      h += `<div class="row small" style="margin-top:10px"><span class="muted">Translation, frame +1</span><button class="small ghost" data-sqc="tr${ri}">copy</button></div><div class="seqout" data-sqc="tr${ri}">${esc(prot.slice(0, 1000))}${prot.length > 1000 ? '…' : ''}</div>`;
+      h += `<div class="small" style="margin-top:10px"><span class="muted">ORFs (ATG → stop, ≥ ${minAa} aa, both strands):</span> ${orfs.length ? orfs.slice(0, 3).map((o, k) => `<div style="margin-top:3px">${o.aaLen} aa · strand ${o.strand} frame ${o.frame} · ${o.start.toLocaleString('en-US')}–${o.end.toLocaleString('en-US')}${o.complete ? '' : ' <span class="muted">(no stop before end)</span>'} <button class="small ghost" data-sqc="orf${ri}_${k}">copy protein</button></div>`).join('') + (orfs.length > 3 ? `<div class="muted">+ ${orfs.length - 3} shorter</div>` : '') : 'none found'}</div>`;
+      const sites = LabCore.restrictionSites(seq), cut = sites.filter(x => x.n), none = sites.filter(x => !x.n);
+      h += `<div class="small" style="margin-top:10px"><span class="muted">Restriction sites:</span> ${cut.length ? cut.map(x => `<b>${x.name}</b> ×${x.n} <span class="muted">(${x.pos.slice(0, 4).join(', ')}${x.n > 4 ? '…' : ''})</span>`).join(' · ') : 'none of the common ones'}
+        ${none.length ? `<details style="margin-top:4px"><summary>${none.length} enzymes do not cut</summary><span class="muted">${none.map(x => x.name).join(', ')}</span></details>` : ''}</div>`;
+    }
+    if (motif) {
+      const r2 = LabCore.findMotif(seq, motif, cls.type !== 'protein');
+      if (!r2 || r2.error) h += `<div class="err small" style="margin-top:8px">Motif: ${esc(r2 ? r2.error : 'empty')}</div>`;
+      else h += `<div class="small" style="margin-top:8px"><span class="muted">Motif “${esc(motif)}”:</span> <b>${r2.hits.length}${r2.capped ? '+' : ''}</b> hit${r2.hits.length === 1 ? '' : 's'} ${r2.hits.slice(0, 40).map(x => `<span class="mono">${x.pos}${cls.type === 'protein' ? '' : x.strand}</span>`).join(', ')}${r2.hits.length > 40 ? '…' : ''}</div>`;
+    }
+    return h + '</div>';
+  }).join('');
+}
+$('#sqOut').addEventListener('click', e => { const el = e.target.closest('[data-sqc]'); if (!el) return; const c = sqCache.find(x => x.id === el.dataset.sqc); if (c) copy(c.s); });
+let sqT; const sqLater = () => { clearTimeout(sqT); sqT = setTimeout(sqRender, 150); };
+$('#sqIn').addEventListener('input', sqLater); $('#sqMotif').addEventListener('input', sqLater);
+$('#sqExample').onclick = () => { $('#sqIn').value = SQ_EXAMPLES[sqEx++ % SQ_EXAMPLES.length]; sqRender(); };
+$('#sqClear').onclick = () => { $('#sqIn').value = ''; sqRender(); };
+$('#sqIn').value = store.get('seq', '');
+
+/* ---------- MASTER MIX ---------- */
+const MM_PRESETS = {
+  qpcr20: { label: 'SYBR qPCR, 2× mix, 20 µL', vol: 20, tpl: 5, comps: [['2× SYBR master mix', '2', '1', ''], ['Primer F (µM)', '10', '0.25', ''], ['Primer R (µM)', '10', '0.25', ''], ['Water', '', '', 'fill']] },
+  qpcr10: { label: 'SYBR qPCR, 2× mix, 10 µL', vol: 10, tpl: 2, comps: [['2× SYBR master mix', '2', '1', ''], ['Primer F (µM)', '10', '0.25', ''], ['Primer R (µM)', '10', '0.25', ''], ['Water', '', '', 'fill']] },
+  taq25: { label: 'Taq PCR, 25 µL (NEB-style)', vol: 25, tpl: 1, comps: [['10× Taq buffer', '10', '1', ''], ['dNTPs (mM each)', '10', '0.2', ''], ['Primer F (µM)', '10', '0.2', ''], ['Primer R (µM)', '10', '0.2', ''], ['Taq polymerase', '', '', '0.125'], ['Water', '', '', 'fill']] },
+  q5_50: { label: 'High-fidelity (Q5-style), 50 µL', vol: 50, tpl: 1, comps: [['5× reaction buffer', '5', '1', ''], ['dNTPs (mM each)', '10', '0.2', ''], ['Primer F (µM)', '10', '0.5', ''], ['Primer R (µM)', '10', '0.5', ''], ['Polymerase', '', '', '0.5'], ['Water', '', '', 'fill']] },
+  blank: { label: 'Empty', vol: 20, tpl: 0, comps: [['Component 1', '', '', ''], ['Water', '', '', 'fill']] }
+};
+const mmFrom = k => ({ preset: k, n: '24', over: '10', extra: '0', vol: String(MM_PRESETS[k].vol), tpl: String(MM_PRESETS[k].tpl), comps: MM_PRESETS[k].comps.map(c => ({ name: c[0], stock: c[1], final: c[2], vol: c[3] })) });
+let MM = store.get('mm', null) || mmFrom('qpcr20');
+fillSelect($('#mmPreset'), [['', 'preset…'], ...Object.entries(MM_PRESETS).map(([k, p]) => [k, p.label])], '');
+const MM_FIELDS = { mmN: 'n', mmOver: 'over', mmExtra: 'extra', mmVol: 'vol', mmTpl: 'tpl' };
+function mmRows() {
+  $('#mmTable').innerHTML = `<thead><tr><th>Component</th><th>Stock</th><th>Final</th><th>µL / rxn</th><th style="text-align:right">Total µL</th><th></th></tr></thead><tbody>${MM.comps.map((c, i) => `<tr data-i="${i}">
+    <td><input data-f="name" value="${esc(c.name)}" style="min-width:150px"></td><td><input data-f="stock" value="${esc(c.stock)}" inputmode="decimal" style="width:70px"></td>
+    <td><input data-f="final" value="${esc(c.final)}" inputmode="decimal" style="width:70px"></td><td><input data-f="vol" class="calc" value="${esc(c.vol)}" style="width:80px"></td>
+    <td class="tot"></td><td><button class="ghost small" data-rm title="Remove">✕</button></td></tr>`).join('')}</tbody><tfoot><tr><td>Template (added per well)</td><td></td><td></td><td id="mmTplCell"></td><td class="tot" id="mmTplTot"></td><td></td></tr><tr><td>Master mix total</td><td></td><td></td><td id="mmPerCell"></td><td class="tot" id="mmTotCell"></td><td></td></tr></tfoot>`;
+  for (const [id, k] of Object.entries(MM_FIELDS)) $('#' + id).value = MM[k];
+}
+let mmLast = null;
+function mmCompute() {
+  store.set('mm', MM);
+  const comps = MM.comps.map(c => ({ name: c.name, stock: num(c.stock), final: num(c.final), vol: /^fill$/i.test(c.vol.trim()) ? NaN : num(c.vol), fill: /^fill$/i.test(c.vol.trim()) }));
+  const n = num(MM.n), out = $('#mmOut');
+  if (!(n > 0)) { mmLast = null; out.className = 'answer bad'; out.textContent = 'Enter the number of reactions.'; return; }
+  const r = LabCore.masterMix({ n, extra: num(MM.extra) || 0, overagePct: num(MM.over) || 0, rxnVol: num(MM.vol), templateVol: num(MM.tpl) || 0, comps });
+  mmLast = r;
+  $$('#mmTable tbody tr').forEach((tr, i) => {
+    const row = r.rows[i], vin = $('[data-f="vol"]', tr);
+    vin.placeholder = row.per >= 0 && row.computed ? plain(row.per, 4) : '';
+    $('.tot', tr).innerHTML = row.per >= 0 ? (row.fill ? `<span class="muted" style="font-weight:400">${plain(row.per, 4)}/rxn ·</span> ` : '') + fmt(row.total, 4) : row.fill ? `<span class="err">${plain(row.per, 4)}/rxn</span>` : '<span class="muted">—</span>';
+    tr.classList.toggle('bad', row.per < 0 || (!(row.per >= 0) && !row.fill));
+  });
+  $('#mmTplCell').textContent = r.templateVol ? plain(r.templateVol, 4) : '';
+  $('#mmTplTot').innerHTML = r.templateVol ? `<span class="muted">${fmt(r.templateVol * n, 4)} for ${n}</span>` : '';
+  $('#mmPerCell').textContent = plain(r.mixPer, 4);
+  $('#mmTotCell').textContent = fmt(r.mixTotal, 4);
+  out.className = r.warnings.length ? 'answer bad' : 'answer';
+  out.innerHTML = `Make <b>${fmt(r.mixTotal, 4)} µL</b> master mix (enough for ${fmt(r.nEff, 3)} reactions = ${n}${num(MM.extra) ? ' + ' + num(MM.extra) : ''} + ${num(MM.over) || 0}%). Pipette <b>${plain(r.mixPer, 4)} µL</b> mix${r.templateVol ? ` + <b>${plain(r.templateVol, 4)} µL</b> template` : ''} per well.` + r.warnings.map(w => `<div class="sub" style="color:var(--warn)">${esc(w)}</div>`).join('');
+}
+$('#mmTable').addEventListener('input', e => { const tr = e.target.closest('tr[data-i]'); if (!tr) return; MM.comps[+tr.dataset.i][e.target.dataset.f] = e.target.value; MM.preset = ''; mmCompute(); });
+$('#mmTable').addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (!b) return; MM.comps.splice(+b.closest('tr').dataset.i, 1); mmRows(); mmCompute(); });
+for (const [id, k] of Object.entries(MM_FIELDS)) $('#' + id).addEventListener('input', () => { MM[k] = $('#' + id).value; mmCompute(); });
+$('#mmPreset').onchange = () => { const k = $('#mmPreset').value; if (!k) return; const keepN = MM.n, keepO = MM.over, keepE = MM.extra; MM = mmFrom(k); MM.n = keepN; MM.over = keepO; MM.extra = keepE; $('#mmPreset').value = ''; mmRows(); mmCompute(); };
+$('#mmAdd').onclick = () => { const wi = MM.comps.findIndex(c => /^fill$/i.test(c.vol)); MM.comps.splice(wi >= 0 ? wi : MM.comps.length, 0, { name: 'Component', stock: '', final: '', vol: '' }); mmRows(); mmCompute(); };
+function mmPlate() { const s = num($('#mmS').value) || 0, c = num($('#mmC').value) || 0, r = num($('#mmR').value) || 1; const n = (s + c) * r; $('#mmPlate').textContent = `= ${n} wells per primer pair`; return n; }
+['#mmS', '#mmC', '#mmR'].forEach(sel => $(sel).addEventListener('input', mmPlate));
+$('#mmUse').onclick = () => { MM.n = String(mmPlate()); $('#mmN').value = MM.n; mmCompute(); };
+$('#mmCopy').onclick = () => {
+  if (!mmLast) { toast('Nothing to copy yet'); return; }
+  const lines = [`Master mix for ${num(MM.n)} reactions + ${num(MM.over) || 0}% overage (${fmt(mmLast.nEff, 3)} rxn), ${MM.vol} µL each`, 'Component\tµL/rxn\tTotal µL'];
+  mmLast.rows.forEach(r => lines.push(`${r.name}\t${plain(r.per, 4)}\t${plain(r.total, 4)}`));
+  lines.push(`Master mix\t${plain(mmLast.mixPer, 4)}\t${plain(mmLast.mixTotal, 4)}`);
+  if (mmLast.templateVol) lines.push(`Template (per well)\t${plain(mmLast.templateVol, 4)}\t`);
+  copy(lines.join('\n'));
+};
+
+/* ---------- REGENERATION TIMEPOINTS ---------- */
+const TP = Object.assign({ cut: null, hours: '0, 6, 12, 24, 48, 72', ws: 8, we: 18, ns: 22, ne: 7 }, store.get('tp', {}));
+if (!TP.cut) TP.cut = Math.floor(Date.now() / 300000) * 300000;
+const TP_PRESETS = [['0 6 12 24 48 72', '0, 6, 12, 24, 48, 72'], ['early: 0 0.5 1 2 4 8 12', '0, 0.5, 1, 2, 4, 8, 12'], ['daily 1–5 dpa', '1d, 2d, 3d, 4d, 5d'], ['0 2 4 8 16 24 36 48', '0, 2, 4, 8, 16, 24, 36, 48']];
+$('#tpPresets').innerHTML = TP_PRESETS.map(([l, v]) => `<button data-v="${v}">${l}</button>`).join('');
+const tpOpts = () => ({ tz: LOCAL_TZ, workStart: TP.ws, workEnd: TP.we, nightStart: TP.ns, nightEnd: TP.ne });
+const fmtHpa = h => { const s = +h.toFixed(2); return s >= 24 && s % 24 === 0 ? `${s} hpa <span class="muted">(${s / 24} d)</span>` : `${s} hpa`; };
+const wdName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], moName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const tpWhen = p => `${wdName[p.wd]} ${p.d} ${moName[p.mo - 1]}`;
+let tpRows = [];
+function tpSyncInputs() { const p = parts(LOCAL_TZ, TP.cut); $('#tpDate').value = `${p.y}-${pad(p.mo)}-${pad(p.d)}`; $('#tpTime').value = `${pad(p.h)}:${pad(p.mi)}`; }
+function tpRender() {
+  store.set('tp', TP);
+  const hours = LabCore.parseHours(TP.hours), out = $('#tpOut');
+  if (hours.error) { out.innerHTML = `<div class="answer bad">Could not read “${esc(hours.error)}”. Use numbers in hours, or add d for days (e.g. 0, 6, 12, 1d, 2d).</div>`; return; }
+  if (!hours.length) { out.innerHTML = ''; return; }
+  const o = tpOpts(); tpRows = LabCore.planTimepoints(TP.cut, hours, o);
+  const flagged = tpRows.filter(r => r.night || r.weekend).length;
+  out.innerHTML = `<table class="t" style="width:100%"><tr><th>Point</th><th>Day</th><th>Time</th><th>Flags</th></tr>${tpRows.map(r => {
+    const f = (r.night ? '<span class="flag n">night</span>' : '') + (r.weekend ? '<span class="flag w">weekend</span>' : '') + (r.outside ? `<span class="flag o">${r.p.h < o.workStart ? 'early' : 'late'}</span>` : '') + (r.dstShift ? `<span class="flag o" title="A daylight-saving change happens between the cut and this point; the clock time already accounts for it">DST ${r.dstShift > 0 ? '+' : '−'}${Math.abs(r.dstShift / 60)}h</span>` : '');
+    return `<tr class="${r.night ? 'bad' : ''}"><td>${fmtHpa(r.hpa)}</td><td>${tpWhen(r.p)}</td><td><b>${pad(r.p.h)}:${pad(r.p.mi)}</b></td><td>${f}</td></tr>`;
+  }).join('')}</table>
+  <div class="hint">${flagged ? `${flagged} of ${tpRows.length} points fall at night or on a weekend.` : 'All points are on weekdays and outside the night window.'}</div>`;
+  const sug = LabCore.suggestCuts(Date.now(), hours, o, 7, 5);
+  $('#tpSuggest').innerHTML = sug.map(s => { const p = parts(LOCAL_TZ, s.t), bad = s.rows.filter(r => r.night).length, wk = s.rows.filter(r => r.weekend).length, out2 = s.rows.filter(r => r.outside).length;
+    return `<button data-t="${s.t}" title="night ${bad} · weekend ${wk} · early/late ${out2}">${tpWhen(p)} ${pad(p.h)}:${pad(p.mi)} · ${s.score === 0 ? 'no flags' : [bad && bad + ' night', wk && wk + ' weekend', out2 && out2 + ' early/late'].filter(Boolean).join(', ')}</button>`; }).join('');
+}
+function tpFromInputs() {
+  const [y, mo, d] = ($('#tpDate').value || '').split('-').map(Number), [h, mi] = ($('#tpTime').value || '').split(':').map(Number);
+  if (!y || isNaN(h)) return; TP.cut = zonedToUtc(LOCAL_TZ, y, mo, d, h, mi || 0).t; tpRender();
+}
+$('#tpDate').addEventListener('change', tpFromInputs); $('#tpTime').addEventListener('change', tpFromInputs);
+$('#tpNow').onclick = () => { TP.cut = Math.floor(Date.now() / 300000) * 300000; tpSyncInputs(); tpRender(); };
+$('#tpHours').addEventListener('input', () => { TP.hours = $('#tpHours').value; tpRender(); });
+$('#tpPresets').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; TP.hours = b.dataset.v; $('#tpHours').value = TP.hours; tpRender(); });
+$('#tpSuggest').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; TP.cut = +b.dataset.t; tpSyncInputs(); tpRender(); });
+[['#tpWs', 'ws'], ['#tpWe', 'we'], ['#tpNs', 'ns'], ['#tpNe', 'ne']].forEach(([s, k]) => { $(s).value = TP[k]; $(s).addEventListener('change', () => { const v = num($(s).value); if (v >= 0 && v <= 24) TP[k] = v; $(s).value = TP[k]; tpRender(); }); });
+$('#tpCopy').onclick = () => copy(['Point (hpa)\tDate\tTime\tFlags', ...tpRows.map(r => `${+r.hpa.toFixed(2)}\t${r.p.y}-${pad(r.p.mo)}-${pad(r.p.d)} (${wdName[r.p.wd]})\t${pad(r.p.h)}:${pad(r.p.mi)}\t${[r.night && 'night', r.weekend && 'weekend', r.outside && 'outside hours'].filter(Boolean).join(', ')}`)].join('\n'));
+$('#tpHours').value = TP.hours;
+
+/* ---------- HYDRA TANK ---------- */
+(() => {
+  const cv = $('#tank'), ctx = cv.getContext('2d');
+  const SP = {
+    oligactis: { body: '#a8743f', dark: '#7c5530', tent: '#b98a5a', tl: 1.9, curl: 1.4, name: 'H. oligactis' },
+    viridissima: { body: '#5e9a45', dark: '#3f7230', tent: '#7fb262', tl: 0.85, curl: 0.5, name: 'H. viridissima' },
+    vulgaris: { body: '#c79d6c', dark: '#9b7448', tent: '#d3ad80', tl: 1.25, curl: 0.8, name: 'H. vulgaris' }
+  };
+  const SPK = Object.keys(SP);
+  const st = Object.assign({ eaten: 0, born: 0 }, store.get('hydraStats', {}));
+  let W = 320, H = 200, dpr = 1, t = 0, last = 0, raf = 0, onScreen = true, dark = false, darkCheck = 0;
+  let polyps = [], food = [], bubbles = [], pebbles = [];
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const angDiff = (a, b) => { let d = a - b; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return d; };
+  function mk(x, sp, len) { return { x, sp, len: len || rnd(46, 66), lean: rnd(-0.22, 0.22), ph: rnd(0, 6.3), nt: sp === 'viridissima' ? 6 : 5 + (Math.random() * 3 | 0), c: 0, pokeT: 0, fed: 0, feeds: 0, bud: null, drop: null }; }
+  function load() {
+    const s = store.get('hydraPolyps', null);
+    polyps = (s && s.length ? s : [{ x: 0.3, sp: 'oligactis' }, { x: 0.7, sp: 'viridissima' }]).map(p => Object.assign(mk(p.x, p.sp, p.len), { feeds: p.feeds || 0 }));
+  }
+  const save = () => { store.set('hydraPolyps', polyps.map(p => ({ x: p.x, sp: p.sp, len: p.len, feeds: p.feeds }))); store.set('hydraStats', st); stats(); };
+  function stats() { const sp = [...new Set(polyps.map(p => SP[p.sp].name))].join(', '); $('#hyStats').textContent = `${polyps.length} polyp${polyps.length === 1 ? '' : 's'} · ${st.eaten} fed · ${st.born} bud${st.born === 1 ? '' : 's'}`; $('#hyStats').title = sp; }
+  function resize() {
+    const r = cv.getBoundingClientRect(); dpr = window.devicePixelRatio || 1; W = Math.max(200, r.width || 320); H = r.height || 200;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    pebbles = Array.from({ length: Math.round(W / 6) }, () => ({ x: rnd(0, W), y: rnd(H - 12, H - 2), r: rnd(1, 2.6), s: rnd(-0.08, 0.08) }));
+  }
+  const floorY = () => H - 13;
+  function geom(p) {
+    const fx = p.x * W, fy = p.drop ? p.drop.y : floorY();
+    const sway = p.lean + Math.sin(t * 0.5 + p.ph) * 0.13 + Math.sin(t * 1.3 + p.ph * 2) * 0.04 + (p.drop ? Math.sin(t * 3) * 0.4 : 0);
+    const L = p.len * (1 - 0.72 * p.c);
+    return { fx, fy, sway, L, w: 5 + p.c * 6 + Math.min(p.fed, 1.5) * 2.5,
+      hx: fx + Math.sin(sway) * L, hy: fy - Math.cos(sway) * L,
+      cx: fx + Math.sin(sway * 0.3) * L * 0.55, cy: fy - Math.cos(sway * 0.3) * L * 0.55 };
+  }
+  const qp = (g, u) => ({ x: (1 - u) * (1 - u) * g.fx + 2 * (1 - u) * u * g.cx + u * u * g.hx, y: (1 - u) * (1 - u) * g.fy + 2 * (1 - u) * u * g.cy + u * u * g.hy });
+  function tentacles(p, g) {
+    const sp = SP[p.sp], TL = p.len * sp.tl * (1 - 0.88 * p.c), lines = [];
+    let target = null, bd = 1e9;
+    for (const f of food) if (f.st === 'free') { const d = Math.hypot(f.x - g.hx, f.y - g.hy); if (d < TL * 1.1 && d < bd) { bd = d; target = f; } }
+    const ta = target ? Math.atan2(target.x - g.hx, -(target.y - g.hy)) : 0;
+    for (let i = 0; i < p.nt; i++) {
+      const rel = p.nt > 1 ? i / (p.nt - 1) - 0.5 : 0, a0 = g.sway + rel * 2.4, side = rel === 0 ? (i % 2 ? 1 : -1) : Math.sign(rel);
+      const wgt = target ? Math.max(0.15, 1 - Math.abs(angDiff(ta, a0)) / 1.6) : 0;
+      let x = g.hx, y = g.hy; const pts = [{ x, y }], segs = 9, sl = TL / segs;
+      for (let k = 1; k <= segs; k++) {
+        const s = k / segs;
+        let a = a0 + side * s * sp.curl * (1 - 0.6 * p.c) + Math.sin(t * 1.3 + i * 1.9 + s * 3.2 + p.ph) * 0.32 * s;
+        if (target) a += angDiff(ta, a) * Math.min(0.9, wgt * 0.9 * s);
+        x += Math.sin(a) * sl; y -= Math.cos(a) * sl;
+        if (y > floorY() - 1) y = floorY() - 1;
+        pts.push({ x, y });
+      }
+      lines.push(pts);
+    }
+    return lines;
+  }
+  function addFood(x, y, n = 3) {
+    for (let i = 0; i < n && food.length < 45; i++) food.push({ x: Math.max(6, Math.min(W - 6, x + rnd(-14, 14))), y: Math.max(8, Math.min(floorY() - 20, y + rnd(-8, 8))), vx: rnd(-20, 20), vy: rnd(5, 25), st: 'free', kick: rnd(0, 0.4), ph: rnd(0, 6), ty: rnd(H * 0.3, floorY() - 25) });
+    ensure();
+  }
+  function update(dt) {
+    if (Math.random() < dt * 0.5) bubbles.push({ x: W * 0.9 + rnd(-4, 4), y: floorY(), r: rnd(1.2, 2.8), s: rnd(18, 30) });
+    bubbles = bubbles.filter(b => (b.y -= b.s * dt, b.x += Math.sin(t * 3 + b.r * 9) * 0.25, b.y > -5));
+    for (const f of food) {
+      if (f.st === 'free') {
+        f.kick -= dt;
+        if (f.kick <= 0) { f.kick = rnd(0.25, 0.75); const a = rnd(0, 6.283); f.vx += Math.cos(a) * 42; f.vy += Math.sin(a) * 42; if (Math.random() < 0.15) f.ty = rnd(H * 0.3, floorY() - 25); }
+        const damp = Math.exp(-2.6 * dt); f.vx *= damp; f.vy *= damp; f.vy += ((f.ty ?? H * 0.5) - f.y) * 0.5 * dt;
+        f.x += f.vx * dt; f.y += f.vy * dt;
+        if (f.x < 4) { f.x = 4; f.vx = Math.abs(f.vx); } if (f.x > W - 4) { f.x = W - 4; f.vx = -Math.abs(f.vx); }
+        if (f.y < 6) { f.y = 6; f.vy = Math.abs(f.vy); } if (f.y > floorY() - 3) { f.y = floorY() - 3; f.vy = -Math.abs(f.vy); }
+      }
+    }
+    for (const p of polyps) {
+      if (p.drop) { p.drop.vy += 70 * dt; p.drop.y += p.drop.vy * dt; if (p.drop.y >= floorY()) { p.drop = null; save(); } }
+      if (Math.random() < dt / 150) p.pokeT = rnd(0.6, 1.2);
+      if (p.pokeT > 0) p.pokeT -= dt;
+      const target = p.pokeT > 0 ? 1 : 0;
+      p.c += (target - p.c) * Math.min(1, (target > p.c ? 9 : 0.45) * dt);
+      p.fed = Math.max(0, p.fed - dt / 40);
+      const g = geom(p);
+      p._g = g; p._t = tentacles(p, g);
+      if (p.c < 0.5) for (const line of p._t) for (let k = 3; k < line.length; k++) for (const f of food) if (f.st === 'free' && Math.abs(f.x - line[k].x) < 7 && Math.abs(f.y - line[k].y) < 7) { f.st = 'caught'; f.by = p; }
+      if (p.bud) {
+        p.bud.g += dt / 22;
+        if (p.bud.g >= 1 && polyps.length < 12) {
+          const b = qp(g, 0.42), nx = Math.max(0.04, Math.min(0.96, (b.x + p.bud.side * 26) / W));
+          const child = mk(nx, p.sp, p.len * rnd(0.8, 0.95)); child.drop = { y: b.y, vy: 0 }; child.c = 0.6;
+          polyps.push(child); p.bud = null; st.born++; save(); toast('A bud detached!');
+        } else if (p.bud.g >= 1) p.bud = null;
+      }
+    }
+    for (const f of food) if (f.st === 'caught') {
+      const g = f.by._g; if (!g) continue;
+      f.x += (g.hx - f.x) * Math.min(1, dt * 2.2); f.y += (g.hy - f.y) * Math.min(1, dt * 2.2);
+      if (Math.hypot(g.hx - f.x, g.hy - f.y) < 3) {
+        f.st = 'gone'; const p = f.by; p.fed = Math.min(2, p.fed + 1); p.feeds++; st.eaten++;
+        if (p.feeds >= 4 && !p.bud && polyps.length < 12) { p.bud = { g: 0, side: Math.random() < 0.5 ? -1 : 1 }; p.feeds -= 4; }
+        save();
+      }
+    }
+    food = food.filter(f => f.st !== 'gone');
+  }
+  function line(pts, w, col) { ctx.strokeStyle = col; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); for (let k = 1; k < pts.length - 1; k++) { const mx = (pts[k].x + pts[k + 1].x) / 2, my = (pts[k].y + pts[k + 1].y) / 2; ctx.quadraticCurveTo(pts[k].x, pts[k].y, mx, my); } const e = pts[pts.length - 1]; ctx.lineTo(e.x, e.y); ctx.stroke(); }
+  function draw() {
+    if (t > darkCheck) { darkCheck = t + 1; const bg = getComputedStyle(document.body).backgroundColor.match(/\d+/g) || [255]; dark = (+bg[0] + +(bg[1] || 0) + +(bg[2] || 0)) / 3 < 100; }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const gr = ctx.createLinearGradient(0, 0, 0, H);
+    gr.addColorStop(0, dark ? '#16343a' : '#e3f2f3'); gr.addColorStop(1, dark ? '#0c2125' : '#bcdde2');
+    ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = dark ? 'rgba(255,255,255,0.025)' : 'rgba(255,255,255,0.25)';
+    for (let i = 0; i < 3; i++) { const x0 = W * (0.15 + i * 0.3) + Math.sin(t * 0.2 + i) * 20; ctx.beginPath(); ctx.moveTo(x0, 0); ctx.lineTo(x0 + 30, 0); ctx.lineTo(x0 + 70, H); ctx.lineTo(x0 + 20, H); ctx.fill(); }
+    ctx.lineCap = 'round';
+    for (let i = 0; i < 4; i++) { const bx = 10 + i * 6, hh = 70 + i * 18; ctx.strokeStyle = dark ? '#2f5a35' : '#79ad6b'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(bx, floorY() + 2); ctx.quadraticCurveTo(bx + Math.sin(t * 0.7 + i) * 10, floorY() - hh / 2, bx + Math.sin(t * 0.6 + i * 2) * 14, floorY() - hh); ctx.stroke(); }
+    ctx.fillStyle = dark ? '#3a3426' : '#dccca5'; ctx.fillRect(0, floorY(), W, H - floorY());
+    for (const pb of pebbles) { ctx.fillStyle = dark ? 'rgba(0,0,0,.25)' : 'rgba(120,95,60,.28)'; ctx.beginPath(); ctx.ellipse(pb.x, pb.y, pb.r * 1.3, pb.r, pb.s, 0, 6.283); ctx.fill(); }
+    ctx.strokeStyle = dark ? 'rgba(200,240,255,.35)' : 'rgba(255,255,255,.9)'; ctx.lineWidth = 1;
+    for (const b of bubbles) { ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 6.283); ctx.stroke(); }
+    for (const p of polyps) {
+      const g = p._g || geom(p), sp = SP[p.sp], tl = p._t || tentacles(p, g);
+      ctx.lineCap = 'round';
+      if (p.bud) {
+        const b = qp(g, 0.42), a = g.sway + p.bud.side * 1.0, bl = p.len * 0.42 * p.bud.g;
+        const bx = b.x + Math.sin(a) * bl, by = b.y - Math.cos(a) * bl;
+        ctx.strokeStyle = sp.body; ctx.lineWidth = 2.5 + 2.5 * p.bud.g; ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(bx, by); ctx.stroke();
+        if (p.bud.g > 0.45) for (let i = 0; i < 4; i++) { const ta = a + (i / 3 - 0.5) * 2.2, tl2 = 12 * (p.bud.g - 0.45) * 1.8; ctx.strokeStyle = sp.tent; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx + Math.sin(ta) * tl2, by - Math.cos(ta) * tl2); ctx.stroke(); }
+      }
+      ctx.fillStyle = sp.dark; ctx.beginPath(); ctx.ellipse(g.fx, g.fy, 4 + p.c * 2, 2.2, 0, 0, 6.283); ctx.fill();
+      ctx.strokeStyle = sp.body; ctx.lineWidth = g.w * 0.62; ctx.beginPath(); ctx.moveTo(g.fx, g.fy); ctx.quadraticCurveTo(g.cx, g.cy, g.hx, g.hy); ctx.stroke();
+      const up = []; for (let k = 0; k <= 8; k++) up.push(qp(g, 0.35 + 0.65 * k / 8));
+      line(up, g.w, sp.body);
+      if (p.fed > 0.05) { const m = qp(g, 0.62); ctx.fillStyle = `rgba(222,120,50,${Math.min(0.75, p.fed * 0.5)})`; ctx.beginPath(); ctx.ellipse(m.x, m.y, g.w * 0.45 + p.fed * 1.6, g.w * 0.3 + p.fed * 1.4, g.sway, 0, 6.283); ctx.fill(); }
+      for (const tline of tl) line(tline, p.sp === 'oligactis' ? 1.1 : 1.4, sp.tent);
+      ctx.fillStyle = sp.dark; ctx.beginPath(); ctx.arc(g.hx, g.hy, g.w * 0.42, 0, 6.283); ctx.fill();
+    }
+    for (const f of food) {
+      const a = Math.atan2(f.vy, f.vx);
+      ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.st === 'caught' ? t * 4 : a);
+      ctx.fillStyle = '#e8843a'; ctx.beginPath(); ctx.ellipse(0, 0, 2.8, 1.8, 0, 0, 6.283); ctx.fill();
+      ctx.fillStyle = '#3b2412'; ctx.beginPath(); ctx.arc(2.1, 0, 0.7, 0, 6.283); ctx.fill();
+      ctx.strokeStyle = 'rgba(232,132,58,.8)'; ctx.lineWidth = 0.8; const fl = Math.sin(t * 18 + f.ph) * 1.2;
+      ctx.beginPath(); ctx.moveTo(1, -1); ctx.lineTo(2.5, -3.5 + fl); ctx.moveTo(1, 1); ctx.lineTo(2.5, 3.5 - fl); ctx.stroke();
+      ctx.restore();
+    }
+  }
+  function frame(ts) {
+    const dt = last ? Math.min(0.05, (ts - last) / 1000) : 0.016; last = ts; t += dt;
+    update(dt); draw();
+    raf = onScreen && !document.hidden ? requestAnimationFrame(frame) : 0;
+    if (!raf) last = 0;
+  }
+  function ensure() { if (!raf && onScreen && !document.hidden) raf = requestAnimationFrame(frame); }
+  cv.addEventListener('click', e => {
+    const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    for (const p of polyps) {
+      const g = p._g || geom(p);
+      for (let k = 0; k <= 10; k++) { const q = qp(g, k / 10); if (Math.hypot(q.x - x, q.y - y) < 11) { p.pokeT = rnd(1.2, 2); ensure(); return; } }
+    }
+    addFood(x, y, 3);
+  });
+  $('#hyFeed').onclick = () => { for (let i = 0; i < 3; i++) addFood(rnd(20, W - 20), rnd(10, 40), 2); };
+  $('#hyAdd').onclick = () => {
+    if (polyps.length >= 12) { toast('The tank is full'); return; }
+    const sp = SPK[polyps.length % SPK.length], p = mk(rnd(0.08, 0.92), sp); p.drop = { y: 10, vy: 0 }; p.c = 0.7;
+    polyps.push(p); save(); ensure(); toast('Added ' + SP[sp].name);
+  };
+  $('#hyReset').onclick = () => { if (!confirm('Reset the tank (polyps and counters)?')) return; store.set('hydraPolyps', null); st.eaten = 0; st.born = 0; food = []; load(); save(); ensure(); };
+  try { new IntersectionObserver(es => { onScreen = es[0].isIntersecting; ensure(); }).observe(cv); } catch {}
+  document.addEventListener('visibilitychange', ensure);
+  window.addEventListener('resize', () => { resize(); ensure(); });
+  load(); resize(); stats(); ensure();
+})();
+
+/* ---------- main loop ---------- */
+function updateTitle() {
+  if (P.st.running) { document.title = `${mmss(pRemaining(), false)} · ${POMO_LABEL[P.st.mode]}`; return; }
+  const ring = T.find(t => t.state === 'ringing'); if (ring) { document.title = `⏰ ${ring.label}`; return; }
+  const run = T.filter(t => t.state === 'running').sort((a, b) => a.endAt - b.endAt)[0];
+  document.title = run ? `${mmss(tRem(run))} · ${run.label}` : 'Tubeling';
+}
+function loop() { pTick(); tTick(); tzRender(false); updateTitle(); }
+setInterval(loop, 250);
+document.addEventListener('visibilitychange', loop);
+
+/* ---------- init ---------- */
+pRender(); tRender(); cRender(); uUpdate(); ccUpdate(); wUpdate(); rUpdate(); dUpdate(); sUpdate(); naUpdate();
+swRender(); txRender(); sqRender(); mmRows(); mmCompute(); mmPlate(); tpSyncInputs(); tpRender();
+setTab(store.get('tab', 'units'));
+loop();
+</script>
+</body>
+</html>
