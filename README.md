@@ -2,14 +2,13 @@
 
 # Tubeling
 
-A little lab helper. Just a collection of small tools I often need when doing benchwork, vibe-coded with Claude, no guarantees. 
-It has small tools for everyday bench work: timers, a counter, and calculators for units, concentrations, dilutions, centrifugation, nucleic acids, master mixes, sequences, text clean-up, time zones and experiment timepoints.
-I tried to keep it all-in-one, with no dependencies.
+A little lab helper, built with Claude, no guarantees. 
+It offers a bunch of small tools for everyday bench work: timers, a counter, and calculators for units, concentrations, dilutions, centrifugation, nucleic acids, master mixes, sequences, text clean-up, time zones and experiment timepoints.
 
 ## Usage
 
 Open it online at https://awesomecells.github.io/tubeling/, or download `tubeling.html` and open it in a web browser. 
-Settings are stored in the browser and should survive reloading the page, but probably not a restart. 
+Settings are stored in the browser and should survive reloading the page. 
 ## Tools
 
 Left column:
