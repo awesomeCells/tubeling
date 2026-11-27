@@ -29,6 +29,7 @@
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+[hidden]{display:none !important}
 header{max-width:1360px;margin:0 auto;padding:18px 20px 6px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 header h1{font-size:24px;font-weight:700;margin:0;letter-spacing:-.01em;font-family:"Helvetica Neue",Arial,sans-serif}
 .brand{display:flex;align-items:center;gap:8px;align-self:center}
@@ -98,6 +99,17 @@ details[open] summary{margin-bottom:10px}
 .timer{display:grid;grid-template-columns:1fr auto;gap:2px 8px;padding:9px 0;border-top:1px solid var(--line)}
 .timer:first-child{border-top:0}
 .timer .tl{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cc-sq{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;font-size:12px}
+.cc-sq span{background:var(--soft);border-radius:6px;padding:2px 7px;font-variant-numeric:tabular-nums}
+.cc-sq span.cur{background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--line)}
+.cc-scheme{display:flex;gap:14px;align-items:center;margin:8px 0;font-size:12px;color:var(--muted)}
+.cc-scheme svg{flex:none;width:132px;height:132px}
+.cc-scheme .g{stroke:var(--faint);fill:none}
+.cc-scheme .gl{stroke:var(--line);fill:none}
+.cc-scheme .hi{fill:var(--hl);fill-opacity:.28;stroke:var(--hl)}
+.timer .tl-in{font:inherit;font-size:13px;color:inherit;background:transparent;border:1px solid transparent;border-radius:4px;padding:1px 3px;margin:0 2px 0 -4px;width:auto;max-width:70%;min-width:0;box-shadow:none}
+.timer .tl-in:hover{border-color:var(--line)}
+.timer .tl-in:focus{border-color:var(--accent);background:var(--card);outline:none}
 .timer .tt{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
 .timer .tb{grid-column:1/-1;height:6px;background:var(--soft);border-radius:2px;overflow:hidden}
 .timer .tb i{display:block;height:100%;width:0;background:linear-gradient(var(--y) 0 33.3%,var(--o) 33.3% 66.6%,var(--r) 66.6%)}
@@ -131,19 +143,10 @@ details[open] summary{margin-bottom:10px}
 .f input{width:120px}
 .f input.w-s{width:80px}
 .f input.w-l{width:160px}
-.res{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px;margin-top:14px}
-.ri{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:copy;min-width:0}
-.ri:hover{border-color:var(--o)}
-.ri .rv{font-weight:600;font-variant-numeric:tabular-nums;flex-shrink:0}
-.ri .ru{color:var(--muted);font-size:12.5px;text-align:right}
-.ri.src{background:var(--accent-soft);border-color:transparent}
-.ri.na .rv{color:var(--faint);font-weight:400}
 .answer{margin-top:14px;padding:12px 14px;background:var(--accent-soft);border-radius:10px;font-size:15px}
 .answer b{font-variant-numeric:tabular-nums}
 .answer.bad{background:var(--warn-soft);color:var(--warn)}
 .answer .sub{font-size:12.5px;color:var(--muted);margin-top:4px}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-@media (max-width:1100px){.split{grid-template-columns:1fr}}
 .sec{border-top:1px solid var(--line);margin-top:20px;padding-top:4px}
 table.t{border-collapse:collapse;margin-top:12px;font-variant-numeric:tabular-nums;font-size:13px}
 table.t td,table.t th{padding:4px 12px 4px 0;text-align:left;border-bottom:1px solid var(--line)}
@@ -237,6 +240,7 @@ tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
 <header>
   <h1 class="brand"><svg viewBox="0 0 64 64" width="38" height="38" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9H50" stroke="currentColor" stroke-width="3.4"/><path d="M18 14H46V31L36 55Q32 61 28 55L18 31Z" stroke="currentColor" stroke-width="3"/><path d="M32 55C30 48 34 42 32 35" stroke="#d63a3a" stroke-width="5.5"/><path d="M32 34C26 30 22 32 21 37" stroke="#f0b72f" stroke-width="2.6"/><path d="M32 34C27 26 24 22 23 19" stroke="#ee7d2b" stroke-width="2.6"/><path d="M32 34C31 27 32 22 33 18" stroke="#d63a3a" stroke-width="2.6"/><path d="M32 34C37 26 40 22 41 19" stroke="#ee7d2b" stroke-width="2.6"/><path d="M32 34C38 30 42 32 43 37" stroke="#f0b72f" stroke-width="2.6"/><path d="M32 47C36 45 38 43 39 40" stroke="#ee7d2b" stroke-width="3.6"/></g><circle cx="32" cy="34" r="3.4" fill="currentColor"/></svg><span><span class="pale">Tube</span>ling</span></h1>
   <span class="spacer"></span>
+  <button class="ghost small" id="sndBtn" hidden style="color:var(--warn)" title="Browsers only play sound after a click on the page">🔇 Click to enable alarm sound</button>
   <button class="ghost small" id="wakeBtn" title="Keep the screen from sleeping while this page is open">Keep awake: off</button>
   <button class="ghost small" id="themeBtn" title="Switch colour theme">Theme: auto</button>
 </header>
@@ -288,7 +292,6 @@ tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
     </div>
     <div class="chips" style="margin-top:8px" id="tmPresets"></div>
     <div id="tmList" style="margin-top:8px"></div>
-    <div class="hint" id="tmEmpty">Run as many as you need; they survive a reload.</div>
   </section>
 
   <!-- STOPWATCH -->
@@ -318,17 +321,21 @@ tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
       <button class="small" id="cAdd">+ Add category</button>
       <span class="small muted" id="cTotal"></span>
     </div>
-    <details style="margin-top:12px">
-      <summary>Hemocytometer → cells/mL</summary>
+    <div class="row" style="margin-top:10px">
+      <label class="f" style="flex-direction:row;align-items:center;gap:6px"><span>Use for</span><select id="cMode" style="max-width:220px"></select></label>
+      <button class="ghost small" id="cInfo" title="Which squares to count" aria-expanded="false" hidden>?</button>
+    </div>
+    <div id="cCell" hidden>
+      <div class="cc-scheme" id="cScheme" hidden></div>
       <div class="fields">
-        <label class="f"><span>Total count</span><input id="hcCount" class="w-s" inputmode="decimal" placeholder="total"></label>
-        <label class="f"><span>Squares counted</span><input id="hcSq" class="w-s" inputmode="decimal" value="4"></label>
-        <label class="f"><span>Dilution factor</span><input id="hcDil" class="w-s" inputmode="decimal" value="2"></label>
+        <label class="f"><span>Dilution factor</span><input id="cDil" class="w-s" inputmode="decimal" title="e.g. 2 for 1:1 with trypan blue"></label>
+        <label class="f"><span>Squares to count</span><input id="cTarget" class="w-s" inputmode="numeric"></label>
+        <button class="primary small" id="cNext" style="margin-bottom:4px" title="Save this square and start the next one (Enter)">Next square</button>
       </div>
-      <div class="row" style="margin-top:8px"><button class="small" id="hcUse">Use counter total</button><label class="chk"><input type="checkbox" id="hcViab"> first row = live, second = dead</label></div>
-      <div class="answer" id="hcOut" style="font-size:14px"></div>
-      <div class="formula">cells/mL = (count ÷ squares) × dilution × 10⁴ &nbsp;(Neubauer large square = 0.1 µL)</div>
-    </details>
+      <div class="cc-sq" id="cSqList"></div>
+      <div class="answer" id="cRes" style="font-size:14px"></div>
+      <label class="chk" id="cViabRow" hidden><input type="checkbox" id="cViab"> first row = live, second = dead</label>
+    </div>
   </section>
 
   <!-- HYDRA TANK -->
@@ -340,7 +347,7 @@ tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
     <canvas id="tank" aria-label="Hydra fishbowl minigame"></canvas>
     <div class="row" style="justify-content:space-between;margin-top:8px">
       <span class="small muted" id="hyStats"></span>
-      <button class="small" id="hyFeed">Feed artemia</button>
+      <span class="row" style="gap:6px"><button class="small ghost" id="hyClean" title="Remove dead and uneaten shrimp">Clean tank</button><button class="small" id="hyFeed">Feed artemia</button></span>
     </div>
     <div class="hint">Click the water to feed, click a polyp to poke it.</div>
   </section>
@@ -349,45 +356,33 @@ tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
 <div class="col">
   <section class="card" id="tools">
     <div class="tabs" id="tabs">
-      <button data-tab="units">Units</button>
       <button data-tab="conc">Concentration</button>
-      <button data-tab="dil">Dilution</button>
       <button data-tab="cfg">Centrifuge</button>
-      <button data-tab="na">DNA / RNA</button>
       <button data-tab="mm">Master mix</button>
-      <button data-tab="seq">Sequence</button>
       <button data-tab="text">Text</button>
       <button data-tab="tz">Time zones</button>
       <button data-tab="tp">Timepoints</button>
     </div>
 
-    <!-- UNITS -->
-    <div class="pane" data-pane="units">
-      <div class="fields">
-        <label class="f"><span>Quantity</span><select id="uCat"></select></label>
-        <label class="f"><span>Value</span><input id="uVal" inputmode="decimal" value="1"></label>
-        <label class="f"><span>Unit</span><select id="uFrom"></select></label>
-      </div>
-      <div class="res" id="uOut"></div>
-    </div>
-
     <!-- CONCENTRATION -->
     <div class="pane" data-pane="conc">
-      <h3>Convert a concentration</h3>
       <div class="fields">
-        <label class="f"><span>Value</span><input id="ccVal" inputmode="decimal" value="1"></label>
-        <label class="f"><span>Unit</span><select id="ccUnit"></select></label>
+        <label class="f"><span>Compound</span><select id="ccPick" style="width:210px"></select></label>
         <label class="f"><span>MW (g/mol)</span><input id="ccMW" class="w-s" inputmode="decimal" placeholder="e.g. 58.44"></label>
-        <label class="f"><span>or pick a compound</span><select id="ccPick" style="width:190px"></select></label>
       </div>
-      <div class="res" id="ccOut"></div>
 
+      <div class="sec">
+        <h3>Convert</h3>
+        <div class="fields">
+          <label class="f"><span>Concentration</span><span class="in"><input id="ccVal" inputmode="decimal" value="1" class="w-s"><select id="ccUnit"></select></span></label>
+        </div>
+        <div class="answer" id="ccOut"></div>
+      </div>
       <div class="sec">
         <h3>How much do I weigh?</h3>
         <div class="fields">
           <label class="f"><span>Target concentration</span><span class="in"><input id="wC" inputmode="decimal" value="1" class="w-s"><select id="wCu"></select></span></label>
           <label class="f"><span>Final volume</span><span class="in"><input id="wV" inputmode="decimal" value="100" class="w-s"><select id="wVu"></select></span></label>
-          <span class="small muted" style="padding-bottom:8px">uses the MW above</span>
         </div>
         <div class="answer" id="wOut"></div>
       </div>
@@ -395,39 +390,11 @@ tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
         <h3>What concentration did I make?</h3>
         <div class="fields">
           <label class="f"><span>Mass dissolved</span><span class="in"><input id="rM" inputmode="decimal" class="w-s" placeholder="mass"><select id="rMu"></select></span></label>
-          <label class="f"><span>in volume</span><span class="in"><input id="rV" inputmode="decimal" class="w-s" placeholder="volume"><select id="rVu"></select></span></label>
+          <label class="f"><span>Final volume</span><span class="in"><input id="rV" inputmode="decimal" class="w-s" placeholder="volume"><select id="rVu"></select></span></label>
         </div>
         <div class="answer" id="rOut"></div>
       </div>
       <div class="hint">Hydrates differ: check the formula weight on your bottle.</div>
-    </div>
-
-    <!-- DILUTION -->
-    <div class="pane" data-pane="dil">
-      <h3>C₁V₁ = C₂V₂ <span class="muted" style="font-weight:400">· leave one field empty</span></h3>
-      <div class="fields">
-        <label class="f"><span>Stock conc. C₁</span><span class="in"><input id="dC1" inputmode="decimal" class="w-s" value="10"><select id="dC1u"></select></span></label>
-        <label class="f"><span>Stock volume V₁</span><span class="in"><input id="dV1" inputmode="decimal" class="w-s calc"><select id="dV1u"></select></span></label>
-      </div>
-      <div class="fields" style="margin-top:8px">
-        <label class="f"><span>Final conc. C₂</span><span class="in"><input id="dC2" inputmode="decimal" class="w-s" value="1"><select id="dC2u"></select></span></label>
-        <label class="f"><span>Final volume V₂</span><span class="in"><input id="dV2" inputmode="decimal" class="w-s" value="1"><select id="dV2u"></select></span></label>
-        <button class="small ghost" id="dClear" style="margin-bottom:4px">Clear</button>
-      </div>
-      <div class="answer" id="dOut"></div>
-
-      <div class="sec">
-        <h3>Serial dilution</h3>
-        <div class="fields">
-          <label class="f"><span>Start conc.</span><input id="sC" inputmode="decimal" class="w-s" value="100"></label>
-          <label class="f"><span>Unit (label)</span><input id="sU" class="w-s" value="µM"></label>
-          <label class="f"><span>Fold per step</span><input id="sF" inputmode="decimal" class="w-s" value="10"></label>
-          <label class="f"><span>Steps</span><input id="sN" inputmode="numeric" class="w-s" value="6"></label>
-          <label class="f"><span>Volume per tube</span><span class="in"><input id="sV" inputmode="decimal" class="w-s" value="100"><select id="sVu"></select></span></label>
-        </div>
-        <div class="answer" id="sOut"></div>
-        <div id="sTable"></div>
-      </div>
     </div>
 
     <!-- CENTRIFUGE -->
@@ -442,57 +409,6 @@ tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
       <div class="chips" style="margin-top:10px" id="cfPresets"></div>
       <div class="formula">RCF = 1.118 × 10⁻⁵ × r(cm) × rpm²</div>
       <div class="hint">Radius: rotor axis to tube bottom (r<sub>max</sub>, in the rotor manual).</div>
-    </div>
-
-    <!-- NUCLEIC ACIDS -->
-    <div class="pane" data-pane="na">
-      <div class="fields">
-        <label class="f"><span>Molecule</span><select id="naType">
-          <option value="ds">dsDNA</option><option value="ss">ssDNA / oligo</option><option value="rna">ssRNA</option></select></label>
-        <label class="f"><span>Length (bp / nt)</span><input id="naLen" inputmode="decimal" value="1000"></label>
-        <span class="small muted" style="padding-bottom:8px" id="naMW"></span>
-      </div>
-      <div class="split">
-        <div>
-          <h3 style="margin-top:18px">Mass ↔ moles ↔ copies</h3>
-          <div class="fields">
-            <label class="f"><span>Amount</span><input id="naAmt" inputmode="decimal" value="100"></label>
-            <label class="f"><span>Unit</span><select id="naAmtU"></select></label>
-          </div>
-          <div class="res" id="naAmtOut" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr))"></div>
-        </div>
-        <div>
-          <h3 style="margin-top:18px">Concentration</h3>
-          <div class="fields">
-            <label class="f"><span>Value</span><input id="naC" inputmode="decimal" value="50"></label>
-            <label class="f"><span>Unit</span><select id="naCu"></select></label>
-          </div>
-          <div class="res" id="naCOut" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr))"></div>
-        </div>
-      </div>
-      <div class="split">
-        <div class="sec">
-          <h3>Concentration from A260</h3>
-          <div class="fields">
-            <label class="f"><span>A260</span><input id="aA" inputmode="decimal" class="w-s" placeholder="0.25"></label>
-            <label class="f"><span>A280 (opt.)</span><input id="aB" inputmode="decimal" class="w-s"></label>
-            <label class="f"><span>Dilution ×</span><input id="aD" inputmode="decimal" class="w-s" value="1"></label>
-            <label class="f"><span>Factor</span><input id="aF" inputmode="decimal" class="w-s" title="µg/mL per A260 unit: dsDNA 50, ssDNA 33, RNA 40, oligo ~20–33"></label>
-          </div>
-          <div class="answer" id="aOut"></div>
-        </div>
-        <div class="sec">
-          <h3>Ligation insert amount</h3>
-          <div class="fields">
-            <label class="f"><span>Vector (bp)</span><input id="lVb" inputmode="decimal" class="w-s" value="3000"></label>
-            <label class="f"><span>Vector (ng)</span><input id="lVn" inputmode="decimal" class="w-s" value="50"></label>
-            <label class="f"><span>Insert (bp)</span><input id="lIb" inputmode="decimal" class="w-s" value="1000"></label>
-            <label class="f"><span>Insert : vector</span><input id="lR" inputmode="decimal" class="w-s" value="3"></label>
-          </div>
-          <div class="answer" id="lOut"></div>
-        </div>
-      </div>
-      <div class="formula">MW: dsDNA = bp×617.96+36.04 · ssDNA = nt×303.7+79.0 · ssRNA = nt×320.5+159.0 g/mol (Thermo/NEB formulas, average composition)</div>
     </div>
 
     <!-- MASTER MIX -->
@@ -523,7 +439,7 @@ tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
     <!-- TIMEPOINTS -->
     <div class="pane" data-pane="tp">
       <div class="fields">
-        <label class="f"><span>Cut / amputation</span><span class="in"><input type="date" id="tpDate"><input type="time" id="tpTime"></span></label>
+        <label class="f"><span>Cut / amputation</span><span class="in"><input type="date" id="tpDate"><input id="tpTime" inputmode="numeric" placeholder="HH:MM" maxlength="5" style="width:66px" title="24-hour time, e.g. 14:30"></span></label>
         <button class="small" id="tpNow" style="margin-bottom:4px">Now</button>
         <label class="f" style="flex:1 1 240px"><span>Sampling points (hours; 2d = 48 h)</span><input id="tpHours" style="width:100%"></label>
       </div>
@@ -544,36 +460,20 @@ tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
       </div>
     </div>
 
-    <!-- SEQUENCE -->
-    <div class="pane" data-pane="seq">
-      <textarea id="sqIn" rows="7" spellcheck="false" placeholder="Paste a sequence: raw, FASTA (several records OK) or GenBank-style with numbers. DNA, RNA or protein is detected automatically."></textarea>
-      <div class="row" style="margin-top:8px">
-        <label class="f" style="flex-direction:row;align-items:center;gap:6px"><span>Find motif</span><input id="sqMotif" placeholder="e.g. GAATTC, TATAWAW, N[^P][ST]" style="width:230px" title="DNA: IUPAC codes allowed (R, Y, N …), both strands searched. Protein: letters, X = any, or a regular expression."></label>
-        <span class="sp" style="flex:1"></span>
-        <button class="small" id="sqExample">Example</button>
-        <button class="small ghost" id="sqClear">Clear</button>
-      </div>
-      <div id="sqOut"></div>
-    </div>
-
     <!-- TEXT -->
     <div class="pane" data-pane="text">
       <textarea id="txIn" rows="9" spellcheck="false" placeholder="Paste or type text here. Counts update as you type; the buttons below edit the text in place (Undo goes back one step)."></textarea>
       <div class="stats" id="txStats"></div>
       <div class="small muted" style="margin:10px 0 4px">Clean up</div>
       <div class="ops" id="txOps">
-        <button data-op="join">Join lines (space)</button>
-        <button data-op="nobr">Remove line breaks</button>
-        <button data-op="nows">Remove all whitespace</button>
-        <button data-op="nonum">Remove numbers + whitespace</button>
-        <button data-op="collapse">Collapse spaces / trim</button>
+        <button data-op="join" title="All lines into one, separated by spaces">Join lines</button>
+        <button data-op="nows" title="Remove spaces, tabs and line breaks (e.g. for a sequence)">Remove all whitespace</button>
         <button data-op="noempty">Remove empty lines</button>
-        <button data-op="fasta1">FASTA: one line per sequence</button>
-        <button data-op="wrap60">FASTA: wrap at 60</button>
+        <button data-op="uniq">Unique lines</button>
         <button data-op="upper">UPPER</button>
         <button data-op="lower">lower</button>
-        <button data-op="sort">Sort lines</button>
-        <button data-op="uniq">Unique lines</button>
+        <button data-op="fasta1">FASTA: one line per sequence</button>
+        <button data-op="wrap60">FASTA: wrap at 60</button>
       </div>
       <div class="row" style="margin-top:12px">
         <button class="primary small" id="txCopy">Copy text</button>
@@ -588,7 +488,7 @@ tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
       <div class="tz-ctrl">
         <label class="f"><span>Reference zone</span><select id="tzRef" style="width:200px"></select></label>
         <label class="f"><span>Date</span><input type="date" id="tzDate"></label>
-        <label class="f"><span>Time</span><input type="time" id="tzTime"></label>
+        <label class="f"><span>Time</span><input id="tzTime" inputmode="numeric" placeholder="HH:MM" maxlength="5" style="width:66px" title="24-hour time, e.g. 14:30"></label>
         <button id="tzNow" style="margin-bottom:1px">Now</button>
         <span class="sp" style="flex:1"></span>
         <button class="ghost small" id="tzCopy" title="Copy all times as text" style="margin-bottom:4px">Copy as text</button>
@@ -639,45 +539,19 @@ function parseDur(s) { // -> ms
   return rest.trim() === '' && total > 0 ? total * 1000 : NaN;
 }
 
-/* ---- units ---- */
-const lin = (u, f) => ({ u, f });
-const UNITS = {
-  Mass: [lin('kg', 1e3), lin('g', 1), lin('mg', 1e-3), lin('µg', 1e-6), lin('ng', 1e-9), lin('pg', 1e-12), lin('lb', 453.59237), lin('oz', 28.349523125)],
-  Volume: [lin('L', 1), lin('mL', 1e-3), lin('µL', 1e-6), lin('nL', 1e-9), lin('m³', 1e3), lin('cm³ (cc)', 1e-3), lin('mm³', 1e-6), lin('gal (US)', 3.785411784), lin('fl oz (US)', 0.0295735295625)],
-  Length: [lin('km', 1e3), lin('m', 1), lin('cm', 1e-2), lin('mm', 1e-3), lin('µm', 1e-6), lin('nm', 1e-9), lin('Å', 1e-10), lin('in', 0.0254), lin('ft', 0.3048)],
-  Temperature: [
-    { u: '°C', to: x => x, from: x => x },
-    { u: '°F', to: x => (x - 32) * 5 / 9, from: x => x * 9 / 5 + 32 },
-    { u: 'K', to: x => x - 273.15, from: x => x + 273.15 }],
-  Time: [lin('ms', 1e-3), lin('s', 1), lin('min', 60), lin('h', 3600), lin('day', 86400), lin('week', 604800), lin('year (365.25 d)', 31557600)],
-  Pressure: [lin('Pa', 1), lin('kPa', 1e3), lin('MPa', 1e6), lin('bar', 1e5), lin('mbar', 100), lin('atm', 101325), lin('psi', 6894.757293168), lin('mmHg', 133.322387415), lin('Torr', 101325 / 760)],
-  'Amount (mol)': [lin('mol', 1), lin('mmol', 1e-3), lin('µmol', 1e-6), lin('nmol', 1e-9), lin('pmol', 1e-12), lin('fmol', 1e-15), lin('molecules', 1 / AVOGADRO)],
-  Radioactivity: [lin('Ci', 3.7e10), lin('mCi', 3.7e7), lin('µCi', 3.7e4), lin('Bq', 1), lin('kBq', 1e3), lin('MBq', 1e6), lin('GBq', 1e9), lin('dpm', 1 / 60)],
-  Energy: [lin('J', 1), lin('kJ', 1e3), lin('cal', 4.184), lin('kcal', 4184), lin('eV', 1.602176634e-19), lin('Wh', 3600)],
-  Area: [lin('m²', 1), lin('cm²', 1e-4), lin('mm²', 1e-6), lin('µm²', 1e-12), lin('in²', 0.00064516)],
-  'Light (wavelength ↔ energy)': [
-    { u: 'nm', to: x => x, from: x => x },
-    { u: 'eV', to: x => 1239.841984 / x, from: x => 1239.841984 / x },
-    { u: 'THz', to: x => 299792.458 / x, from: x => 299792.458 / x },
-    { u: 'cm⁻¹', to: x => 1e7 / x, from: x => 1e7 / x }]
-};
-const toBase = (d, x) => d.to ? d.to(x) : x * d.f;
-const fromBase = (d, x) => d.from ? d.from(x) : x / d.f;
-function convertUnit(cat, x, from) {
-  const list = UNITS[cat], src = list.find(d => d.u === from), b = toBase(src, x);
-  return Object.fromEntries(list.map(d => [d.u, fromBase(d, b)]));
+// 24-hour clock time typed by a person: "14:30", "1430", "9", "9.05", "09:05" -> {h, mi}, or null
+function parseClock(str) {
+  const t = String(str || '').trim().replace(/[.h ]/, ':');
+  const m = t.match(/^(\d{1,2})(?::?(\d{2}))?$/);
+  if (!m) return null;
+  const h = +m[1], mi = m[2] ? +m[2] : 0;
+  return h <= 23 && mi <= 59 ? { h, mi } : null;
 }
 
 /* ---- concentration ---- */
 const CONC = [
-  { u: 'M', k: 'mol', f: 1 }, { u: 'mM', k: 'mol', f: 1e-3 }, { u: 'µM', k: 'mol', f: 1e-6 }, { u: 'nM', k: 'mol', f: 1e-9 }, { u: 'pM', k: 'mol', f: 1e-12 },
-  { u: 'g/L', k: 'g', f: 1 }, { u: 'mg/mL', k: 'g', f: 1 }, { u: 'µg/µL', k: 'g', f: 1 },
-  { u: 'mg/L', k: 'g', f: 1e-3 }, { u: 'µg/mL', k: 'g', f: 1e-3 }, { u: 'ng/µL', k: 'g', f: 1e-3 },
-  { u: 'ng/mL', k: 'g', f: 1e-6 }, { u: 'pg/mL', k: 'g', f: 1e-9 }, { u: '% (w/v)', k: 'g', f: 10 }
-];
-const CONC_OUT = [
-  { u: 'M', k: 'mol', f: 1 }, { u: 'mM', k: 'mol', f: 1e-3 }, { u: 'µM', k: 'mol', f: 1e-6 }, { u: 'nM', k: 'mol', f: 1e-9 }, { u: 'pM', k: 'mol', f: 1e-12 },
-  { u: 'g/L = mg/mL', k: 'g', f: 1 }, { u: 'µg/mL = ng/µL', k: 'g', f: 1e-3 }, { u: 'ng/mL', k: 'g', f: 1e-6 }, { u: 'pg/mL', k: 'g', f: 1e-9 }, { u: '% (w/v)', k: 'g', f: 10 }
+  { u: 'M', k: 'mol', f: 1 }, { u: 'mM', k: 'mol', f: 1e-3 }, { u: 'µM', k: 'mol', f: 1e-6 }, { u: 'nM', k: 'mol', f: 1e-9 },
+  { u: 'mg/mL', k: 'g', f: 1 }, { u: 'µg/mL', k: 'g', f: 1e-3 }, { u: 'ng/mL', k: 'g', f: 1e-6 }, { u: '% (w/v)', k: 'g', f: 10 }
 ];
 // Formula weights (g/mol) of common reagents, for the form named. Values: PubChem / supplier labels.
 const REAGENTS = [
@@ -694,193 +568,56 @@ function concToBase(x, unit, mw) { // -> {mol: mol/L, g: g/L}; one of them NaN w
   if (c.k === 'mol') { const mol = x * c.f; return { mol, g: mol * mw }; }
   const g = x * c.f; return { g, mol: g / mw };
 }
-function convertConc(x, unit, mw) {
-  const b = concToBase(x, unit, mw > 0 ? mw : NaN);
-  return Object.fromEntries(CONC_OUT.map(d => [d.u, (d.k === 'mol' ? b.mol : b.g) / d.f]));
+// the other kind of concentration: molar in -> mass/volume out, mass/volume (or %) in -> molar out
+function concPartner(x, unit, mw) {
+  const c = CONC.find(d => d.u === unit), b = concToBase(x, unit, mw > 0 ? mw : NaN);
+  return c.k === 'mol' ? { kind: 'g', gL: b.g } : { kind: 'mol', M: b.mol };
 }
 const massToWeigh = (x, unit, volL, mw) => concToBase(x, unit, mw > 0 ? mw : NaN).g * volL; // g
 function concFromMass(g, volL, mw) { const gL = g / volL; return { gL, M: mw > 0 ? gL / mw : NaN, pct: gL / 10 }; }
-
-/* ---- dilution ---- */
-// C1V1 = C2V2. Pass base-unit numbers; exactly one of the four must be null/NaN.
-function solveDilution(v) {
-  const keys = ['C1', 'V1', 'C2', 'V2'], miss = keys.filter(k => v[k] == null || Number.isNaN(v[k]));
-  if (miss.length !== 1) return { error: 'one-blank' };
-  const { C1, V1, C2, V2 } = v, k = miss[0];
-  const r = k === 'V1' ? C2 * V2 / C1 : k === 'V2' ? C1 * V1 / C2 : k === 'C1' ? C2 * V2 / V1 : C1 * V1 / V2;
-  if (!isFinite(r) || r <= 0) return { error: 'invalid' };
-  const out = Object.assign({}, v, { [k]: r });
-  if (out.C2 > out.C1 * (1 + 1e-9)) return { error: 'concentrate', key: k, value: r };
-  return { key: k, value: r, diluent: out.V2 - out.V1, fold: out.C1 / out.C2, all: out };
+// What to actually weigh. Masses below minG can't be weighed accurately, so instead weigh minG and either make
+// more of the same solution (fold 1, up to maxSameL) or a 10×/100×/… stock (up to maxStockL) that is diluted
+// later. A single dilution step needs at least minPipL of stock per final volume, otherwise the stock
+// is diluted serially (steps of up to 100×).
+const WEIGH = { minG: 0.01, maxSameL: 0.25, maxStockL: 0.05, minPipL: 2e-6 };
+function weighPlan(gL, volL, o = WEIGH) {
+  const m = gL * volL;
+  if (!(m > 0)) return null;
+  if (m >= o.minG) return { direct: true, mass: m };
+  for (let e = 0; e <= 12; e++) {
+    const fold = 10 ** e, stockL = o.minG / (gL * fold);
+    if (stockL > (fold === 1 ? o.maxSameL : o.maxStockL)) continue;
+    const pipL = volL / fold, steps = [];
+    if (pipL < o.minPipL) for (let left = fold; left > 1; left /= Math.min(100, left)) steps.push(Math.min(100, left));
+    return { direct: false, mass: o.minG, fold, stockL, stockGL: gL * fold, pipL, needG: m, serial: steps.length ? steps : null };
+  }
+  return null;
 }
-function serialDilution(c0, F, N, V) { // V = final volume per tube
-  const transfer = V / F, diluent = V - transfer, rows = [];
-  for (let i = 0; i <= N; i++) rows.push({ i, conc: c0 / F ** i, fold: F ** i });
-  return { transfer, diluent, rows };
+
+/* ---- cell counting chambers ---- */
+// volume of one counted square; perMl = 1 / volume in mL. Neubauer improved: 0.1 mm deep, large squares 1 mm²,
+// the 25 squares of the centre square 0.2 × 0.2 mm. Fuchs-Rosenthal: 0.2 mm deep, 16 squares of 1 mm².
+const CHAMBERS = {
+  neubauer: { name: 'Neubauer improved', sq: 'large square (1 × 1 mm)', volUl: 0.1, def: 4, how: '4 corner squares' },
+  neubauerSmall: { name: 'Neubauer improved, small squares', sq: 'centre small square (0.2 × 0.2 mm)', volUl: 0.004, def: 5, how: '4 corner + centre small squares of the centre square' },
+  fuchs: { name: 'Fuchs-Rosenthal', sq: 'large square (1 × 1 mm)', volUl: 0.2, def: 16, how: 'all 16 squares' }
+};
+// counts: cells per square. Returns cells/mL with the spread between squares and the Poisson (counting) error.
+function cellCount(counts, chamber, dil = 1) {
+  const ch = CHAMBERS[chamber], n = counts.length;
+  if (!ch || !n || !(dil > 0)) return null;
+  const total = counts.reduce((a, b) => a + b, 0), mean = total / n;
+  const sd = n > 1 ? Math.sqrt(counts.reduce((a, b) => a + (b - mean) ** 2, 0) / (n - 1)) : NaN;
+  const k = dil * 1000 / ch.volUl; // cells per mL for 1 cell per square
+  const perMl = mean * k, poissonCv = total ? 1 / Math.sqrt(total) : NaN;
+  return { n, total, mean, sd, cv: mean ? sd / mean : NaN, perMl, sdMl: sd * k, semMl: sd * k / Math.sqrt(n), poissonCv,
+    lo: total ? Math.max(0, total - 1.96 * Math.sqrt(total)) / n * k : 0, hi: (total + 1.96 * Math.sqrt(Math.max(total, 1))) / n * k, volUl: n * ch.volUl };
 }
 
 /* ---- centrifuge ---- */
 const RCF_K = 1.118e-5;
 const rcfFromRpm = (rCm, rpm) => RCF_K * rCm * rpm * rpm;
 const rpmFromRcf = (rCm, g) => Math.sqrt(g / (RCF_K * rCm));
-
-/* ---- nucleic acids ---- */
-const NA = { // average MW formulas (Thermo Fisher / NEB)
-  ds: { mw: n => n * 617.96 + 36.04, a260: 50, unit: 'bp' },
-  ss: { mw: n => n * 303.7 + 79.0, a260: 33, unit: 'nt' },
-  rna: { mw: n => n * 320.5 + 159.0, a260: 40, unit: 'nt' }
-};
-const naMW = (type, len) => len > 0 ? NA[type].mw(len) : NaN;
-const a260Conc = (A, factor, dil = 1) => A * factor * dil; // ng/µL
-const ligationInsertNg = (vecBp, vecNg, insBp, ratio) => ratio * vecNg * insBp / vecBp;
-
-/* ---- sequence analysis ---- */
-const IUPAC = { A: 'A', C: 'C', G: 'G', T: 'T', U: 'T', R: '[AG]', Y: '[CT]', S: '[GC]', W: '[AT]', K: '[GT]', M: '[AC]', B: '[CGT]', D: '[AGT]', H: '[ACT]', V: '[ACG]', N: '[ACGTN]' };
-const COMP = { A: 'T', T: 'A', U: 'A', G: 'C', C: 'G', R: 'Y', Y: 'R', S: 'S', W: 'W', K: 'M', M: 'K', B: 'V', V: 'B', D: 'H', H: 'D', N: 'N' };
-const CODE = 'FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG'; // standard code, TCAG order
-const ENZYMES = [
-  ['AatII', 'GACGTC'], ['AflII', 'CTTAAG'], ['AgeI', 'ACCGGT'], ['ApaI', 'GGGCCC'], ['AscI', 'GGCGCGCC'], ['BamHI', 'GGATCC'], ['BglII', 'AGATCT'],
-  ['BsaI', 'GGTCTC'], ['BsmBI', 'CGTCTC'], ['ClaI', 'ATCGAT'], ['EcoRI', 'GAATTC'], ['EcoRV', 'GATATC'], ['HindIII', 'AAGCTT'], ['HpaI', 'GTTAAC'],
-  ['KpnI', 'GGTACC'], ['MluI', 'ACGCGT'], ['NcoI', 'CCATGG'], ['NdeI', 'CATATG'], ['NheI', 'GCTAGC'], ['NotI', 'GCGGCCGC'], ['NsiI', 'ATGCAT'],
-  ['PacI', 'TTAATTAA'], ['PstI', 'CTGCAG'], ['SacI', 'GAGCTC'], ['SalI', 'GTCGAC'], ['SapI', 'GCTCTTC'], ['SmaI', 'CCCGGG'], ['SpeI', 'ACTAGT'],
-  ['SphI', 'GCATGC'], ['XbaI', 'TCTAGA'], ['XhoI', 'CTCGAG']
-];
-const AA_MASS = { A: 71.0788, R: 156.1875, N: 114.1038, D: 115.0886, C: 103.1388, E: 129.1155, Q: 128.1307, G: 57.0519, H: 137.1411, I: 113.1594, L: 113.1594, K: 128.1741, M: 131.1926, F: 147.1766, P: 97.1167, S: 87.0782, T: 101.1051, W: 186.2132, Y: 163.1760, V: 99.1326, U: 150.0388, O: 237.3018 };
-const KD = { A: 1.8, R: -4.5, N: -3.5, D: -3.5, C: 2.5, Q: -3.5, E: -3.5, G: -0.4, H: -3.2, I: 4.5, L: 3.8, K: -3.9, M: 1.9, F: 2.8, P: -1.6, S: -0.8, T: -0.7, W: -0.9, Y: -1.3, V: 4.2 };
-// Bjellqvist pKa set as in ExPASy Compute pI: N-terminal pKa depends on the first residue, C-terminal pKa is
-// 3.55 for every residue (D/E-specific C-terminal values used elsewhere do not reproduce ExPASy).
-const PKA = { Nt: 7.5, Ct: 3.55, K: 10.0, R: 12.0, H: 5.98, D: 4.05, E: 4.45, C: 9.0, Y: 10.0 };
-const PKA_NT = { A: 7.59, M: 7.0, S: 6.93, P: 8.36, T: 6.82, V: 7.44, E: 7.7 };
-
-function parseSeqInput(text) {
-  text = String(text || '').replace(/\r/g, '');
-  if (/^ORIGIN/m.test(text)) { // GenBank flat file
-    const name = (text.match(/^LOCUS\s+(\S+)/m) || [])[1] || 'GenBank record';
-    const body = text.split(/^ORIGIN.*$/m)[1].split(/^\/\//m)[0];
-    return [cleanRec(name, body)];
-  }
-  const recs = []; let cur = null;
-  for (const line of text.split('\n')) {
-    if (line.startsWith('>')) { cur = { name: line.slice(1).trim() || '(no name)', raw: '' }; recs.push(cur); }
-    else if (line.startsWith(';')) continue;
-    else { if (!cur) { if (!line.trim()) continue; cur = { name: 'sequence', raw: '' }; recs.push(cur); } cur.raw += line + '\n'; }
-  }
-  return recs.map(r => cleanRec(r.name, r.raw));
-}
-function cleanRec(name, raw) {
-  const up = raw.toUpperCase(), noWs = up.replace(/[\s\d]/g, ''), seq = noWs.replace(/[-.]/g, '');
-  return { name, seq, gaps: noWs.length - seq.length };
-}
-function classify(seq) {
-  if (!seq) return { type: 'empty' };
-  const strict = (seq.match(/[ACGTUN]/g) || []).length / seq.length;
-  if (/^[ACGTURYSWKMBDHVN]+$/.test(seq) && strict >= 0.75) {
-    const U = seq.includes('U'), T = seq.includes('T');
-    return { type: U && !T ? 'RNA' : 'DNA', mixedTU: U && T };
-  }
-  if (/^[ACDEFGHIKLMNPQRSTVWYBZXJUO*]+$/.test(seq)) return { type: 'protein' };
-  return { type: 'invalid', bad: [...new Set(seq.replace(/[ACDEFGHIKLMNPQRSTVWYBZXJUO*]/g, ''))].join('') };
-}
-const toDna = s => s.replace(/U/g, 'T');
-function revcomp(seq, rna = false) {
-  let out = '';
-  for (let i = seq.length - 1; i >= 0; i--) out += COMP[seq[i]] || 'N';
-  return rna ? out.replace(/T/g, 'U') : out;
-}
-function ntStats(seq) {
-  const s = toDna(seq), c = { A: 0, C: 0, G: 0, T: 0 }; let amb = 0;
-  for (const ch of s) if (ch in c) c[ch]++; else amb++;
-  const acgt = c.A + c.C + c.G + c.T;
-  let run = 0, best = 0, bestCh = '', prev = '';
-  for (const ch of s) { run = ch === prev ? run + 1 : 1; prev = ch; if (run > best) { best = run; bestCh = ch; } }
-  const cpg = (s.match(/CG/g) || []).length;
-  return { len: s.length, counts: c, ambiguous: amb, gc: acgt ? (c.G + c.C) / acgt * 100 : NaN, cpg, cpgOE: c.C && c.G ? cpg * s.length / (c.C * c.G) : NaN, homopolymer: { base: bestCh, len: best } };
-}
-function tmBasic(seq) { // simple Tm (°C); no salt / nearest-neighbour correction
-  const s = toDna(seq), gc = (s.match(/[GC]/g) || []).length, at = (s.match(/[AT]/g) || []).length, n = gc + at;
-  if (!n) return NaN;
-  return n < 14 ? 2 * at + 4 * gc : 64.9 + 41 * (gc - 16.4) / n;
-}
-function oligoMW(seq, rna = false) { // Thermo Fisher formulas; DNA without 5' phosphate, RNA with 5' triphosphate
-  const k = ch => (seq.match(new RegExp(ch, 'g')) || []).length;
-  return rna ? k('A') * 329.21 + k('U') * 306.17 + k('C') * 305.18 + k('G') * 345.21 + 159.0
-             : k('A') * 313.21 + k('T') * 304.2 + k('C') * 289.18 + k('G') * 329.21 - 61.96;
-}
-function translate(nt, frame = 0) {
-  const s = toDna(nt), idx = { T: 0, C: 1, A: 2, G: 3 }; let p = '';
-  for (let i = frame; i + 3 <= s.length; i += 3) {
-    const a = idx[s[i]], b = idx[s[i + 1]], c = idx[s[i + 2]];
-    p += a == null || b == null || c == null ? 'X' : CODE[16 * a + 4 * b + c];
-  }
-  return p;
-}
-function findOrfs(nt, minAa = 30) { // ATG..stop, longest per start region, both strands; coords 1-based on the given strand's forward sequence
-  const s = toDna(nt), L = s.length, rc = revcomp(s), out = [];
-  for (const [strand, seq] of [['+', s], ['−', rc]]) for (let f = 0; f < 3; f++) {
-    const aa = translate(seq, f); let start = -1;
-    for (let i = 0; i <= aa.length; i++) {
-      if (start < 0 && aa[i] === 'M') start = i;
-      if (start >= 0 && (aa[i] === '*' || i === aa.length)) {
-        const complete = aa[i] === '*', len = i - start;
-        if (len >= minAa) {
-          const a = f + start * 3, b = f + i * 3 + (complete ? 3 : 0); // [a,b) on this strand
-          out.push({ strand, frame: f + 1, start: strand === '+' ? a + 1 : L - b + 1, end: strand === '+' ? b : L - a, aaLen: len, complete, protein: aa.slice(start, i) });
-        }
-        start = -1;
-      }
-    }
-  }
-  return out.sort((x, y) => y.aaLen - x.aaLen);
-}
-function motifRegex(pattern, isNt) {
-  pattern = String(pattern).trim();
-  if (!pattern) return null;
-  const up = pattern.toUpperCase();
-  if (isNt && /^[ACGTURYSWKMBDHVN]+$/.test(up)) return { re: up.split('').map(c => IUPAC[c]).join(''), iupac: toDna(up) };
-  if (!isNt && /^[A-Z*]+$/.test(up)) return { re: up.replace(/X/g, '.').replace(/\*/g, '\\*') };
-  // free regular expression: keep escapes like \w \d intact, match case-insensitively; on DNA/RNA an
-  // unescaped U means T (sequences are searched in their T form)
-  const re = isNt ? pattern.replace(/(\\.)|[Uu]/g, (m, esc) => esc || 'T') : pattern;
-  try { new RegExp(re, 'i'); return { re, flags: 'i' }; } catch { return { error: 'Not a valid pattern' }; }
-}
-function findMotif(seq, pattern, isNt, max = 2000) {
-  const m = motifRegex(pattern, isNt); if (!m || m.error) return m;
-  const s = isNt ? toDna(seq) : seq, hits = [];
-  const scan = (str, strand) => {
-    const re = new RegExp('(?=(' + m.re + '))', 'g' + (m.flags || '')); let x;
-    while ((x = re.exec(str)) && hits.length < max) {
-      const len = x[1].length || 1;
-      hits.push({ strand, pos: strand === '+' ? x.index + 1 : str.length - x.index - len + 1, match: x[1] });
-      re.lastIndex = x.index + 1;
-    }
-  };
-  scan(s, '+');
-  if (isNt && !(m.iupac && revcomp(m.iupac) === m.iupac)) scan(revcomp(s), '−');
-  return { hits: hits.sort((a, b) => a.pos - b.pos), capped: hits.length >= max };
-}
-function restrictionSites(seq) {
-  const s = toDna(seq);
-  return ENZYMES.map(([name, site]) => {
-    const r = findMotif(s, site, true); return { name, site, n: r.hits.length, pos: r.hits.map(h => h.pos) };
-  });
-}
-function proteinStats(seq) {
-  const p = seq.replace(/\*+$/, ''), c = {};
-  for (const ch of p) c[ch] = (c[ch] || 0) + 1;
-  let mw = 18.01528, unk = 0, kd = 0, kdn = 0;
-  for (const ch of p) { if (ch === '*') continue; if (AA_MASS[ch]) mw += AA_MASS[ch]; else { mw += 110; unk++; } if (KD[ch] != null) { kd += KD[ch]; kdn++; } }
-  const n = ch => c[ch] || 0;
-  const charge = pH => {
-    const pos = (pk, k) => k / (1 + 10 ** (pH - pk)), neg = (pk, k) => k / (1 + 10 ** (pk - pH));
-    return pos(PKA_NT[p[0]] ?? PKA.Nt, 1) + pos(PKA.K, n('K')) + pos(PKA.R, n('R')) + pos(PKA.H, n('H'))
-      - neg(PKA.Ct, 1) - neg(PKA.D, n('D')) - neg(PKA.E, n('E')) - neg(PKA.C, n('C')) - neg(PKA.Y, n('Y'));
-  };
-  let lo = 0, hi = 14;
-  for (let i = 0; i < 60; i++) { const m = (lo + hi) / 2; if (charge(m) > 0) lo = m; else hi = m; }
-  const epsRed = n('W') * 5500 + n('Y') * 1490, epsOx = epsRed + Math.floor(n('C') / 2) * 125;
-  const glyc = (p.match(/(?=N[^P][ST][^P])/g) || []).length;
-  return { len: p.length, mw, pI: (lo + hi) / 2, charge7: charge(7), epsOx, epsRed, abs01: epsOx / mw, gravy: kdn ? kd / kdn : NaN, counts: c, unknown: unk, internalStops: (p.match(/\*/g) || []).length, nGlyc: glyc, startsM: p[0] === 'M' };
-}
 
 /* ---- text ---- */
 function textStats(t) {
@@ -900,16 +637,12 @@ function fastaMap(t, fn) { // apply fn to the sequence part of each FASTA record
 }
 const TEXT_OPS = {
   join: t => t.split(/\r?\n/).map(l => l.trim()).filter(Boolean).join(' '),
-  nobr: t => t.replace(/\r?\n/g, ''),
   nows: t => t.replace(/\s+/g, ''),
-  nonum: t => /^>/m.test(t) ? fastaMap(t, x => x.replace(/\d+/g, '')) : t.replace(/[\s\d]+/g, ''),
-  collapse: t => t.split(/\r?\n/).map(l => l.replace(/[ \t ]+/g, ' ').trim()).join('\n'),
   noempty: t => t.split(/\r?\n/).filter(l => l.trim()).join('\n'),
   fasta1: t => fastaMap(t, s => s),
   wrap60: t => fastaMap(t, s => s.match(/.{1,60}/g)?.join('\n') || ''),
   upper: t => t.toUpperCase(),
   lower: t => t.toLowerCase(),
-  sort: t => t.split(/\r?\n/).sort((a, b) => a.localeCompare(b, undefined, { numeric: true })).join('\n'),
   uniq: t => [...new Set(t.split(/\r?\n/))].join('\n')
 };
 
@@ -1008,17 +741,15 @@ function masterMix({ n, extra = 0, overagePct = 10, rxnVol, templateVol = 0, com
   return { nEff, rows, mixPer, mixTotal: mixPer * nEff, templateVol, warnings };
 }
 
-return { AVOGADRO, num, parseDur, UNITS, toBase, fromBase, convertUnit, CONC, CONC_OUT, REAGENTS, concToBase, convertConc, massToWeigh, concFromMass,
-  solveDilution, serialDilution, RCF_K, rcfFromRpm, rpmFromRcf, NA, naMW, a260Conc, ligationInsertNg,
-  IUPAC, ENZYMES, parseSeqInput, classify, revcomp, ntStats, tmBasic, oligoMW, translate, findOrfs, findMotif, restrictionSites, proteinStats,
-  textStats, TEXT_OPS, parts, offsetMin, zonedToUtc, isDst, nextChange, tzLabel, parseHours, planTimepoints, suggestCuts, tpScore, masterMix };
+return { AVOGADRO, num, parseDur, parseClock, CONC, REAGENTS, concToBase, concPartner, massToWeigh, weighPlan, concFromMass,
+  RCF_K, rcfFromRpm, rpmFromRcf, CHAMBERS, cellCount, textStats, TEXT_OPS, parts, offsetMin, zonedToUtc, isDst, nextChange, tzLabel, parseHours, planTimepoints, suggestCuts, tpScore, masterMix };
 })();
 if (typeof module !== 'undefined') module.exports = LabCore;
 </script>
 
 <script>
 "use strict";
-const { num, parseDur, UNITS, toBase, fromBase, CONC, CONC_OUT, REAGENTS, concToBase, NA, parts, offsetMin, zonedToUtc, isDst, nextChange, tzLabel } = LabCore;
+const { num, parseDur, parseClock, CONC, REAGENTS, concToBase, parts, offsetMin, zonedToUtc, isDst, nextChange, tzLabel } = LabCore;
 /* ---------- helpers ---------- */
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -1084,13 +815,16 @@ function persistInputs(ids, key) {
 let actx;
 function audio() {
   try {
+    const fresh = !actx;
     actx = actx || new (window.AudioContext || window.webkitAudioContext)();
     if (actx.state === 'suspended') actx.resume().then(() => syncSched()).catch(() => {});
+    else if (fresh) setTimeout(syncSched, 0); // e.g. a timer started with Enter before the audio clock existed
   } catch {}
   return actx;
 }
-document.addEventListener('pointerdown', audio, { once: true });
-document.addEventListener('keydown', audio, { once: true });
+// every click/keypress (re)starts the audio clock: browsers only allow sound after one, and may suspend it again
+document.addEventListener('pointerdown', audio);
+document.addEventListener('keydown', audio);
 // when = seconds from now, or an absolute AudioContext time if abs = true; returns the oscillator so it can be cancelled
 function tone(freq, dur, when = 0, vol = 0.18, type = 'sine', abs = false) {
   const a = audio(); if (!a) return null;
@@ -1107,7 +841,18 @@ const alarm = (at = 0, abs = false) => [0, 1, 2].map(i => tone(988, .12, at + i 
 const SCHED = new Map(); // key -> {at: epoch ms, nodes: [osc]}
 const ALARM_SPAN = 12000; // the pre-scheduled alarm covers the first 12 s of ringing
 function stopSched(k) { const e = SCHED.get(k); if (e) { e.nodes.forEach(o => { try { o && o.stop(0); } catch {} }); SCHED.delete(k); } }
+// Repeating timers in background tabs can be slowed to once a minute; a one-off timeout set for the next end
+// time is only delayed by about a second, so end-of-timer notifications and title updates stay on time.
+let wakeT = 0;
+function armWake() {
+  clearTimeout(wakeT);
+  const now = Date.now(), ends = T.filter(t => t.state === 'running').map(t => t.endAt);
+  if (P.st.running) ends.push(P.st.endAt);
+  const next = Math.min(...ends.filter(e => e > now));
+  if (isFinite(next)) wakeT = setTimeout(() => { loop(); armWake(); }, next - now + 30);
+}
 function syncSched() {
+  armWake();
   const a = actx; if (!a || a.state !== 'running') return; // no audio before the first click/keypress
   const now = Date.now(), want = new Map();
   for (const t of T) if (t.state === 'running') want.set('t' + t.id, t.endAt);
@@ -1245,9 +990,11 @@ function tAdd(label, ms) {
 }
 const tRem = t => t.state === 'running' ? Math.max(0, t.endAt - Date.now()) : t.state === 'paused' ? t.remaining : 0;
 function tRender() {
+  // keep the cursor in a name field that is being edited when the list is rebuilt
+  const ae = document.activeElement, editing = ae && ae.classList.contains('tl-in') ? { id: ae.closest('.timer').dataset.id, a: ae.selectionStart, b: ae.selectionEnd } : null;
   $('#tmList').innerHTML = T.map(t => `
     <div class="timer ${t.state}" data-id="${t.id}">
-      <div class="tl" title="${esc(t.label)}">${esc(t.label)} <span class="muted small">· ${durLabel(t.dur)}</span></div>
+      <div class="tl"><input class="tl-in" value="${esc(t.label)}" aria-label="Timer name" title="Click to rename" size="${Math.max(4, Math.min(28, [...t.label].length + 1))}"><span class="muted small">· ${durLabel(t.dur)}</span></div>
       <div class="ta">${
         t.state === 'ringing' ? `<button class="small primary" data-a="dismiss">Dismiss</button>` :
         t.state === 'finished' ? `<button class="small" data-a="restart">Restart</button><button class="ghost small" data-a="rm" title="Remove">✕</button>` :
@@ -1255,14 +1002,27 @@ function tRender() {
       <div class="tt" data-tt></div><div class="small muted" data-te style="text-align:right;align-self:end"></div>
       <div class="tb"><i data-tb></i></div>
     </div>`).join('');
-  $('#tmEmpty').style.display = T.length ? 'none' : '';
+  if (editing) { const el = $(`#tmList .timer[data-id="${editing.id}"] .tl-in`); if (el) { el.focus(); try { el.setSelectionRange(editing.a, editing.b); } catch {} } }
   tTick();
 }
+$('#tmList').addEventListener('input', e => {
+  if (!e.target.classList.contains('tl-in')) return;
+  const t = T.find(x => String(x.id) === e.target.closest('.timer').dataset.id); if (!t) return;
+  t.label = e.target.value; e.target.size = Math.max(4, Math.min(28, [...t.label].length + 1)); store.set('timers', T);
+});
+$('#tmList').addEventListener('change', e => {
+  if (!e.target.classList.contains('tl-in')) return;
+  const t = T.find(x => String(x.id) === e.target.closest('.timer').dataset.id); if (!t) return;
+  if (!t.label.trim()) { t.label = durLabel(t.dur); e.target.value = t.label; } store.set('timers', T);
+});
+$('#tmList').addEventListener('keydown', e => { if (e.target.classList.contains('tl-in') && (e.key === 'Enter' || e.key === 'Escape')) e.target.blur(); });
 let lastAlarm = 0;
 function tTick() {
   let changed = false;
   for (const t of T) if (t.state === 'running' && t.endAt <= Date.now()) {
-    t.state = 'ringing'; t.rangAt = Date.now(); changed = true;
+    changed = true;
+    if (Date.now() - t.endAt > 5 * 60000) { t.state = 'finished'; continue; } // ended long ago (page closed or computer asleep): just mark it
+    t.state = 'ringing'; t.rangAt = Date.now();
     notify('Timer done: ' + t.label, 'Finished at ' + new Date(t.endAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }));
   }
   if (changed) { tSave(); tRender(); return; }
@@ -1275,7 +1035,8 @@ function tTick() {
     const t = T.find(x => String(x.id) === el.dataset.id); if (!t) continue;
     const r = tRem(t);
     $('[data-tt]', el).textContent = t.state === 'ringing' ? 'Done!' : t.state === 'finished' ? 'done' : mmss(r);
-    $('[data-te]', el).textContent = t.state === 'running' ? 'at ' + new Date(t.endAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : t.state === 'paused' ? 'paused' : '';
+    const hm = new Date(t.endAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    $('[data-te]', el).textContent = t.state === 'running' ? 'at ' + hm : t.state === 'paused' ? 'paused' : 'ended ' + hm;
     $('[data-tb]', el).style.width = (t.state === 'ringing' || t.state === 'finished' ? 100 : 100 * (1 - r / t.dur)) + '%';
   }
 }
@@ -1294,7 +1055,7 @@ $('#tmList').addEventListener('click', e => {
   }
   tSave(); tRender();
 });
-const TM_PRESETS = [['30 s', 30e3], ['1 min', 60e3], ['2 min', 120e3], ['5 min', 300e3], ['10 min', 600e3], ['15 min', 900e3], ['20 min', 1200e3], ['30 min', 1800e3], ['45 min', 2700e3], ['1 h', 3600e3], ['2 h', 7200e3]];
+const TM_PRESETS = [['1 min', 60e3], ['5 min', 300e3], ['15 min', 900e3], ['30 min', 1800e3], ['1 h', 3600e3], ['2 h', 7200e3]];
 $('#tmPresets').innerHTML = TM_PRESETS.map(([l, ms]) => `<button data-ms="${ms}">${l}</button>`).join('');
 $('#tmPresets').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; tAdd($('#tmLabel').value.trim(), +b.dataset.ms); $('#tmLabel').value = ''; });
 function tAddFromInputs() { const ms = parseDur($('#tmDur').value); tAdd($('#tmLabel').value.trim(), ms); if (ms > 0) { $('#tmLabel').value = ''; $('#tmDur').value = ''; } }
@@ -1304,19 +1065,23 @@ $('#tmClear').onclick = () => { T.filter(t => t.state === 'finished').forEach(t 
 
 /* ---------- COUNTER ---------- */
 const C = Object.assign({ list: [{ name: 'Count', n: 0 }], active: 0, hist: [] }, store.get('counter', {}));
-const cSave = () => store.set('counter', { list: C.list, active: C.active, hist: C.hist.slice(-500) });
+const cSave = () => store.set('counter', { list: C.list, active: C.active, hist: C.hist.slice(-500), cell: C.cell });
 function cBump(i, d = 1) {
   if (i < 0 || i >= C.list.length) return;
   if (d < 0 && C.list[i].n + d < 0) return;
   C.list[i].n += d; C.hist.push([i, d]); C.active = i; cSave(); cRender(true); if (d > 0) tick();
 }
-function cUndo() { const h = C.hist.pop(); if (!h) { toast('Nothing to undo'); return; } C.list[h[0]].n -= h[1]; C.active = h[0]; cSave(); cRender(); }
+function cUndo() {
+  if (!C.hist.length && inCell() && C.cell.squares.length && !C.list.some(c => c.n)) { // step back into the last saved square
+    const q = C.cell.squares.pop(); C.list.forEach((c, i) => c.n = q.c[i] || 0); C.hist = q.h || []; toast(`Back to square ${C.cell.squares.length + 1}`); cSave(); cRender(); return;
+  }
+  const h = C.hist.pop(); if (!h) { toast('Nothing to undo'); return; } C.list[h[0]].n -= h[1]; C.active = h[0]; cSave(); cRender(); }
 function cRender(bump) {
   if (C.active >= C.list.length) C.active = 0;
   const a = C.list[C.active], total = C.list.reduce((s, c) => s + c.n, 0), multi = C.list.length > 1;
   const big = $('#cBig'); big.textContent = a.n;
   if (bump) { big.classList.remove('bump'); void big.offsetWidth; big.classList.add('bump'); }
-  $('#cName').textContent = multi ? a.name : 'Space or click to count';
+  $('#cName').textContent = inCell() ? `${multi ? a.name + ' · ' : ''}square ${C.cell.squares.length + 1} of ${C.cell.target}` : multi ? a.name : 'Space or click to count';
   $('#cTotal').textContent = multi ? `Total ${total}` : '';
   const list = $('#cList');
   // rebuild rows only when their number changes, so name inputs keep focus
@@ -1333,11 +1098,11 @@ function cRender(bump) {
     const c = C.list[i]; row.classList.toggle('on', i === C.active);
     $('.v', row).innerHTML = `${c.n} <span class="pc">${total ? Math.round(100 * c.n / total) + '%' : ''}</span>`;
   });
-  hcUpdate();
+  cellUpdate();
 }
 $('#cMain').onclick = () => cBump(C.active, 1);
 $('#cUndo').onclick = cUndo;
-$('#cReset').onclick = () => { if (!C.list.some(c => c.n)) return; if (!confirm('Reset all counts to 0?')) return; C.list.forEach(c => c.n = 0); C.hist = []; cSave(); cRender(); };
+$('#cReset').onclick = () => { if (!C.list.some(c => c.n) && !C.cell.squares.length) return; if (!confirm('Reset all counts' + (C.cell.squares.length ? ' and counted squares' : '') + '?')) return; C.list.forEach(c => c.n = 0); C.hist = []; C.cell.squares = []; cSave(); cRender(); };
 $('#cAdd').onclick = () => {
   if (C.list.length >= 12) return;
   if (C.list.length === 1 && C.list[0].name === 'Count') C.list[0].name = 'Category 1';
@@ -1350,6 +1115,7 @@ $('#cList').addEventListener('click', e => {
   if (b.dataset.d === 'x') {
     if (C.list[i].n && !confirm(`Remove "${C.list[i].name}" (${C.list[i].n} counts)?`)) return;
     C.list.splice(i, 1); C.hist = C.hist.filter(h => h[0] !== i).map(h => [h[0] > i ? h[0] - 1 : h[0], h[1]]);
+    C.cell.squares.forEach(q => { q.c.splice(i, 1); q.h = (q.h || []).filter(h => h[0] !== i).map(h => [h[0] > i ? h[0] - 1 : h[0], h[1]]); });
     if (C.list.length === 1 && /^Category \d+$/.test(C.list[0].name)) C.list[0].name = 'Count';
     C.active = Math.min(C.active, C.list.length - 1); $('#cList').innerHTML = ''; cSave(); cRender();
   } else cBump(i, +b.dataset.d);
@@ -1358,22 +1124,72 @@ $('#cList').addEventListener('input', e => { const row = e.target.closest('.ctr'
 $('#cList').addEventListener('focusin', e => { const row = e.target.closest('.ctr'); if (row) { C.active = +row.dataset.i; $$('#cList .ctr').forEach((r, i) => r.classList.toggle('on', i === C.active)); $('#cBig').textContent = C.list[C.active].n; $('#cName').textContent = C.list[C.active].name; } });
 $('#cList').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === 'Escape') e.target.blur(); });
 
-// hemocytometer
-function hcUpdate() {
-  const out = $('#hcOut');
-  const n = num($('#hcCount').value), sq = num($('#hcSq').value), dil = num($('#hcDil').value);
-  if (!(n >= 0) || !(sq > 0) || !(dil > 0)) { out.innerHTML = '<span class="muted">Enter a count (or use the counter total).</span>'; return; }
-  const perMl = n / sq * dil * 1e4;
-  let s = `<b>${fmt(perMl, 3)}</b> cells/mL <span class="muted small">= ${fmt(perMl / 1e3, 3)} cells/µL</span>`;
-  if ($('#hcViab').checked && C.list.length >= 2) {
-    const live = C.list[0].n, dead = C.list[1].n;
-    if (live + dead) s += `<div class="sub">Viability ${(100 * live / (live + dead)).toFixed(1)}% · live ${fmt(live / sq * dil * 1e4, 3)} cells/mL</div>`;
+// cell counting: count square by square, then cells/mL from the mean per square
+const CH = LabCore.CHAMBERS;
+C.cell = Object.assign({ chamber: '', dil: 2, target: 4, squares: [], viab: false }, C.cell || {});
+fillSelect($('#cMode'), [['', 'plain counting'], ['neubauer', 'cells: Neubauer improved'], ['neubauerSmall', 'cells: Neubauer, small squares'], ['fuchs', 'cells: Fuchs-Rosenthal']], CH[C.cell.chamber] ? C.cell.chamber : '');
+const inCell = () => !!CH[C.cell.chamber];
+function cellScheme(k) {
+  // simplified ruling: big squares with their subdivisions; highlighted = squares to count
+  const big = k === 'fuchs' ? 4 : 3, S = 128, b = S / big, out = [], hi = [];
+  for (let r = 0; r < big; r++) for (let c = 0; c < big; c++) {
+    const x = 2 + c * b, y = 2 + r * b, sub = k === 'fuchs' ? 4 : (r === 1 && c === 1 ? 5 : 4);
+    for (let i = 1; i < sub; i++) out.push(`<path class="gl" d="M${x + i * b / sub} ${y}v${b}M${x} ${y + i * b / sub}h${b}"/>`);
+    const corner = (r === 0 || r === big - 1) && (c === 0 || c === big - 1);
+    if (k === 'fuchs' || (k === 'neubauer' && corner)) hi.push(`<rect class="hi" x="${x}" y="${y}" width="${b}" height="${b}"/>`);
+    if (k === 'neubauerSmall' && r === 1 && c === 1) for (const [i, j] of [[0, 0], [0, 4], [4, 0], [4, 4], [2, 2]]) hi.push(`<rect class="hi" x="${x + j * b / 5}" y="${y + i * b / 5}" width="${b / 5}" height="${b / 5}"/>`);
   }
-  out.innerHTML = s;
+  for (let i = 0; i <= big; i++) out.push(`<path class="g" d="M${2 + i * b} 2v${S}M2 ${2 + i * b}h${S}"/>`);
+  const c = CH[k];
+  return `<svg viewBox="0 0 132 132" aria-hidden="true">${hi.join('')}${out.join('')}</svg><div><b>${esc(c.name)}</b><br>Count the ${esc(c.how)} (shaded).<br>One ${esc(c.sq)} holds ${c.volUl >= 0.1 ? c.volUl + ' µL' : c.volUl * 1000 + ' nL'}.<br>Count cells touching the top and left lines, not the bottom and right ones.</div>`;
 }
-['#hcCount', '#hcSq', '#hcDil'].forEach(s => $(s).addEventListener('input', hcUpdate));
-$('#hcViab').addEventListener('change', hcUpdate);
-$('#hcUse').onclick = () => { $('#hcCount').value = C.list.reduce((s, c) => s + c.n, 0); hcUpdate(); };
+function cellUpdate() {
+  const on = inCell(), cc = C.cell;
+  $('#cCell').hidden = !on; $('#cInfo').hidden = !on;
+  if (!on) return;
+  if (!$('#cScheme').hidden) $('#cScheme').innerHTML = cellScheme(cc.chamber);
+  if (document.activeElement !== $('#cDil')) $('#cDil').value = cc.dil;
+  if (document.activeElement !== $('#cTarget')) $('#cTarget').value = cc.target;
+  const multi = C.list.length > 1, done = cc.squares.length, cur = C.list.reduce((s, c) => s + c.n, 0);
+  $('#cViabRow').hidden = !multi; $('#cViab').checked = cc.viab;
+  $('#cSqList').innerHTML = cc.squares.map((q, i) => `<span title="Square ${i + 1}">${i + 1}: ${q.c.reduce((a, b) => a + b, 0)}</span>`).join('') +
+    `<span class="cur">${done + 1}${done >= cc.target ? ' (extra)' : ''}: ${cur}</span>`;
+  const out = $('#cRes');
+  if (!done) { out.innerHTML = `<span class="muted">Count square 1 of ${cc.target}, then press Next square (Enter).</span>`; return; }
+  const viab = multi && cc.viab, col = i => cc.squares.map(q => q.c[i] || 0);
+  const totals = cc.squares.map(q => viab ? (q.c[0] || 0) + (q.c[1] || 0) : q.c.reduce((a, b) => a + b, 0));
+  const r = LabCore.cellCount(totals, cc.chamber, cc.dil); if (!r) { out.innerHTML = '<span class="muted">Enter a dilution factor.</span>'; return; }
+  const pm = x => fmt(x, 3);
+  let h = `<b data-copy="${plain(r.perMl, 3)}" style="cursor:copy">${pm(r.perMl)} cells/mL</b>` + (done < cc.target ? ` <span class="muted small">(${done} of ${cc.target} squares so far)</span>` : '');
+  h += `<div class="sub">${r.total} cells in ${r.n} square${r.n > 1 ? 's' : ''} · mean ${fmt(r.mean, 3)}${r.n > 1 ? ` ± ${fmt(r.sd, 2)} SD` : ''} per square · ×${fmt(cc.dil, 3)} dilution</div>`;
+  if (r.total) h += `<div class="sub">Counting error ±${Math.round(196 * r.poissonCv)}% (95%, from ${r.total} cells): ${pm(r.lo)} – ${pm(r.hi)} cells/mL${r.total < 100 ? '. Count more squares to narrow this.' : ''}</div>`;
+  if (r.n >= 3 && r.mean > 0 && r.sd ** 2 / r.mean > 2.5) h += `<div class="sub" style="color:var(--warn)">Squares differ more than chance would explain: check mixing, clumps or loading.</div>`;
+  if (viab) {
+    const live = LabCore.cellCount(col(0), cc.chamber, cc.dil), L = col(0).reduce((a, b) => a + b, 0), D = col(1).reduce((a, b) => a + b, 0);
+    if (L + D) h += `<div class="sub">Viability <b>${(100 * L / (L + D)).toFixed(1)}%</b> · live ${pm(live.perMl)} cells/mL</div>`;
+  } else if (multi) h += C.list.map((c, i) => `<div class="sub">${esc(c.name)}: ${pm(LabCore.cellCount(col(i), cc.chamber, cc.dil).perMl)} cells/mL</div>`).join('');
+  out.innerHTML = h;
+}
+function cellNext() {
+  if (!inCell()) return;
+  C.cell.squares.push({ c: C.list.map(c => c.n), h: C.hist });
+  C.list.forEach(c => c.n = 0); C.hist = [];
+  if (C.cell.squares.length === C.cell.target) toast(`All ${C.cell.target} squares counted`);
+  cSave(); cRender();
+}
+$('#cMode').onchange = () => {
+  const k = $('#cMode').value;
+  if (C.cell.squares.length && !confirm(`Discard the ${C.cell.squares.length} counted square${C.cell.squares.length > 1 ? 's' : ''}?`)) { $('#cMode').value = C.cell.chamber; return; }
+  C.cell.chamber = k; C.cell.squares = [];
+  if (CH[k]) C.cell.target = CH[k].def; else $('#cScheme').hidden = true;
+  cSave(); cRender();
+};
+$('#cInfo').onclick = () => { const sc = $('#cScheme'); sc.hidden = !sc.hidden; $('#cInfo').setAttribute('aria-expanded', !sc.hidden); cellUpdate(); };
+$('#cNext').onclick = cellNext;
+$('#cDil').addEventListener('input', () => { const v = num($('#cDil').value); if (v > 0) { C.cell.dil = v; cSave(); cellUpdate(); } });
+$('#cTarget').addEventListener('input', () => { const v = Math.round(num($('#cTarget').value)); if (v >= 1 && v <= 64) { C.cell.target = v; cSave(); cellUpdate(); } });
+['#cDil', '#cTarget'].forEach(sel => $(sel).addEventListener('change', cellUpdate));
+$('#cViab').addEventListener('change', () => { C.cell.viab = $('#cViab').checked; cSave(); cellUpdate(); });
 
 /* ---------- global keys ---------- */
 const typing = el => el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
@@ -1386,6 +1202,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowDown' && C.list.length > 1) { e.preventDefault(); C.active = (C.active + 1) % C.list.length; cSave(); cRender(); return; }
   if (e.key === 'ArrowUp' && C.list.length > 1) { e.preventDefault(); C.active = (C.active - 1 + C.list.length) % C.list.length; cSave(); cRender(); return; }
   if (e.key === 'p' || e.key === 'P') { pToggle(); return; }
+  if (e.key === 'Enter' && inCell() && e.target.tagName !== 'BUTTON') { e.preventDefault(); cellNext(); return; }
 });
 // stop the space bar from also "clicking" whichever button has focus
 document.addEventListener('keyup', e => { if ((e.code === 'Space' || e.key === ' ') && !typing(e.target)) e.preventDefault(); });
@@ -1394,120 +1211,57 @@ document.addEventListener('keyup', e => { if ((e.code === 'Space' || e.key === '
 function setTab(t) { $$('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t)); $$('.pane').forEach(p => p.classList.toggle('on', p.dataset.pane === t)); store.set('tab', t); if (t === 'tz') tzRender(true); }
 $$('#tabs button').forEach(b => b.onclick = () => setTab(b.dataset.tab));
 
-/* ---------- UNITS ---------- */
-fillSelect($('#uCat'), Object.keys(UNITS).map(k => [k]));
-function uCatChange(keepUnit) {
-  const list = UNITS[$('#uCat').value];
-  fillSelect($('#uFrom'), list.map(d => [d.u]), keepUnit && list.some(d => d.u === keepUnit) ? keepUnit : list[list.findIndex(d => d.f === 1 || d.u === '°C' || d.u === 'nm')]?.u ?? list[0].u);
-}
-function uUpdate() {
-  const list = UNITS[$('#uCat').value], src = list.find(d => d.u === $('#uFrom').value), x = num($('#uVal').value);
-  const base = toBase(src, x);
-  $('#uOut').innerHTML = list.map(d => {
-    const v = fromBase(d, base), ok = isFinite(v);
-    return `<div class="ri ${d === src ? 'src' : ''}" ${ok ? `data-copy="${plain(v, 6)}"` : ''} title="Click to copy"><span class="rv">${fmt(v, 5)}</span><span class="ru">${d.u}</span></div>`;
-  }).join('');
-  store.set('units', { cat: $('#uCat').value, unit: $('#uFrom').value, val: $('#uVal').value });
-}
-{ const s = store.get('units', null); if (s && UNITS[s.cat]) { $('#uCat').value = s.cat; uCatChange(s.unit); $('#uVal').value = s.val; } else { $('#uCat').value = 'Mass'; uCatChange(); } }
-$('#uCat').onchange = () => { uCatChange(); uUpdate(); };
-$('#uFrom').onchange = uUpdate; $('#uVal').oninput = uUpdate;
-
 /* ---------- CONCENTRATION ---------- */
-fillSelect($('#ccUnit'), CONC.map(c => [c.u]), 'mM');
+const MASSC_AUTO = [['mg/mL', 1], ['µg/mL', 1e-3], ['ng/mL', 1e-6], ['pg/mL', 1e-9]];
+const MASSES = [['g', 1], ['mg', 1e-3], ['µg', 1e-6]];
 fillSelect($('#ccPick'), [['', 'pick a compound…'], ...REAGENTS.map(([n, mw]) => [mw + '|' + n, `${n} (${mw})`])]);
-$('#ccPick').onchange = () => { const v = $('#ccPick').value; if (!v) return; $('#ccMW').value = v.split('|')[0]; ccUpdate(); wUpdate(); rUpdate(); store.set('ccPick', v); };
-function ccUpdate() {
-  const c = CONC.find(d => d.u === $('#ccUnit').value), x = num($('#ccVal').value), mw = num($('#ccMW').value);
-  const b = concToBase(x, c.u, mw > 0 ? mw : NaN);
-  $('#ccOut').innerHTML = CONC_OUT.map(d => {
-    const v = (d.k === 'mol' ? b.mol : b.g) / d.f, ok = isFinite(v);
-    const isSrc = d.u.split(' = ').includes(c.u) || d.u === c.u;
-    return `<div class="ri ${isSrc ? 'src' : ''} ${ok ? '' : 'na'}" ${ok ? `data-copy="${plain(v, 6)}"` : ''}><span class="rv">${ok ? fmt(v, 5) : 'needs MW'}</span><span class="ru">${d.u}</span></div>`;
-  }).join('');
-}
-const MASSES = [['kg', 1e3], ['g', 1], ['mg', 1e-3], ['µg', 1e-6], ['ng', 1e-9]];
-fillSelect($('#wCu'), CONC.map(c => [c.u]), 'mM');
+['#ccUnit', '#wCu'].forEach(sel => fillSelect($(sel), CONC.map(c => [c.u]), 'mM'));
 fillSelect($('#wVu'), VOLS.map(([u]) => [u]), 'mL');
 fillSelect($('#rMu'), MASSES.map(([u]) => [u]), 'mg');
 fillSelect($('#rVu'), VOLS.map(([u]) => [u]), 'mL');
+const ccMw = () => num($('#ccMW').value);
+const ccName = () => { const [m, n] = $('#ccPick').value.split('|'); return n && Math.abs(+m - ccMw()) < 1e-9 ? ' ' + esc(n) : ''; };
+const ccNeedMw = '<span class="muted">Enter the MW (or pick a compound) to convert between molar and mass concentrations.</span>';
+function ccUpdate() {
+  const x = num($('#ccVal').value), u = $('#ccUnit').value, out = $('#ccOut');
+  if (!(x >= 0)) { out.innerHTML = '<span class="muted">Enter a concentration.</span>'; return; }
+  if (!(ccMw() > 0)) { out.innerHTML = ccNeedMw; return; }
+  const r = LabCore.concPartner(x, u, ccMw()), v = r.kind === 'g' ? auto(r.gL, MASSC_AUTO) : auto(r.M, MOL_AUTO);
+  out.innerHTML = `${esc($('#ccVal').value.trim())} ${u} = <b data-copy="${plain(v.v, 4)} ${v.u}" style="cursor:copy">${fmt(v.v, 4)} ${v.u}</b>`;
+}
 function wUpdate() {
-  const c = CONC.find(d => d.u === $('#wCu').value), x = num($('#wC').value), mw = num($('#ccMW').value);
-  const V = num($('#wV').value) * VOLS.find(v => v[0] === $('#wVu').value)[1];
-  const out = $('#wOut');
-  if (!(x >= 0) || !(V > 0)) { out.className = 'answer bad'; out.textContent = 'Enter a concentration and a volume.'; return; }
-  if (c.k === 'mol' && !(mw > 0)) { out.className = 'answer bad'; out.textContent = 'Enter the MW (above) for molar concentrations.'; return; }
-  const m = LabCore.massToWeigh(x, c.u, V, mw), gL = m / V;
+  const c = CONC.find(d => d.u === $('#wCu').value), x = num($('#wC').value), mw = ccMw();
+  const V = num($('#wV').value) * VOLS.find(v => v[0] === $('#wVu').value)[1], out = $('#wOut');
   out.className = 'answer';
-  const [pickMw, pickName] = $('#ccPick').value.split('|'), name = pickName && Math.abs(+pickMw - mw) < 1e-9 ? ' ' + esc(pickName) : '';
-  out.innerHTML = `Weigh <b data-copy="${plainAuto(m, MASS_AUTO)}" style="cursor:copy">${fmtAuto(m, MASS_AUTO)}</b>${name}, dissolve in less than ${fmtAuto(V, VOLS)}, then fill up to ${fmtAuto(V, VOLS)}.` +
-    (c.k === 'mol' ? `<div class="sub">${fmt(x * c.f * V * 1e3, 4)} mmol at ${mw} g/mol</div>` : '');
+  if (!(x > 0) || !(V > 0)) { out.innerHTML = '<span class="muted">Enter a concentration and a volume.</span>'; return; }
+  if (c.k === 'mol' && !(mw > 0)) { out.innerHTML = ccNeedMw; return; }
+  const gL = LabCore.massToWeigh(x, c.u, 1, mw), plan = LabCore.weighPlan(gL, V), name = ccName();
+  const conc = gL2 => c.k === 'mol' ? fmtAuto(gL2 / mw, MOL_AUTO) : fmtAuto(gL2, MASSC_AUTO);
+  const b = (txt, copyTxt) => `<b data-copy="${copyTxt}" style="cursor:copy">${txt}</b>`;
+  if (!plan) { out.innerHTML = 'Too dilute to plan from a single weighing.'; return; }
+  if (plan.direct) { out.innerHTML = `Weigh ${b(fmtAuto(plan.mass, MASS_AUTO), plainAuto(plan.mass, MASS_AUTO))}${name}, dissolve in less than ${fmtAuto(V, VOLS)}, then fill up to ${fmtAuto(V, VOLS)}.`; return; }
+  const small = `${fmtAuto(plan.needG, MASS_AUTO)} is too little to weigh accurately.`, m10 = b(fmtAuto(plan.mass, MASS_AUTO), plainAuto(plan.mass, MASS_AUTO));
+  if (plan.fold === 1) { out.innerHTML = `${small} Weigh ${m10}${name} and fill up to ${b(fmtAuto(plan.stockL, VOLS, 3), plainAuto(plan.stockL, VOLS, 3))} instead: same concentration, more than you need.`; return; }
+  const fold = plan.fold.toLocaleString('en-US');
+  out.innerHTML = `${small} Make a <b>${fold}× stock (${conc(plan.stockGL)})</b>: weigh ${m10}${name}, fill up to ${b(fmtAuto(plan.stockL, VOLS, 3), plainAuto(plan.stockL, VOLS, 3))}.` +
+    `<div class="sub">${plan.serial ? `Then dilute it ${fold}× in steps: ${plan.serial.map(f => '1:' + f.toLocaleString('en-US')).join(', then ')}.` : `Then use ${fmtAuto(plan.pipL, VOLS, 3)} stock per ${fmtAuto(V, VOLS)} final volume (1:${fold}).`}</div>`;
 }
 function rUpdate() {
   const m = num($('#rM').value) * MASSES.find(v => v[0] === $('#rMu').value)[1];
-  const V = num($('#rV').value) * VOLS.find(v => v[0] === $('#rVu').value)[1], mw = num($('#ccMW').value), out = $('#rOut');
-  if (!(m > 0) || !(V > 0)) { out.className = 'answer'; out.innerHTML = '<span class="muted">Enter the mass you dissolved and the final volume.</span>'; return; }
-  const { gL, M } = LabCore.concFromMass(m, V, mw);
-  out.className = 'answer';
-  out.innerHTML = (mw > 0 ? `<b>${fmtAuto(M, MOL_AUTO)}</b> · ` : '') + `${fmt(gL, 4)} mg/mL · ${fmt(gL / 10, 4)} % (w/v)` + (mw > 0 ? '' : `<div class="sub">Enter the MW above to get molarity.</div>`);
+  const V = num($('#rV').value) * VOLS.find(v => v[0] === $('#rVu').value)[1], mw = ccMw(), out = $('#rOut');
+  if (!(m > 0) || !(V > 0)) { out.innerHTML = '<span class="muted">Enter the mass you dissolved and the final volume.</span>'; return; }
+  const { gL, M } = LabCore.concFromMass(m, V, mw), g = auto(gL, MASSC_AUTO);
+  out.innerHTML = (mw > 0 ? `<b>${fmtAuto(M, MOL_AUTO)}</b> · ` : '') + `${fmt(g.v, 4)} ${g.u}` + (mw > 0 ? '' : `<div class="sub">Enter the MW above to get molarity.</div>`);
 }
-['#ccVal', '#ccMW'].forEach(s => $(s).addEventListener('input', () => { ccUpdate(); wUpdate(); rUpdate(); }));
-$('#ccMW').addEventListener('input', () => { $('#ccPick').value = ''; });
-$('#ccUnit').onchange = ccUpdate;
-['#wC', '#wV', '#wCu', '#wVu'].forEach(s => $(s).addEventListener('input', wUpdate));
-['#rM', '#rV', '#rMu', '#rVu'].forEach(s => $(s).addEventListener('input', rUpdate));
+const ccAll = () => { ccUpdate(); wUpdate(); rUpdate(); };
+$('#ccPick').onchange = () => { const v = $('#ccPick').value; if (v) $('#ccMW').value = v.split('|')[0]; store.set('ccPick', v); ccAll(); };
+$('#ccMW').addEventListener('input', () => { $('#ccPick').value = ''; ccAll(); });
+['#ccVal', '#ccUnit'].forEach(sel => $(sel).addEventListener('input', ccUpdate));
+['#wC', '#wV', '#wCu', '#wVu'].forEach(sel => $(sel).addEventListener('input', wUpdate));
+['#rM', '#rV', '#rMu', '#rVu'].forEach(sel => $(sel).addEventListener('input', rUpdate));
 persistInputs(['ccVal', 'ccUnit', 'ccMW', 'wC', 'wCu', 'wV', 'wVu', 'rMu', 'rVu'], 'conc');
+[['#ccUnit', 'mM'], ['#wCu', 'mM'], ['#rMu', 'mg']].forEach(([sel, d]) => { if (!$(sel).value) $(sel).value = d; }); // a saved unit that no longer exists
 { const p = store.get('ccPick', ''); if (p && $('#ccMW').value === p.split('|')[0]) $('#ccPick').value = p; }
-
-/* ---------- DILUTION ---------- */
-const DCONC = [
-  ['X', 'x', 1], ['M', 'mol', 1], ['mM', 'mol', 1e-3], ['µM', 'mol', 1e-6], ['nM', 'mol', 1e-9], ['pM', 'mol', 1e-12],
-  ['mg/mL', 'g', 1], ['µg/mL', 'g', 1e-3], ['ng/µL', 'g', 1e-3], ['ng/mL', 'g', 1e-6], ['%', 'pct', 1], ['U/mL', 'U', 1], ['U/µL', 'U', 1e3], ['cells/mL', 'cell', 1]
-];
-['#dC1u', '#dC2u'].forEach(s => fillSelect($(s), DCONC.map(d => [d[0]]), 'mM'));
-['#dV1u', '#dV2u'].forEach(s => fillSelect($(s), VOLS.map(([u]) => [u]), 'mL'));
-fillSelect($('#sVu'), VOLS.map(([u]) => [u]), 'µL');
-const dcu = s => DCONC.find(d => d[0] === $(s).value);
-const vf = s => VOLS.find(v => v[0] === $(s).value)[1];
-function dUpdate() {
-  const ids = ['dC1', 'dV1', 'dC2', 'dV2'], out = $('#dOut');
-  ids.forEach(id => { $('#' + id).placeholder = ''; });
-  const empty = ids.filter(id => blank($('#' + id)));
-  const u1 = dcu('#dC1u'), u2 = dcu('#dC2u');
-  const bad = msg => { out.className = 'answer bad'; out.innerHTML = msg; };
-  if (u1[1] !== u2[1]) return bad(`C₁ and C₂ must be the same kind of unit (${u1[0]} vs ${u2[0]}). Use the Concentration tab to convert first.`);
-  if (empty.length !== 1) return bad(empty.length ? 'Leave exactly one field empty; it will be calculated.' : 'Clear one of the four fields to calculate it.');
-  const val = id => blank($('#' + id)) ? null : num($('#' + id).value);
-  const sol = LabCore.solveDilution({ C1: val('dC1') == null ? null : val('dC1') * u1[2], V1: val('dV1') == null ? null : val('dV1') * vf('#dV1u'),
-                                      C2: val('dC2') == null ? null : val('dC2') * u2[2], V2: val('dV2') == null ? null : val('dV2') * vf('#dV2u') });
-  if (sol.error === 'invalid' || sol.error === 'one-blank') return bad('Check the numbers (all must be positive).');
-  const miss = 'd' + sol.key, r = sol.value;
-  const fill = { dV1: () => r / vf('#dV1u'), dV2: () => r / vf('#dV2u'), dC1: () => r / u1[2], dC2: () => r / u2[2] }[miss]();
-  $('#' + miss).placeholder = plain(fill, 4);
-  if (sol.error === 'concentrate') return bad('Final concentration is higher than the stock; that is not a dilution.');
-  const { C1: c1, C2: c2, V1: v1, V2: v2 } = sol.all;
-  out.className = 'answer';
-  const cu = u2[0], c2show = fmt(c2 / u2[2], 4), fold = c1 / c2;
-  out.innerHTML = `Add <b data-copy="${plainAuto(v1, VOLS)}" style="cursor:copy">${fmtAuto(v1, VOLS)}</b> stock + <b data-copy="${plainAuto(v2 - v1, VOLS)}" style="cursor:copy">${fmtAuto(v2 - v1, VOLS)}</b> diluent → ${fmtAuto(v2, VOLS)} at ${c2show} ${cu}` +
-    `<div class="sub">${fmt(fold, 4)}× dilution (1:${fmt(fold, 4)})${miss.startsWith('dC') ? ` · calculated ${miss === 'dC1' ? 'C₁' : 'C₂'} = ${fmt(fill, 4)} ${miss === 'dC1' ? u1[0] : u2[0]}` : ''}</div>`;
-}
-['dC1', 'dV1', 'dC2', 'dV2', 'dC1u', 'dV1u', 'dC2u', 'dV2u'].forEach(id => $('#' + id).addEventListener('input', dUpdate));
-$('#dClear').onclick = () => { ['dC1', 'dV1', 'dC2', 'dV2'].forEach(id => $('#' + id).value = ''); dUpdate(); store.set('dil', {}); };
-persistInputs(['dC1', 'dV1', 'dC2', 'dV2', 'dC1u', 'dV1u', 'dC2u', 'dV2u'], 'dil');
-
-function sUpdate() {
-  const c0 = num($('#sC').value), F = num($('#sF').value), N = Math.round(num($('#sN').value)), V = num($('#sV').value) * vf('#sVu'), unit = $('#sU').value, out = $('#sOut');
-  if (!(c0 > 0) || !(F > 1) || !(N >= 1 && N <= 30) || !(V > 0)) { out.className = 'answer bad'; out.textContent = 'Need start > 0, fold > 1, 1–30 steps, volume > 0.'; $('#sTable').innerHTML = ''; return; }
-  const { transfer: vt, diluent: vd } = LabCore.serialDilution(c0, F, N, V);
-  out.className = 'answer';
-  out.innerHTML = `Put <b>${fmtAuto(vd, VOLS)}</b> diluent in each of ${N} tubes, then transfer <b>${fmtAuto(vt, VOLS)}</b> from tube to tube (mix each time).` +
-    `<div class="sub">Each tube ends with ${fmtAuto(vd, VOLS)}; the last one has ${fmtAuto(V, VOLS)} unless you discard ${fmtAuto(vt, VOLS)}. You need ≥ ${fmtAuto(vt, VOLS)} of the start solution.</div>`;
-  let rows = `<tr><th>Tube</th><th>Concentration</th><th>Dilution</th></tr><tr><td>start</td><td>${fmt(c0, 4)} ${esc(unit)}</td><td>1</td></tr>`;
-  for (let i = 1; i <= N; i++) rows += `<tr><td>${i}</td><td>${fmt(c0 / F ** i, 4)} ${esc(unit)}</td><td>1:${fmt(F ** i, 4)}</td></tr>`;
-  $('#sTable').innerHTML = `<table class="t">${rows}</table>`;
-}
-['sC', 'sU', 'sF', 'sN', 'sV', 'sVu'].forEach(id => $('#' + id).addEventListener('input', sUpdate));
-persistInputs(['sC', 'sU', 'sF', 'sN', 'sV', 'sVu'], 'serial');
 
 /* ---------- CENTRIFUGE ---------- */
 const CF_PRESETS = [['Microfuge (r ≈ 8.4 cm)', 8.4], ['Mini centrifuge (≈ 4.5 cm)', 4.5], ['15/50 mL swing (≈ 18 cm)', 18], ['Plate rotor (≈ 14 cm)', 14]];
@@ -1524,46 +1278,6 @@ $('#cfRpm').oninput = () => { cfFrom('rpm'); persistCf(); };
 $('#cfG').oninput = () => { cfFrom('g'); persistCf(); };
 $('#cfR').oninput = () => { cfFrom(cfLast); persistCf(); };
 { const s = store.get('cfg', null); if (s) { $('#cfR').value = s.r; $('#cfRpm').value = s.rpm; $('#cfG').value = s.g; cfLast = s.last || 'rpm'; } cfFrom(cfLast); }
-
-/* ---------- NUCLEIC ACIDS ---------- */
-const NA_AMT = [['µg', 'g', 1e-6], ['ng', 'g', 1e-9], ['pg', 'g', 1e-12], ['nmol', 'mol', 1e-9], ['pmol', 'mol', 1e-12], ['fmol', 'mol', 1e-15], ['copies', 'mol', 1 / LabCore.AVOGADRO]];
-const NA_CONC = [['µg/µL', 'g', 1], ['ng/µL', 'g', 1e-3], ['pg/µL', 'g', 1e-6], ['µM', 'mol', 1e-6], ['nM', 'mol', 1e-9], ['pM', 'mol', 1e-12], ['copies/µL', 'mol', 1e6 / LabCore.AVOGADRO]];
-fillSelect($('#naAmtU'), NA_AMT.map(d => [d[0]]), 'ng');
-fillSelect($('#naCu'), NA_CONC.map(d => [d[0]]), 'ng/µL');
-let lastType = null;
-function naUpdate() {
-  const type = NA[$('#naType').value], L = num($('#naLen').value), mw = L > 0 ? type.mw(L) : NaN;
-  $('#naMW').innerHTML = isFinite(mw) ? `MW ≈ <b>${fmt(mw, 5)}</b> g/mol (${fmt(mw / 1000, 4)} kDa)` : 'enter a length';
-  if (lastType !== $('#naType').value) { if (lastType !== null || blank($('#aF'))) $('#aF').value = type.a260; lastType = $('#naType').value; }
-  const conv = (val, unitDef, table) => {
-    const base = val * unitDef[2]; // g or mol (per L for concentrations)
-    const g = unitDef[1] === 'g' ? base : base * mw, mol = unitDef[1] === 'mol' ? base : base / mw;
-    return table.map(d => { const v = (d[1] === 'g' ? g : mol) / d[2], ok = isFinite(v); return `<div class="ri ${d === unitDef ? 'src' : ''} ${ok ? '' : 'na'}" ${ok ? `data-copy="${plain(v, 6)}"` : ''}><span class="rv">${ok ? fmt(v, 4) : '—'}</span><span class="ru">${d[0]}</span></div>`; }).join('');
-  };
-  $('#naAmtOut').innerHTML = conv(num($('#naAmt').value), NA_AMT.find(d => d[0] === $('#naAmtU').value), NA_AMT);
-  $('#naCOut').innerHTML = conv(num($('#naC').value), NA_CONC.find(d => d[0] === $('#naCu').value), NA_CONC);
-  aUpdate(mw); lUpdate();
-}
-function aUpdate(mw) {
-  const A = num($('#aA').value), B = num($('#aB').value), D = num($('#aD').value) || 1, F = num($('#aF').value), out = $('#aOut');
-  if (!(A >= 0) || !(F > 0)) { out.className = 'answer'; out.innerHTML = '<span class="muted">Enter an A260 reading.</span>'; return; }
-  const ngul = LabCore.a260Conc(A, F, D);
-  let s = `<b data-copy="${plain(ngul, 4)}" style="cursor:copy">${fmt(ngul, 4)}</b> ng/µL`;
-  if (isFinite(mw)) s += ` <span class="muted">≈ ${fmtAuto(ngul * 1e-3 / mw, MOL_AUTO, 3)}</span>`;
-  if (B > 0) { const r = A / B, rna = $('#naType').value === 'rna', ok = rna ? r >= 1.9 : r >= 1.75; s += `<div class="sub">A260/280 = ${r.toFixed(2)} ${ok ? '(looks clean)' : `(expected ~${rna ? '2.0' : '1.8'}; possible protein/phenol carry-over)`}</div>`; }
-  if (A > 0 && (A < 0.1 || A > 1.5)) s += `<div class="sub">A260 outside ~0.1–1.5 is less reliable on most cuvette spectrophotometers.</div>`;
-  out.className = 'answer'; out.innerHTML = s;
-}
-function lUpdate() {
-  const vb = num($('#lVb').value), vn = num($('#lVn').value), ib = num($('#lIb').value), r = num($('#lR').value), out = $('#lOut');
-  if (!(vb > 0 && vn > 0 && ib > 0 && r > 0)) { out.className = 'answer bad'; out.textContent = 'Fill in all four fields.'; return; }
-  const ins = LabCore.ligationInsertNg(vb, vn, ib, r), vfmol = vn * 1e-9 / NA.ds.mw(vb) * 1e15;
-  out.className = 'answer';
-  out.innerHTML = `Use <b data-copy="${plain(ins, 3)}" style="cursor:copy">${fmt(ins, 3)} ng</b> insert<div class="sub">vector ${fmt(vfmol, 3)} fmol · insert ${fmt(vfmol * r, 3)} fmol (${r}:1 molar)</div>`;
-}
-['naType', 'naLen', 'naAmt', 'naAmtU', 'naC', 'naCu', 'aA', 'aB', 'aD', 'aF', 'lVb', 'lVn', 'lIb', 'lR'].forEach(id => $('#' + id).addEventListener('input', naUpdate));
-persistInputs(['naType', 'naLen', 'naAmt', 'naAmtU', 'naC', 'naCu', 'aD', 'aF', 'lVb', 'lVn', 'lIb', 'lR'], 'na');
-lastType = blank($('#aF')) ? null : $('#naType').value;
 
 /* ---------- TIME ZONES ---------- */
 const LOCAL_TZ = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch { return 'UTC'; } })();
@@ -1587,9 +1301,9 @@ const tzSave = () => { store.set('tzZones', TZ.zones); store.set('tzRef', TZ.ref
 function tzFillRef() { fillSelect($('#tzRef'), TZ.zones.map(z => [z, `${tzLabel(z)}${z === LOCAL_TZ ? ' (here)' : ''}`]), TZ.ref); }
 function tzSyncInputs() { const p = parts(TZ.ref, TZ.t); $('#tzDate').value = `${p.y}-${pad(p.mo)}-${pad(p.d)}`; $('#tzTime').value = `${pad(p.h)}:${pad(p.mi)}`; }
 function tzFromInputs() {
-  const [y, mo, d] = ($('#tzDate').value || '').split('-').map(Number), [h, mi] = ($('#tzTime').value || '').split(':').map(Number);
-  if (!y || isNaN(h)) return;
-  const r = zonedToUtc(TZ.ref, y, mo, d, h, mi || 0);
+  const [y, mo, d] = ($('#tzDate').value || '').split('-').map(Number), c = parseClock($('#tzTime').value);
+  if (!y || !c) { tzSyncInputs(); return; }
+  const h = c.h, mi = c.mi, r = zonedToUtc(TZ.ref, y, mo, d, h, mi);
   TZ.t = r.t; TZ.live = false;
   $('#tzWarn').textContent = r.exact ? '' : `${pad(h)}:${pad(mi || 0)} does not exist in ${tzLabel(TZ.ref)} on that date (clocks jump forward); showing ${pad(parts(TZ.ref, r.t).h)}:${pad(parts(TZ.ref, r.t).mi)} instead.`;
   tzRender(true);
@@ -1678,6 +1392,7 @@ $('#tzList').addEventListener('click', e => {
 $('#tzRef').onchange = () => { TZ.ref = $('#tzRef').value; tzSave(); tzRender(true); };
 $('#tzDate').addEventListener('change', tzFromInputs);
 $('#tzTime').addEventListener('change', tzFromInputs);
+$('#tzTime').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.blur(); });
 $('#tzNow').onclick = () => { TZ.live = true; $('#tzWarn').textContent = ''; tzRender(true); };
 function tzAddZone() {
   const q = $('#tzAdd').value.trim(); if (!q) return;
@@ -1720,7 +1435,7 @@ $('#swReset').onclick = () => { SW.running = false; SW.acc = 0; SW.laps = []; sw
 
 /* ---------- TEXT ---------- */
 const txUndoStack = [];
-const TX_LABEL = { join: 'Joined lines', nobr: 'Removed line breaks', nows: 'Removed whitespace', nonum: 'Removed numbers + whitespace', collapse: 'Collapsed spaces', noempty: 'Removed empty lines', fasta1: 'FASTA one-line', wrap60: 'Wrapped at 60', upper: 'Upper case', lower: 'Lower case', sort: 'Sorted lines', uniq: 'Removed duplicate lines' };
+const TX_LABEL = { join: 'Joined lines', nows: 'Removed whitespace', noempty: 'Removed empty lines', uniq: 'Unique lines', upper: 'Upper case', lower: 'Lower case', fasta1: 'FASTA one-line', wrap60: 'Wrapped at 60' };
 function txRender() {
   const v = $('#txIn').value, s = LabCore.textStats(v);
   const items = [['Characters', s.chars], ['No whitespace', s.charsNoWs], ['Words', s.words], ['Lines', s.lines], ['Non-empty lines', s.nonEmptyLines], ['Paragraphs', s.paragraphs], ['Sentences', s.sentences]];
@@ -1739,80 +1454,6 @@ $('#txUndo').onclick = () => { if (!txUndoStack.length) { $('#txMsg').textConten
 $('#txCopy').onclick = () => copy($('#txIn').value);
 $('#txClear').onclick = () => { if ($('#txIn').value) txUndoStack.push($('#txIn').value); $('#txIn').value = ''; txRender(); };
 $('#txIn').value = store.get('text', '');
-
-/* ---------- SEQUENCE ---------- */
-const SQ_EXAMPLES = [
-  '>example_dna  GFP-like ORF with an EcoRI site\nGAATTCGCCACCATGGTGAGCAAGGGCGAGGAGCTGTTCACCGGGGTGGTGCCCATCCTGGTCGAGCTGGACGGCGACGTAAACGGCCACAAGTTCAGCGTGTCCGGCGAGGGCGAGGGCGATGCCACCTACGGCAAGCTGACCCTGAAGTTCATCTGCACCACCGGCAAGCTGCCCGTGCCCTGGCCCACCCTCGTGACCACCCTGACCTACGGCGTGCAGTGCTTCAGCCGCTACCCCGACCACATGAAGCAGCACGACTTCTTCAAGTCCGCCATGCCCGAAGGCTACGTCCAGGAGCGCACCATCTTCTTCAAGGACGACGGCAACTACAAGACCCGCGCCGAGGTGAAGTTCGAGGGCGACACCCTGGTGAACCGCATCGAGCTGAAGGGCATCGACTTCAAGGAGGACGGCAACATCCTGGGGCACAAGCTGGAGTACAACTACAACAGCCACAACGTCTATATCATGGCCGACAAGCAGAAGAACGGCATCAAGGTGAACTTCAAGATCCGCCACAACATCGAGGACGGCAGCGTGCAGCTCGCCGACCACTACCAGCAGAACACCCCCATCGGCGACGGCCCCGTGCTGCTGCCCGACAACCACTACCTGAGCACCCAGTCCGCCCTGAGCAAAGACCCCAACGAGAAGCGCGATCACATGGTCCTGCTGGAGTTCGTGACCGCCGCCGGGATCACTCTCGGCATGGACGAGCTGTACAAGTAAGCGGCCGC',
-  '>ubiquitin  human, 76 aa\nMQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQQRLIFAGKQLEDGRTLSDYNIQKESTLHLVLRLRGG',
-  '>primer_F\nTGCACCACCGGCAAGCTGCC'
-];
-let sqEx = 0, sqCache = [];
-const NT_COL = { A: '#5aa469', C: '#4a7fc1', G: '#d1a03b', T: '#c8553d' };
-function sqRender() {
-  const text = $('#sqIn').value; if (text.length < 300000) store.set('seq', text);
-  const recs = LabCore.parseSeqInput(text), out = $('#sqOut'), motif = $('#sqMotif').value.trim();
-  sqCache = [];
-  if (!recs.length) { out.innerHTML = '<div class="hint">Nothing analysed yet. Paste a sequence above or click Example.</div>'; return; }
-  const shown = recs.slice(0, 20);
-  out.innerHTML = (recs.length > 20 ? `<div class="hint">${recs.length} records; showing the first 20.</div>` : '') + shown.map((r, ri) => {
-    const cls = LabCore.classify(r.seq), seq = r.seq;
-    let h = `<div class="seqrec"><h4>${esc(r.name.slice(0, 80))}<span class="tag ${cls.type === 'invalid' || cls.type === 'empty' ? 'bad' : ''}">${cls.type}</span><span class="muted small">${seq.length.toLocaleString('en-US')} ${cls.type === 'protein' ? 'aa' : cls.type === 'DNA' ? 'bp / nt' : cls.type === 'RNA' ? 'nt' : 'chars'}</span></h4>`;
-    if (r.gaps) h += `<div class="small muted">${r.gaps} gap characters (-/.) ignored.</div>`;
-    if (cls.type === 'empty') return h + '<div class="small muted">No sequence characters.</div></div>';
-    if (cls.type === 'invalid') return h + `<div class="err">Not a DNA, RNA or protein sequence: unexpected characters <b>${esc(cls.bad)}</b>.</div></div>`;
-    if (seq.length < 12) h += `<div class="small muted">Very short: type detection may be wrong.</div>`;
-    if (cls.type === 'protein') {
-      const p = LabCore.proteinStats(seq);
-      const comp = Object.entries(p.counts).filter(([k]) => k !== '*').sort((a, b) => b[1] - a[1]).slice(0, 8).map(([k, n]) => `${k} ${(100 * n / p.len).toFixed(1)}%`).join(' · ');
-      h += `<dl class="kv">
-        <dt>Length</dt><dd>${p.len} aa${p.startsM ? '' : ' <span class="muted">(does not start with M)</span>'}</dd>
-        <dt>Mass</dt><dd data-copy="${p.mw.toFixed(1)}" style="cursor:copy">${fmt(p.mw / 1000, 4)} kDa <span class="muted">(${p.mw.toFixed(1)} Da, average)</span></dd>
-        <dt>pI (estimate)</dt><dd>${isFinite(p.pI) ? p.pI.toFixed(2) : '—'} <span class="muted">· net charge at pH 7 ≈ ${p.charge7.toFixed(1)}</span></dd>
-        <dt>ε280</dt><dd>${p.epsOx.toLocaleString('en-US')} M⁻¹cm⁻¹${p.epsOx !== p.epsRed ? ` <span class="muted">(${p.epsRed.toLocaleString('en-US')} if Cys reduced)</span>` : ''} · A280 of 1 mg/mL ≈ ${p.abs01.toFixed(3)}</dd>
-        <dt>GRAVY</dt><dd>${isFinite(p.gravy) ? `${p.gravy.toFixed(3)} <span class="muted">(${p.gravy > 0 ? 'hydrophobic' : 'hydrophilic'} on average)</span>` : '—'}</dd>
-        <dt>N-glyc. motifs</dt><dd>${p.nGlyc} <span class="muted">(N-x-S/T, x ≠ P)</span></dd>
-        <dt>Composition</dt><dd>${comp}</dd>
-        ${p.internalStops ? `<dt>Warning</dt><dd class="err">${p.internalStops} internal stop (*)</dd>` : ''}
-        ${p.unknown ? `<dt>Note</dt><dd class="muted">${p.unknown} ambiguous residues counted as 110 Da</dd>` : ''}
-      </dl>`;
-    } else {
-      const rna = cls.type === 'RNA', st = LabCore.ntStats(seq), c = st.counts, tot = c.A + c.C + c.G + c.T || 1;
-      const rc = LabCore.revcomp(seq, rna);
-      const minAa = seq.length < 600 ? 20 : 50, orfs = LabCore.findOrfs(seq, minAa);
-      const prot = LabCore.translate(seq, 0);
-      sqCache.push({ id: `rc${ri}`, s: rc }, { id: `tr${ri}`, s: prot });
-      orfs.slice(0, 3).forEach((o, k) => sqCache.push({ id: `orf${ri}_${k}`, s: o.protein }));
-      const bars = ['A', 'C', 'G', 'T'].map(b => `<i style="width:${100 * c[b] / tot}%;background:${NT_COL[b]}" title="${rna && b === 'T' ? 'U' : b} ${(100 * c[b] / tot).toFixed(1)}%"></i>`).join('');
-      const tm = LabCore.tmBasic(seq);
-      h += `<dl class="kv">
-        <dt>Length</dt><dd>${seq.length.toLocaleString('en-US')} ${rna ? 'nt' : 'bp / nt'}${cls.mixedTU ? ' <span class="err">· contains both T and U</span>' : ''}</dd>
-        <dt>GC content</dt><dd><b>${isFinite(st.gc) ? st.gc.toFixed(1) + '%' : '—'}</b> <span class="muted">· A ${c.A} · C ${c.C} · G ${c.G} · ${rna ? 'U' : 'T'} ${c.T}${st.ambiguous ? ` · ambiguous ${st.ambiguous}` : ''}</span><div class="bars">${bars}</div></dd>
-        <dt>CpG</dt><dd>${st.cpg} <span class="muted">· observed/expected ${isFinite(st.cpgOE) ? st.cpgOE.toFixed(2) : '—'}</span></dd>
-        <dt>Longest run</dt><dd>${st.homopolymer.len} × ${rna && st.homopolymer.base === 'T' ? 'U' : st.homopolymer.base}${st.homopolymer.len >= 6 ? ' <span class="muted">(homopolymer: can cause sequencing / synthesis trouble)</span>' : ''}</dd>
-        <dt>MW</dt><dd>${seq.length <= 200 ? `${fmt(LabCore.oligoMW(seq, rna), 6)} g/mol <span class="muted">(single strand, from composition)</span>` : `${fmt(LabCore.naMW(rna ? 'rna' : 'ds', seq.length) / 1000, 4)} kDa <span class="muted">(${rna ? 'ssRNA' : 'dsDNA'}, average)</span>`}</dd>
-        ${seq.length <= 80 && !rna && isFinite(tm) ? `<dt>Tm (basic)</dt><dd>${tm.toFixed(1)} °C <span class="muted">(${seq.length < 14 ? 'Wallace 2(A+T)+4(G+C)' : '64.9 + 41(GC−16.4)/N'}; no salt correction; use a nearest-neighbour tool for real primer design)</span></dd>` : ''}
-      </dl>`;
-      h += `<div class="row small" style="margin-top:10px"><span class="muted">Reverse complement</span><button class="small ghost" data-sqc="rc${ri}">copy</button></div><div class="seqout" data-sqc="rc${ri}">${esc(rc.slice(0, 3000))}${rc.length > 3000 ? '…' : ''}</div>`;
-      h += `<div class="row small" style="margin-top:10px"><span class="muted">Translation, frame +1</span><button class="small ghost" data-sqc="tr${ri}">copy</button></div><div class="seqout" data-sqc="tr${ri}">${esc(prot.slice(0, 1000))}${prot.length > 1000 ? '…' : ''}</div>`;
-      h += `<div class="small" style="margin-top:10px"><span class="muted">ORFs (ATG → stop, ≥ ${minAa} aa, both strands):</span> ${orfs.length ? orfs.slice(0, 3).map((o, k) => `<div style="margin-top:3px">${o.aaLen} aa · strand ${o.strand} frame ${o.frame} · ${o.start.toLocaleString('en-US')}–${o.end.toLocaleString('en-US')}${o.complete ? '' : ' <span class="muted">(no stop before end)</span>'} <button class="small ghost" data-sqc="orf${ri}_${k}">copy protein</button></div>`).join('') + (orfs.length > 3 ? `<div class="muted">+ ${orfs.length - 3} shorter</div>` : '') : 'none found'}</div>`;
-      const sites = LabCore.restrictionSites(seq), cut = sites.filter(x => x.n), none = sites.filter(x => !x.n);
-      h += `<div class="small" style="margin-top:10px"><span class="muted">Restriction sites:</span> ${cut.length ? cut.map(x => `<b>${x.name}</b> ×${x.n} <span class="muted">(${x.pos.slice(0, 4).join(', ')}${x.n > 4 ? '…' : ''})</span>`).join(' · ') : 'none of the common ones'}
-        ${none.length ? `<details style="margin-top:4px"><summary>${none.length} enzymes do not cut</summary><span class="muted">${none.map(x => x.name).join(', ')}</span></details>` : ''}</div>`;
-    }
-    if (motif) {
-      const r2 = LabCore.findMotif(seq, motif, cls.type !== 'protein');
-      if (!r2 || r2.error) h += `<div class="err small" style="margin-top:8px">Motif: ${esc(r2 ? r2.error : 'empty')}</div>`;
-      else h += `<div class="small" style="margin-top:8px"><span class="muted">Motif “${esc(motif)}”:</span> <b>${r2.hits.length}${r2.capped ? '+' : ''}</b> hit${r2.hits.length === 1 ? '' : 's'} ${r2.hits.slice(0, 40).map(x => `<span class="mono">${x.pos}${cls.type === 'protein' ? '' : x.strand}</span>`).join(', ')}${r2.hits.length > 40 ? '…' : ''}</div>`;
-    }
-    return h + '</div>';
-  }).join('');
-}
-$('#sqOut').addEventListener('click', e => { const el = e.target.closest('[data-sqc]'); if (!el) return; const c = sqCache.find(x => x.id === el.dataset.sqc); if (c) copy(c.s); });
-let sqT; const sqLater = () => { clearTimeout(sqT); sqT = setTimeout(sqRender, 150); };
-$('#sqIn').addEventListener('input', sqLater); $('#sqMotif').addEventListener('input', sqLater);
-$('#sqExample').onclick = () => { $('#sqIn').value = SQ_EXAMPLES[sqEx++ % SQ_EXAMPLES.length]; sqRender(); };
-$('#sqClear').onclick = () => { $('#sqIn').value = ''; sqRender(); };
-$('#sqIn').value = store.get('seq', '');
 
 /* ---------- MASTER MIX ---------- */
 const MM_PRESETS = {
@@ -1899,10 +1540,11 @@ function tpRender() {
     return `<button data-t="${s.t}" title="night ${bad} · weekend ${wk} · early/late ${out2}">${tpWhen(p)} ${pad(p.h)}:${pad(p.mi)} · ${s.score === 0 ? 'no flags' : [bad && bad + ' night', wk && wk + ' weekend', out2 && out2 + ' early/late'].filter(Boolean).join(', ')}</button>`; }).join('');
 }
 function tpFromInputs() {
-  const [y, mo, d] = ($('#tpDate').value || '').split('-').map(Number), [h, mi] = ($('#tpTime').value || '').split(':').map(Number);
-  if (!y || isNaN(h)) return; TP.cut = zonedToUtc(LOCAL_TZ, y, mo, d, h, mi || 0).t; tpRender();
+  const [y, mo, d] = ($('#tpDate').value || '').split('-').map(Number), c = parseClock($('#tpTime').value);
+  if (!y || !c) { tpSyncInputs(); return; } TP.cut = zonedToUtc(LOCAL_TZ, y, mo, d, c.h, c.mi).t; tpSyncInputs(); tpRender();
 }
 $('#tpDate').addEventListener('change', tpFromInputs); $('#tpTime').addEventListener('change', tpFromInputs);
+$('#tpTime').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.blur(); });
 $('#tpNow').onclick = () => { TP.cut = Math.floor(Date.now() / 300000) * 300000; tpSyncInputs(); tpRender(); };
 $('#tpHours').addEventListener('input', () => { TP.hours = $('#tpHours').value; tpRender(); });
 $('#tpPresets').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; TP.hours = b.dataset.v; $('#tpHours').value = TP.hours; tpRender(); });
@@ -1920,46 +1562,73 @@ $('#tpHours').value = TP.hours;
     vulgaris: { body: '#c79d6c', dark: '#9b7448', tent: '#d3ad80', tl: 1.25, curl: 0.8, name: 'H. vulgaris' }
   };
   const SPK = Object.keys(SP);
-  const st = Object.assign({ eaten: 0, born: 0 }, store.get('hydraStats', {}));
+  // rules: a polyp catches shrimp only where a tentacle touches one; that tentacle pulls it to the mouth, then it
+  // goes to the stomach. The stomach holds MAX shrimp. Digestion starts once the polyp stops catching (or is
+  // full); while digesting it can't catch and its tentacles are shorter. Every digested shrimp grows the bud; a bud
+  // needs 2 × MAX shrimp. Uneaten shrimp die after LIFE s and sink; FOUL dead shrimp foul the water, which stops
+  // catching, digestion and budding until the tank is cleaned.
+  const MAX = 3, BUD_FOOD = 2 * MAX, DIGEST_S = 7, PAUSE_S = 3, LIFE_S = 45, FOUL = 8, MAXP = 12, SEGS = 9;
+  const st = Object.assign({ eaten: 0, born: 0, dirt: 0 }, store.get('hydraStats', {}));
   let W = 320, H = 200, dpr = 1, t = 0, last = 0, raf = 0, onScreen = true, dark = false, darkCheck = 0;
-  let polyps = [], food = [], bubbles = [], pebbles = [];
+  let polyps = [], food = [], bubbles = [], pebbles = [], debris = [], wasBad = false;
   const rnd = (a, b) => a + Math.random() * (b - a);
   const angDiff = (a, b) => { let d = a - b; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return d; };
-  function mk(x, sp, len) { return { x, sp, len: len || rnd(46, 66), lean: rnd(-0.22, 0.22), ph: rnd(0, 6.3), nt: sp === 'viridissima' ? 6 : 5 + (Math.random() * 3 | 0), c: 0, pokeT: 0, fed: 0, feeds: 0, bud: null, drop: null }; }
+  const fouled = () => st.dirt >= FOUL;
+  function mk(x, sp, len) {
+    const nt = sp === 'viridissima' ? 6 : 5 + (Math.random() * 3 | 0);
+    return { x, sp, len: len || rnd(46, 66), lean: rnd(-0.22, 0.22), ph: rnd(0, 6.3), nt, c: 0, pokeT: 0, ret: Array(nt).fill(1), hold: Array(nt).fill(null),
+      stom: 0, dig: 0, digesting: false, lastIn: 99, growth: 0, short: 0, bud: null, budG: 0, drop: null };
+  }
   function load() {
     const s = store.get('hydraPolyps', null);
-    polyps = (s && s.length ? s : [{ x: 0.3, sp: 'oligactis' }, { x: 0.7, sp: 'viridissima' }]).map(p => Object.assign(mk(p.x, p.sp, p.len), { feeds: p.feeds || 0 }));
+    polyps = (s && s.length ? s : [{ x: 0.3, sp: 'oligactis' }, { x: 0.7, sp: 'viridissima' }]).map(p => {
+      const q = Object.assign(mk(p.x, p.sp, p.len), { stom: Math.min(MAX, p.stom || 0), growth: Math.min(BUD_FOOD, p.growth ?? p.feeds ?? 0) });
+      if (q.growth >= 1) { q.bud = { side: p.budSide || (Math.random() < 0.5 ? -1 : 1) }; q.budG = q.growth / BUD_FOOD; }
+      q.digesting = q.stom > 0; return q;
+    });
   }
-  const save = () => { store.set('hydraPolyps', polyps.map(p => ({ x: p.x, sp: p.sp, len: p.len, feeds: p.feeds }))); store.set('hydraStats', st); stats(); };
-  function stats() { const sp = [...new Set(polyps.map(p => SP[p.sp].name))].join(', '); $('#hyStats').textContent = `${polyps.length} polyp${polyps.length === 1 ? '' : 's'} · ${st.eaten} fed · ${st.born} bud${st.born === 1 ? '' : 's'}`; $('#hyStats').title = sp; }
+  const save = () => {
+    store.set('hydraPolyps', polyps.map(p => ({ x: p.x, sp: p.sp, len: p.len, stom: p.stom, growth: p.growth, budSide: p.bud ? p.bud.side : 0 })));
+    store.set('hydraStats', st); stats();
+  };
+  function stats() {
+    const sp = [...new Set(polyps.map(p => SP[p.sp].name))].join(', ');
+    $('#hyStats').textContent = `${polyps.length} polyp${polyps.length === 1 ? '' : 's'} · ${st.eaten} eaten · ${st.born} bud${st.born === 1 ? '' : 's'}` +
+      (fouled() ? ' · water fouled: clean the tank' : st.dirt ? ` · ${st.dirt} dead shrimp` : '');
+    $('#hyStats').title = sp; $('#hyStats').style.color = fouled() ? 'var(--warn)' : '';
+    $('#hyClean').className = fouled() ? 'small primary' : 'small ghost';
+  }
   function resize() {
     const r = cv.getBoundingClientRect(); dpr = window.devicePixelRatio || 1; W = Math.max(200, r.width || 320); H = r.height || 200;
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     pebbles = Array.from({ length: Math.round(W / 6) }, () => ({ x: rnd(0, W), y: rnd(H - 12, H - 2), r: rnd(1, 2.6), s: rnd(-0.08, 0.08) }));
+    debris = Array.from({ length: st.dirt }, (_, i) => debris[i] || { x: rnd(8, W - 8), a: rnd(0, 3) });
   }
   const floorY = () => H - 13;
   function geom(p) {
     const fx = p.x * W, fy = p.drop ? p.drop.y : floorY();
     const sway = p.lean + Math.sin(t * 0.5 + p.ph) * 0.13 + Math.sin(t * 1.3 + p.ph * 2) * 0.04 + (p.drop ? Math.sin(t * 3) * 0.4 : 0);
-    const L = p.len * (1 - 0.72 * p.c);
-    return { fx, fy, sway, L, w: 5 + p.c * 6 + Math.min(p.fed, 1.5) * 2.5,
+    const L = p.len * (1 - 0.72 * p.c), full = Math.min(1.5, p.stom * 0.5);
+    return { fx, fy, sway, L, w: 5 + p.c * 6 + full * 2.5,
       hx: fx + Math.sin(sway) * L, hy: fy - Math.cos(sway) * L,
       cx: fx + Math.sin(sway * 0.3) * L * 0.55, cy: fy - Math.cos(sway * 0.3) * L * 0.55 };
   }
   const qp = (g, u) => ({ x: (1 - u) * (1 - u) * g.fx + 2 * (1 - u) * u * g.cx + u * u * g.hx, y: (1 - u) * (1 - u) * g.fy + 2 * (1 - u) * u * g.cy + u * u * g.hy });
+  const holding = p => p.hold.filter(Boolean).length + food.filter(f => f.st === 'ingest' && f.by === p).length;
+  const canCatch = p => !fouled() && !p.digesting && !p.drop && p.c < 0.5 && p.stom + holding(p) < MAX;
   function tentacles(p, g) {
-    const sp = SP[p.sp], TL = p.len * sp.tl * (1 - 0.88 * p.c), lines = [];
+    const sp = SP[p.sp], TL = p.len * sp.tl * (1 - 0.88 * p.c) * (1 - 0.35 * p.short), lines = [];
     let target = null, bd = 1e9;
-    for (const f of food) if (f.st === 'free') { const d = Math.hypot(f.x - g.hx, f.y - g.hy); if (d < TL * 1.1 && d < bd) { bd = d; target = f; } }
+    if (canCatch(p)) for (const f of food) if (f.st === 'free') { const d = Math.hypot(f.x - g.hx, f.y - g.hy); if (d < TL * 1.1 && d < bd) { bd = d; target = f; } }
     const ta = target ? Math.atan2(target.x - g.hx, -(target.y - g.hy)) : 0;
     for (let i = 0; i < p.nt; i++) {
       const rel = p.nt > 1 ? i / (p.nt - 1) - 0.5 : 0, a0 = g.sway + rel * 2.4, side = rel === 0 ? (i % 2 ? 1 : -1) : Math.sign(rel);
-      const wgt = target ? Math.max(0.15, 1 - Math.abs(angDiff(ta, a0)) / 1.6) : 0;
-      let x = g.hx, y = g.hy; const pts = [{ x, y }], segs = 9, sl = TL / segs;
-      for (let k = 1; k <= segs; k++) {
-        const s = k / segs;
+      const wgt = target && !p.hold[i] ? Math.max(0.15, 1 - Math.abs(angDiff(ta, a0)) / 1.6) : 0;
+      let x = g.hx, y = g.hy; const pts = [{ x, y }], sl = TL * p.ret[i] / SEGS;
+      for (let k = 1; k <= SEGS; k++) {
+        const s = k / SEGS;
         let a = a0 + side * s * sp.curl * (1 - 0.6 * p.c) + Math.sin(t * 1.3 + i * 1.9 + s * 3.2 + p.ph) * 0.32 * s;
-        if (target) a += angDiff(ta, a) * Math.min(0.9, wgt * 0.9 * s);
+        if (wgt) a += angDiff(ta, a) * Math.min(0.9, wgt * 0.9 * s);
         x += Math.sin(a) * sl; y -= Math.cos(a) * sl;
         if (y > floorY() - 1) y = floorY() - 1;
         pts.push({ x, y });
@@ -1969,7 +1638,7 @@ $('#tpHours').value = TP.hours;
     return lines;
   }
   function addFood(x, y, n = 3) {
-    for (let i = 0; i < n && food.length < 45; i++) food.push({ x: Math.max(6, Math.min(W - 6, x + rnd(-14, 14))), y: Math.max(8, Math.min(floorY() - 20, y + rnd(-8, 8))), vx: rnd(-20, 20), vy: rnd(5, 25), st: 'free', kick: rnd(0, 0.4), ph: rnd(0, 6), ty: rnd(H * 0.3, floorY() - 25) });
+    for (let i = 0; i < n && food.length < 45; i++) food.push({ x: Math.max(6, Math.min(W - 6, x + rnd(-14, 14))), y: Math.max(8, Math.min(floorY() - 20, y + rnd(-8, 8))), vx: rnd(-20, 20), vy: rnd(5, 25), st: 'free', age: 0, kick: rnd(0, 0.4), ph: rnd(0, 6), ty: rnd(H * 0.3, floorY() - 25) });
     ensure();
   }
   function update(dt) {
@@ -1977,45 +1646,84 @@ $('#tpHours').value = TP.hours;
     bubbles = bubbles.filter(b => (b.y -= b.s * dt, b.x += Math.sin(t * 3 + b.r * 9) * 0.25, b.y > -5));
     for (const f of food) {
       if (f.st === 'free') {
+        f.age += dt;
+        if (f.age > LIFE_S) { f.st = 'dying'; f.vy = 0; continue; }
         f.kick -= dt;
         if (f.kick <= 0) { f.kick = rnd(0.25, 0.75); const a = rnd(0, 6.283); f.vx += Math.cos(a) * 42; f.vy += Math.sin(a) * 42; if (Math.random() < 0.15) f.ty = rnd(H * 0.3, floorY() - 25); }
         const damp = Math.exp(-2.6 * dt); f.vx *= damp; f.vy *= damp; f.vy += ((f.ty ?? H * 0.5) - f.y) * 0.5 * dt;
         f.x += f.vx * dt; f.y += f.vy * dt;
         if (f.x < 4) { f.x = 4; f.vx = Math.abs(f.vx); } if (f.x > W - 4) { f.x = W - 4; f.vx = -Math.abs(f.vx); }
         if (f.y < 6) { f.y = 6; f.vy = Math.abs(f.vy); } if (f.y > floorY() - 3) { f.y = floorY() - 3; f.vy = -Math.abs(f.vy); }
+      } else if (f.st === 'dying') { // sinks, then lies on the floor as debris
+        f.vy = Math.min(22, f.vy + 30 * dt); f.y += f.vy * dt;
+        if (f.y >= floorY() - 1.5) { f.st = 'gone'; st.dirt++; debris.push({ x: f.x, a: rnd(0, 3) }); if (st.dirt === FOUL) toast('The water is fouled: clean the tank'); save(); }
       }
     }
+    const bad = fouled();
+    if (bad !== wasBad) { wasBad = bad; stats(); }
     for (const p of polyps) {
       if (p.drop) { p.drop.vy += 70 * dt; p.drop.y += p.drop.vy * dt; if (p.drop.y >= floorY()) { p.drop = null; save(); } }
       if (Math.random() < dt / 150) p.pokeT = rnd(0.6, 1.2);
       if (p.pokeT > 0) p.pokeT -= dt;
-      const target = p.pokeT > 0 ? 1 : 0;
-      p.c += (target - p.c) * Math.min(1, (target > p.c ? 9 : 0.45) * dt);
-      p.fed = Math.max(0, p.fed - dt / 40);
+      const want = p.pokeT > 0 ? 1 : bad ? 0.45 : 0;
+      p.c += (want - p.c) * Math.min(1, (want > p.c ? 9 : 0.45) * dt);
+      p.lastIn += dt;
+      // digestion: starts when full or a few seconds after the last shrimp went in
+      if (!p.digesting && p.stom > 0 && !holding(p) && (p.lastIn > PAUSE_S || p.stom >= MAX)) p.digesting = true;
+      if (p.digesting && !bad) {
+        p.dig += dt / DIGEST_S;
+        if (p.dig >= 1) {
+          p.dig = 0; p.stom--; p.growth = Math.min(BUD_FOOD, p.growth + 1);
+          if (!p.bud) p.bud = { side: Math.random() < 0.5 ? -1 : 1 };
+          if (p.stom <= 0) { p.stom = 0; p.digesting = false; }
+          save();
+        }
+      }
+      p.short += ((p.digesting ? 1 : 0) - p.short) * Math.min(1, 1.5 * dt);
+      for (let i = 0; i < p.nt; i++) if (!p.hold[i]) p.ret[i] = Math.min(1, p.ret[i] + 0.35 * dt);
       const g = geom(p);
       p._g = g; p._t = tentacles(p, g);
-      if (p.c < 0.5) for (const line of p._t) for (let k = 3; k < line.length; k++) for (const f of food) if (f.st === 'free' && Math.abs(f.x - line[k].x) < 7 && Math.abs(f.y - line[k].y) < 7) { f.st = 'caught'; f.by = p; }
+      // catching: a free shrimp touching a tentacle sticks to it; the tentacle then shortens to pull it in
+      if (canCatch(p)) for (let i = 0; i < p.nt && canCatch(p); i++) {
+        if (p.hold[i]) continue;
+        const line = p._t[i];
+        outer: for (let k = 3; k < line.length; k++) for (const f of food) if (f.st === 'free' && Math.abs(f.x - line[k].x) < 6 && Math.abs(f.y - line[k].y) < 6) {
+          f.st = 'held'; f.by = p; f.ti = i; p.hold[i] = f; p.ret[i] = Math.max(0.15, p.ret[i] * k / SEGS); break outer;
+        }
+      }
       if (p.bud) {
-        p.bud.g += dt / 22;
-        if (p.bud.g >= 1 && polyps.length < 12) {
+        p.budG += (p.growth / BUD_FOOD - p.budG) * Math.min(1, dt * 0.6);
+        if (p.growth >= BUD_FOOD && p.budG > 0.985 && polyps.length < MAXP && !bad) {
           const b = qp(g, 0.42), nx = Math.max(0.04, Math.min(0.96, (b.x + p.bud.side * 26) / W));
           const child = mk(nx, p.sp, p.len * rnd(0.8, 0.95)); child.drop = { y: b.y, vy: 0 }; child.c = 0.6;
-          polyps.push(child); p.bud = null; st.born++; save(); toast('A bud detached!');
-        } else if (p.bud.g >= 1) p.bud = null;
+          polyps.push(child); p.bud = null; p.budG = 0; p.growth = 0; st.born++; save(); toast('A bud detached!');
+        }
       }
     }
-    for (const f of food) if (f.st === 'caught') {
-      const g = f.by._g; if (!g) continue;
-      f.x += (g.hx - f.x) * Math.min(1, dt * 2.2); f.y += (g.hy - f.y) * Math.min(1, dt * 2.2);
-      if (Math.hypot(g.hx - f.x, g.hy - f.y) < 3) {
-        f.st = 'gone'; const p = f.by; p.fed = Math.min(2, p.fed + 1); p.feeds++; st.eaten++;
-        if (p.feeds >= 4 && !p.bud && polyps.length < 12) { p.bud = { g: 0, side: Math.random() < 0.5 ? -1 : 1 }; p.feeds -= 4; }
-        save();
+    for (const f of food) {
+      if (f.st === 'held') {
+        const p = f.by, tip = p._t[f.ti][SEGS];
+        f.x = tip.x; f.y = tip.y;
+        p.ret[f.ti] -= 0.5 * dt;
+        if (p.ret[f.ti] <= 0.12) { p.hold[f.ti] = null; f.st = 'ingest'; f.k = 0; f.sx = f.x; f.sy = f.y; }
+      } else if (f.st === 'ingest') { // into the mouth, then down to the stomach
+        const g = f.by._g; f.k += dt * 1.4;
+        const u = Math.min(1, f.k), m = qp(g, 1 - 0.38 * Math.max(0, u * 1.6 - 0.6));
+        const w = Math.min(1, u * 2.5); f.x = f.sx + (m.x - f.sx) * w; f.y = f.sy + (m.y - f.sy) * w;
+        if (f.k >= 1) { f.st = 'gone'; const p = f.by; p.stom = Math.min(MAX, p.stom + 1); p.lastIn = 0; st.eaten++; save(); }
       }
     }
     food = food.filter(f => f.st !== 'gone');
   }
   function line(pts, w, col) { ctx.strokeStyle = col; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); for (let k = 1; k < pts.length - 1; k++) { const mx = (pts[k].x + pts[k + 1].x) / 2, my = (pts[k].y + pts[k + 1].y) / 2; ctx.quadraticCurveTo(pts[k].x, pts[k].y, mx, my); } const e = pts[pts.length - 1]; ctx.lineTo(e.x, e.y); ctx.stroke(); }
+  function shrimp(f) {
+    const a = Math.atan2(f.vy || 0, f.vx || 1), deadish = f.st === 'dying';
+    ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.st === 'free' ? a : f.st === 'dying' ? 1.2 : t * 4);
+    ctx.fillStyle = deadish ? '#9c8a74' : '#e8843a'; ctx.beginPath(); ctx.ellipse(0, 0, 2.8, 1.8, 0, 0, 6.283); ctx.fill();
+    ctx.fillStyle = '#3b2412'; ctx.beginPath(); ctx.arc(2.1, 0, 0.7, 0, 6.283); ctx.fill();
+    if (!deadish) { ctx.strokeStyle = 'rgba(232,132,58,.8)'; ctx.lineWidth = 0.8; const fl = Math.sin(t * 18 + f.ph) * 1.2; ctx.beginPath(); ctx.moveTo(1, -1); ctx.lineTo(2.5, -3.5 + fl); ctx.moveTo(1, 1); ctx.lineTo(2.5, 3.5 - fl); ctx.stroke(); }
+    ctx.restore();
+  }
   function draw() {
     if (t > darkCheck) { darkCheck = t + 1; const bg = getComputedStyle(document.body).backgroundColor.match(/\d+/g) || [255]; dark = (+bg[0] + +(bg[1] || 0) + +(bg[2] || 0)) / 3 < 100; }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -2028,34 +1736,30 @@ $('#tpHours').value = TP.hours;
     for (let i = 0; i < 4; i++) { const bx = 10 + i * 6, hh = 70 + i * 18; ctx.strokeStyle = dark ? '#2f5a35' : '#79ad6b'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(bx, floorY() + 2); ctx.quadraticCurveTo(bx + Math.sin(t * 0.7 + i) * 10, floorY() - hh / 2, bx + Math.sin(t * 0.6 + i * 2) * 14, floorY() - hh); ctx.stroke(); }
     ctx.fillStyle = dark ? '#3a3426' : '#dccca5'; ctx.fillRect(0, floorY(), W, H - floorY());
     for (const pb of pebbles) { ctx.fillStyle = dark ? 'rgba(0,0,0,.25)' : 'rgba(120,95,60,.28)'; ctx.beginPath(); ctx.ellipse(pb.x, pb.y, pb.r * 1.3, pb.r, pb.s, 0, 6.283); ctx.fill(); }
+    for (const d of debris) { ctx.fillStyle = dark ? '#6b5e4c' : '#8f7b62'; ctx.beginPath(); ctx.ellipse(d.x, floorY() - 1, 2.8, 1.5, d.a, 0, 6.283); ctx.fill(); }
     ctx.strokeStyle = dark ? 'rgba(200,240,255,.35)' : 'rgba(255,255,255,.9)'; ctx.lineWidth = 1;
     for (const b of bubbles) { ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, 6.283); ctx.stroke(); }
     for (const p of polyps) {
       const g = p._g || geom(p), sp = SP[p.sp], tl = p._t || tentacles(p, g);
       ctx.lineCap = 'round';
-      if (p.bud) {
-        const b = qp(g, 0.42), a = g.sway + p.bud.side * 1.0, bl = p.len * 0.42 * p.bud.g;
+      if (p.bud && p.budG > 0.03) {
+        const bg2 = p.budG, b = qp(g, 0.42), a = g.sway + p.bud.side * 1.0, bl = p.len * 0.42 * bg2;
         const bx = b.x + Math.sin(a) * bl, by = b.y - Math.cos(a) * bl;
-        ctx.strokeStyle = sp.body; ctx.lineWidth = 2.5 + 2.5 * p.bud.g; ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(bx, by); ctx.stroke();
-        if (p.bud.g > 0.45) for (let i = 0; i < 4; i++) { const ta = a + (i / 3 - 0.5) * 2.2, tl2 = 12 * (p.bud.g - 0.45) * 1.8; ctx.strokeStyle = sp.tent; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx + Math.sin(ta) * tl2, by - Math.cos(ta) * tl2); ctx.stroke(); }
+        ctx.strokeStyle = sp.body; ctx.lineWidth = 2.5 + 2.5 * bg2; ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(bx, by); ctx.stroke();
+        if (bg2 > 0.45) for (let i = 0; i < 4; i++) { const ta = a + (i / 3 - 0.5) * 2.2, tl2 = 12 * (bg2 - 0.45) * 1.8; ctx.strokeStyle = sp.tent; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx + Math.sin(ta) * tl2, by - Math.cos(ta) * tl2); ctx.stroke(); }
       }
       ctx.fillStyle = sp.dark; ctx.beginPath(); ctx.ellipse(g.fx, g.fy, 4 + p.c * 2, 2.2, 0, 0, 6.283); ctx.fill();
       ctx.strokeStyle = sp.body; ctx.lineWidth = g.w * 0.62; ctx.beginPath(); ctx.moveTo(g.fx, g.fy); ctx.quadraticCurveTo(g.cx, g.cy, g.hx, g.hy); ctx.stroke();
       const up = []; for (let k = 0; k <= 8; k++) up.push(qp(g, 0.35 + 0.65 * k / 8));
       line(up, g.w, sp.body);
-      if (p.fed > 0.05) { const m = qp(g, 0.62); ctx.fillStyle = `rgba(222,120,50,${Math.min(0.75, p.fed * 0.5)})`; ctx.beginPath(); ctx.ellipse(m.x, m.y, g.w * 0.45 + p.fed * 1.6, g.w * 0.3 + p.fed * 1.4, g.sway, 0, 6.283); ctx.fill(); }
+      const full = p.stom - (p.digesting ? p.dig : 0);
+      if (full > 0.05) { const m = qp(g, 0.62); ctx.fillStyle = `rgba(222,120,50,${Math.min(0.8, 0.25 + full * 0.18)})`; ctx.beginPath(); ctx.ellipse(m.x, m.y, g.w * 0.3 + full * 1.3, g.w * 0.22 + full * 1.1, g.sway, 0, 6.283); ctx.fill(); }
       for (const tline of tl) line(tline, p.sp === 'oligactis' ? 1.1 : 1.4, sp.tent);
       ctx.fillStyle = sp.dark; ctx.beginPath(); ctx.arc(g.hx, g.hy, g.w * 0.42, 0, 6.283); ctx.fill();
     }
-    for (const f of food) {
-      const a = Math.atan2(f.vy, f.vx);
-      ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.st === 'caught' ? t * 4 : a);
-      ctx.fillStyle = '#e8843a'; ctx.beginPath(); ctx.ellipse(0, 0, 2.8, 1.8, 0, 0, 6.283); ctx.fill();
-      ctx.fillStyle = '#3b2412'; ctx.beginPath(); ctx.arc(2.1, 0, 0.7, 0, 6.283); ctx.fill();
-      ctx.strokeStyle = 'rgba(232,132,58,.8)'; ctx.lineWidth = 0.8; const fl = Math.sin(t * 18 + f.ph) * 1.2;
-      ctx.beginPath(); ctx.moveTo(1, -1); ctx.lineTo(2.5, -3.5 + fl); ctx.moveTo(1, 1); ctx.lineTo(2.5, 3.5 - fl); ctx.stroke();
-      ctx.restore();
-    }
+    for (const f of food) shrimp(f);
+    const murk = Math.min(1, st.dirt / FOUL);
+    if (murk > 0) { ctx.fillStyle = `rgba(${dark ? '70,62,30' : '128,118,60'},${0.32 * murk})`; ctx.fillRect(0, 0, W, floorY()); }
   }
   function frame(ts) {
     const dt = last ? Math.min(0.05, (ts - last) / 1000) : 0.016; last = ts; t += dt;
@@ -2073,33 +1777,44 @@ $('#tpHours').value = TP.hours;
     addFood(x, y, 3);
   });
   $('#hyFeed').onclick = () => { for (let i = 0; i < 3; i++) addFood(rnd(20, W - 20), rnd(10, 40), 2); };
+  $('#hyClean').onclick = () => { food = food.filter(f => f.st === 'held' || f.st === 'ingest'); debris = []; st.dirt = 0; save(); ensure(); toast('Tank cleaned'); };
   $('#hyAdd').onclick = () => {
-    if (polyps.length >= 12) { toast('The tank is full'); return; }
+    if (polyps.length >= MAXP) { toast('The tank is full'); return; }
     const sp = SPK[polyps.length % SPK.length], p = mk(rnd(0.08, 0.92), sp); p.drop = { y: 10, vy: 0 }; p.c = 0.7;
     polyps.push(p); save(); ensure(); toast('Added ' + SP[sp].name);
   };
-  $('#hyReset').onclick = () => { if (!confirm('Reset the tank (polyps and counters)?')) return; store.set('hydraPolyps', null); st.eaten = 0; st.born = 0; food = []; load(); save(); ensure(); };
+  $('#hyReset').onclick = () => { if (!confirm('Reset the tank (polyps and counters)?')) return; store.set('hydraPolyps', null); st.eaten = 0; st.born = 0; st.dirt = 0; food = []; debris = []; load(); save(); ensure(); };
   try { new IntersectionObserver(es => { onScreen = es[0].isIntersecting; ensure(); }).observe(cv); } catch {}
   document.addEventListener('visibilitychange', ensure);
   window.addEventListener('resize', () => { resize(); ensure(); });
   load(); resize(); stats(); ensure();
+  window.__tank = { get polyps() { return polyps; }, get food() { return food; }, st, addFood, fouled }; // for tests
 })();
 
 /* ---------- main loop ---------- */
 function updateTitle() {
+  const ring = T.find(t => t.state === 'ringing'); if (ring) { document.title = `⏰ ${ring.label}`; return; } // a ringing timer wins: it is what you need to see from another tab
   if (P.st.running) { document.title = `${mmss(pRemaining(), false)} · ${POMO_LABEL[P.st.mode]}`; return; }
-  const ring = T.find(t => t.state === 'ringing'); if (ring) { document.title = `⏰ ${ring.label}`; return; }
   const run = T.filter(t => t.state === 'running').sort((a, b) => a.endAt - b.endAt)[0];
   document.title = run ? `${mmss(tRem(run))} · ${run.label}` : 'Tubeling';
 }
-function loop() { pTick(); tTick(); tzRender(false); updateTitle(); }
+function soundHint() {
+  const need = T.some(t => t.state === 'running') || (P.st.running && P.s.sound), on = actx && actx.state === 'running';
+  $('#sndBtn').hidden = !need || !!on;
+}
+$('#sndBtn').onclick = () => { audio(); setTimeout(() => { syncSched(); soundHint(); }, 100); };
+let lastSync = 0;
+function loop() {
+  pTick(); tTick(); tzRender(false); updateTitle(); soundHint();
+  if (Date.now() - lastSync > 5000) { lastSync = Date.now(); syncSched(); } // self-check: every running alarm is scheduled
+}
 setInterval(loop, 250);
 document.addEventListener('visibilitychange', loop);
 
 /* ---------- init ---------- */
-pRender(); tRender(); cRender(); uUpdate(); ccUpdate(); wUpdate(); rUpdate(); dUpdate(); sUpdate(); naUpdate();
-swRender(); txRender(); sqRender(); mmRows(); mmCompute(); mmPlate(); tpSyncInputs(); tpRender();
-setTab(store.get('tab', 'units'));
+pRender(); tRender(); cRender(); ccUpdate(); wUpdate(); rUpdate();
+swRender(); txRender(); mmRows(); mmCompute(); mmPlate(); tpSyncInputs(); tpRender();
+{ const t = store.get('tab', 'conc'); setTab($(`#tabs button[data-tab="${t}"]`) ? t : 'conc'); }
 loop();
 </script>
 </body>
