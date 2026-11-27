@@ -13,19 +13,20 @@ Settings are stored in the browser and should survive reloading the page.
 
 Left column:
 
-- **Pomodoro**: focus / short break / long break cycle with optional auto-start, sound and desktop notifications.
-- **Countdown timers**: several at once, with labels; durations like `10`, `1:30`, `90s`, `2h`; click a name to rename it. Finished timers keep beeping until dismissed and keep running across reloads.
-- **Stopwatch** with laps.
-- **Counter**: one or more categories, counted with the keyboard. Can also count cells square by square in a Neubauer improved or Fuchs-Rosenthal chamber (cells/mL, viability).
+- **Timers**: one card with tabs; they run in parallel.
+  - **Pomodoro**: focus / short break / long break cycle with optional auto-start, sound and desktop notifications.
+  - **Countdown timers**: several at once, with labels; durations like `10`, `1:30`, `90s`, `2h`; click a name to rename it. Finished timers keep beeping until dismissed and keep running across reloads.
+  - **Stopwatch** with laps.
 - **Hydra tank**: a small easter egg. 
 
 Tabs:
+- **Text**: character/word/line counts and clean-up operations (join lines, remove whitespace or empty lines, unique lines, upper/lower case, FASTA reformatting).
+- **Counter**: one or more categories, counted with the keyboard. Can also count cells square by square in a Neubauer improved or Fuchs-Rosenthal chamber (cells/mL, viability).
+- **Time zones**: compare zones for any date and time, with daylight-saving changes and an hour-by-hour planner.
+- **Timepoints**: clock times of sampling points after a cut/amputation, flagged when they fall at night, on a weekend or outside working hours, plus suggested cut times for the next 7 days.
 - **Concentration**: molar ↔ mass concentration, mass to weigh for a solution (never less than 10 mg; suggests a stock to dilute instead), concentration from mass and volume; list of common reagents with formula weights.
 - **Centrifuge**: rpm ↔ × g for a given rotor radius.
 - **Master mix**: per-reaction and total volumes with overage, presets for common PCR/qPCR set-ups, copyable table.
-- **Text**: character/word/line counts and clean-up operations (join lines, remove whitespace or empty lines, unique lines, upper/lower case, FASTA reformatting).
-- **Time zones**: compare zones for any date and time, with daylight-saving changes and an hour-by-hour planner.
-- **Timepoints**: clock times of sampling points after a cut/amputation, flagged when they fall at night, on a weekend or outside working hours, plus suggested cut times for the next 7 days.
 
 ## Keyboard shortcuts
 
@@ -39,7 +40,7 @@ Tabs:
 | P | start / pause the pomodoro |
 | Enter | next square (cell counting) |
 
-Enter adds a timer from the timer fields and adds a zone from the time-zone field.
+Counter keys work while the Counter tab is open. Enter adds a timer from the timer fields and adds a zone from the time-zone field.
 ## Notes
 
 - The calculations are aids, no guarantees. Check results against your kit protocol, the reagent bottle (formula weights differ between salt and hydrate forms) and your rotor manual.
