@@ -38,6 +38,7 @@ header h1{font-size:24px;font-weight:700;margin:0;letter-spacing:-.01em;font-fam
 header .spacer{flex:1}
 main{max-width:1360px;margin:0 auto;padding:10px 20px 30px;display:grid;grid-template-columns:minmax(300px,390px) minmax(0,1fr);gap:16px;align-items:start}
 .col{display:flex;flex-direction:column;gap:16px;min-width:0}
+@media (max-width:900px){.col{display:contents}#hydra{order:3}}
 @media (max-width:900px){main{grid-template-columns:1fr;padding:8px 16px 24px} header{padding:14px 16px 4px;flex-wrap:nowrap;gap:4px} header .ghost{padding:4px 5px;white-space:nowrap;font-size:12px} header h1{font-size:20px} .brand svg{width:30px;height:30px}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
 .card-h{display:flex;align-items:center;gap:8px;margin-bottom:12px}
@@ -76,6 +77,18 @@ details[open] summary{margin-bottom:10px}
 .tabs button.on{color:var(--ink);font-weight:600;background:linear-gradient(var(--y) 0 33.3%,var(--o) 33.3% 66.6%,var(--r) 66.6%) bottom/100% 4px no-repeat}
 .pane{display:none;container-type:inline-size}
 .pane.on{display:block}
+.tpane{display:none}
+.tpane.on{display:block}
+#ttabs{margin-bottom:12px}
+#ttabs button{padding:8px 10px}
+.tst{font-size:11.5px;font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums;margin-left:5px}
+.tst:empty{display:none}
+.tst.ring{color:var(--warn);font-weight:650}
+.ctr-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:16px 28px}
+.ctr-wrap.cell{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}
+.ctr-wrap.cell #cCell{border-left:1px solid var(--line);padding-left:24px}
+.pane .ctr-main .big{font-size:84px}
+@container (max-width:620px){.ctr-wrap.cell{grid-template-columns:minmax(0,1fr)}.ctr-wrap.cell #cCell{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:12px}}
 
 /* pomodoro */
 .pomo-body{display:flex;flex-direction:column;align-items:center;gap:12px}
@@ -247,94 +260,65 @@ tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
 
 <main>
 <div class="col">
-  <!-- POMODORO -->
-  <section class="card" id="pomo">
-    <div class="card-h"><h2>Pomodoro</h2><span class="sp"></span><span class="small muted" id="pomoToday"></span></div>
-    <div class="pomo-body">
-      <div class="seg" id="pomoModes">
-        <button data-mode="focus">Focus</button><button data-mode="short">Short break</button><button data-mode="long">Long break</button>
+  <!-- TIMERS: pomodoro, countdowns and stopwatch run independently; the tabs only switch what is shown -->
+  <section class="card" id="clock">
+    <div class="tabs" id="ttabs">
+      <button data-ttab="pomo">Pomodoro<span class="tst" id="tsPomo"></span></button>
+      <button data-ttab="cd">Countdown<span class="tst" id="tsCd"></span></button>
+      <button data-ttab="sw">Stopwatch<span class="tst" id="tsSw"></span></button>
+    </div>
+    <div class="tpane" data-tpane="pomo" id="pomo">
+      <div class="small muted" id="pomoToday" style="text-align:right;min-height:1em;margin:-6px 0 2px"></div>
+      <div class="pomo-body">
+        <div class="seg" id="pomoModes">
+          <button data-mode="focus">Focus</button><button data-mode="short">Short break</button><button data-mode="long">Long break</button>
+        </div>
+        <div class="ring" id="pomoRing">
+          <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="51" fill="none" stroke-width="13"/><circle class="bar b1" cx="60" cy="60" r="56" fill="none" stroke-width="3.4" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/><circle class="bar b2" cx="60" cy="60" r="51" fill="none" stroke-width="3.4" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/><circle class="bar b3" cx="60" cy="60" r="46" fill="none" stroke-width="3.4" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/></svg>
+          <div class="lbl"><div class="t" id="pomoTime">25:00</div><div class="m" id="pomoEnds">&nbsp;</div></div>
+        </div>
+        <div class="row">
+          <button class="primary" id="pomoStart" title="Start / pause (P)" style="min-width:90px">Start</button>
+          <button id="pomoReset">Reset</button>
+          <button id="pomoSkip" title="Skip to the next phase">Skip</button>
+        </div>
+        <div class="dots" id="pomoDots"></div>
       </div>
-      <div class="ring" id="pomoRing">
-        <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="51" fill="none" stroke-width="13"/><circle class="bar b1" cx="60" cy="60" r="56" fill="none" stroke-width="3.4" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/><circle class="bar b2" cx="60" cy="60" r="51" fill="none" stroke-width="3.4" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/><circle class="bar b3" cx="60" cy="60" r="46" fill="none" stroke-width="3.4" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/></svg>
-        <div class="lbl"><div class="t" id="pomoTime">25:00</div><div class="m" id="pomoEnds">&nbsp;</div></div>
-      </div>
+      <details style="margin-top:12px">
+        <summary>Settings</summary>
+        <div class="grid2">
+          <label>Focus (min)<input type="number" min="1" max="180" data-ps="focus"></label>
+          <label>Short break (min)<input type="number" min="1" max="60" data-ps="short"></label>
+          <label>Long break (min)<input type="number" min="1" max="90" data-ps="long"></label>
+          <label>Long break every<input type="number" min="2" max="12" data-ps="every"></label>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px">
+          <label class="chk"><input type="checkbox" data-ps="autoBreak"> Start breaks automatically</label>
+          <label class="chk"><input type="checkbox" data-ps="autoFocus"> Start focus automatically after a break</label>
+          <label class="chk"><input type="checkbox" data-ps="sound"> Sound</label>
+          <label class="chk"><input type="checkbox" data-ps="notify"> Desktop notification</label>
+        </div>
+      </details>
+    </div>
+    <div class="tpane" data-tpane="cd" id="timers">
       <div class="row">
-        <button class="primary" id="pomoStart" title="Start / pause (P)" style="min-width:90px">Start</button>
-        <button id="pomoReset">Reset</button>
-        <button id="pomoSkip" title="Skip to the next phase">Skip</button>
+        <input id="tmLabel" placeholder="Label (e.g. wash 2)" style="flex:1 1 120px">
+        <input id="tmDur" placeholder="10, 1:30, 2h" style="width:92px" title="Minutes (10), m:ss (1:30), h:mm:ss, or with units: 90s, 15m, 2h">
+        <button class="primary" id="tmAdd">Add</button>
       </div>
-      <div class="dots" id="pomoDots"></div>
+      <div class="chips" style="margin-top:8px" id="tmPresets"></div>
+      <div id="tmList" style="margin-top:8px"></div>
+      <div class="row" id="tmClearRow" style="justify-content:flex-end;margin-top:6px"><button class="ghost small" id="tmClear" title="Remove finished timers">Clear finished</button></div>
     </div>
-    <details style="margin-top:12px">
-      <summary>Settings</summary>
-      <div class="grid2">
-        <label>Focus (min)<input type="number" min="1" max="180" data-ps="focus"></label>
-        <label>Short break (min)<input type="number" min="1" max="60" data-ps="short"></label>
-        <label>Long break (min)<input type="number" min="1" max="90" data-ps="long"></label>
-        <label>Long break every<input type="number" min="2" max="12" data-ps="every"></label>
+    <div class="tpane" data-tpane="sw" id="stopwatch">
+      <div class="small muted" id="swSince" style="text-align:right;min-height:1em;margin:-6px 0 2px"></div>
+      <div class="sw-t" id="swT">00:00<small>.00</small></div>
+      <div class="row" style="justify-content:center;margin-top:10px">
+        <button class="primary" id="swGo" style="min-width:80px">Start</button>
+        <button id="swLap">Lap</button>
+        <button id="swReset">Reset</button>
       </div>
-      <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px">
-        <label class="chk"><input type="checkbox" data-ps="autoBreak"> Start breaks automatically</label>
-        <label class="chk"><input type="checkbox" data-ps="autoFocus"> Start focus automatically after a break</label>
-        <label class="chk"><input type="checkbox" data-ps="sound"> Sound</label>
-        <label class="chk"><input type="checkbox" data-ps="notify"> Desktop notification</label>
-      </div>
-    </details>
-  </section>
-
-  <!-- LAB TIMERS -->
-  <section class="card" id="timers">
-    <div class="card-h"><h2>Countdown timers</h2><span class="sp"></span><button class="ghost small" id="tmClear" title="Remove finished timers">Clear finished</button></div>
-    <div class="row">
-      <input id="tmLabel" placeholder="Label (e.g. wash 2)" style="flex:1 1 120px">
-      <input id="tmDur" placeholder="10, 1:30, 2h" style="width:92px" title="Minutes (10), m:ss (1:30), h:mm:ss, or with units: 90s, 15m, 2h">
-      <button class="primary" id="tmAdd">Add</button>
-    </div>
-    <div class="chips" style="margin-top:8px" id="tmPresets"></div>
-    <div id="tmList" style="margin-top:8px"></div>
-  </section>
-
-  <!-- STOPWATCH -->
-  <section class="card" id="stopwatch">
-    <div class="card-h"><h2>Stopwatch</h2><span class="sp"></span><span class="small muted" id="swSince"></span></div>
-    <div class="sw-t" id="swT">00:00<small>.00</small></div>
-    <div class="row" style="justify-content:center;margin-top:10px">
-      <button class="primary" id="swGo" style="min-width:80px">Start</button>
-      <button id="swLap">Lap</button>
-      <button id="swReset">Reset</button>
-    </div>
-    <div class="laps" id="swLaps"></div>
-  </section>
-
-  <!-- COUNTER -->
-  <section class="card" id="counter">
-    <div class="card-h"><h2>Counter</h2><span class="sp"></span>
-      <button class="ghost small" id="cUndo" title="Undo (Backspace)">Undo</button>
-      <button class="ghost small" id="cReset">Reset</button>
-    </div>
-    <div class="ctr-main" id="cMain" title="Click or press Space to count">
-      <div class="big" id="cBig">0</div>
-      <div class="nm" id="cName">Space to count</div>
-    </div>
-    <div id="cList"></div>
-    <div class="row" style="margin-top:8px;justify-content:space-between">
-      <button class="small" id="cAdd">+ Add category</button>
-      <span class="small muted" id="cTotal"></span>
-    </div>
-    <div class="row" style="margin-top:10px">
-      <label class="f" style="flex-direction:row;align-items:center;gap:6px"><span>Use for</span><select id="cMode" style="max-width:220px"></select></label>
-      <button class="ghost small" id="cInfo" title="Which squares to count" aria-expanded="false" hidden>?</button>
-    </div>
-    <div id="cCell" hidden>
-      <div class="cc-scheme" id="cScheme" hidden></div>
-      <div class="fields">
-        <label class="f"><span>Dilution factor</span><input id="cDil" class="w-s" inputmode="decimal" title="e.g. 2 for 1:1 with trypan blue"></label>
-        <label class="f"><span>Squares to count</span><input id="cTarget" class="w-s" inputmode="numeric"></label>
-        <button class="primary small" id="cNext" style="margin-bottom:4px" title="Save this square and start the next one (Enter)">Next square</button>
-      </div>
-      <div class="cc-sq" id="cSqList"></div>
-      <div class="answer" id="cRes" style="font-size:14px"></div>
-      <label class="chk" id="cViabRow" hidden><input type="checkbox" id="cViab"> first row = live, second = dead</label>
+      <div class="laps" id="swLaps"></div>
     </div>
   </section>
 
@@ -356,12 +340,48 @@ tr.bad td:first-child{box-shadow:inset 3px 0 0 var(--warn)}
 <div class="col">
   <section class="card" id="tools">
     <div class="tabs" id="tabs">
+      <button data-tab="text">Text</button>
+      <button data-tab="counter">Counter</button>
+      <button data-tab="tz">Time zones</button>
+      <button data-tab="tp">Timepoints</button>
       <button data-tab="conc">Concentration</button>
       <button data-tab="cfg">Centrifuge</button>
       <button data-tab="mm">Master mix</button>
-      <button data-tab="text">Text</button>
-      <button data-tab="tz">Time zones</button>
-      <button data-tab="tp">Timepoints</button>
+    </div>
+
+    <!-- COUNTER -->
+    <div class="pane" data-pane="counter" id="counter">
+      <div class="ctr-wrap" id="cWrap">
+        <div>
+          <div class="ctr-main" id="cMain" title="Click or press Space to count">
+            <div class="big" id="cBig">0</div>
+            <div class="nm" id="cName">Space to count</div>
+          </div>
+          <div id="cList"></div>
+          <div class="row" style="margin-top:8px">
+            <button class="small" id="cAdd">+ Add category</button>
+            <span class="small muted" id="cTotal"></span>
+            <span style="flex:1"></span>
+            <button class="ghost small" id="cUndo" title="Undo (Backspace)">Undo</button>
+            <button class="ghost small" id="cReset">Reset</button>
+          </div>
+          <div class="row" style="margin-top:10px;flex-wrap:nowrap">
+            <label class="f" style="flex-direction:row;align-items:center;gap:6px;min-width:0"><span>Use for</span><select id="cMode" style="max-width:240px;min-width:0"></select></label>
+            <button class="ghost small" id="cInfo" title="Which squares to count" aria-expanded="false" hidden>?</button>
+          </div>
+        </div>
+        <div id="cCell" hidden>
+          <div class="cc-scheme" id="cScheme" hidden></div>
+          <div class="fields">
+            <label class="f"><span>Dilution factor</span><input id="cDil" class="w-s" inputmode="decimal" title="e.g. 2 for 1:1 with trypan blue"></label>
+            <label class="f"><span>Squares to count</span><input id="cTarget" class="w-s" inputmode="numeric"></label>
+            <button class="primary small" id="cNext" style="margin-bottom:4px" title="Save this square and start the next one (Enter)">Next square</button>
+          </div>
+          <div class="cc-sq" id="cSqList"></div>
+          <div class="answer" id="cRes" style="font-size:14px"></div>
+          <label class="chk" id="cViabRow" hidden><input type="checkbox" id="cViab"> first row = live, second = dead</label>
+        </div>
+      </div>
     </div>
 
     <!-- CONCENTRATION -->
@@ -1002,6 +1022,7 @@ function tRender() {
       <div class="tt" data-tt></div><div class="small muted" data-te style="text-align:right;align-self:end"></div>
       <div class="tb"><i data-tb></i></div>
     </div>`).join('');
+  $('#tmClearRow').hidden = !T.some(t => t.state === 'finished');
   if (editing) { const el = $(`#tmList .timer[data-id="${editing.id}"] .tl-in`); if (el) { el.focus(); try { el.setSelectionRange(editing.a, editing.b); } catch {} } }
   tTick();
 }
@@ -1022,7 +1043,7 @@ function tTick() {
   for (const t of T) if (t.state === 'running' && t.endAt <= Date.now()) {
     changed = true;
     if (Date.now() - t.endAt > 5 * 60000) { t.state = 'finished'; continue; } // ended long ago (page closed or computer asleep): just mark it
-    t.state = 'ringing'; t.rangAt = Date.now();
+    t.state = 'ringing'; t.rangAt = Date.now(); if (curTTab && curTTab !== 'cd') setTTab('cd'); // show its Dismiss button
     notify('Timer done: ' + t.label, 'Finished at ' + new Date(t.endAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }));
   }
   if (changed) { tSave(); tRender(); return; }
@@ -1145,7 +1166,7 @@ function cellScheme(k) {
 }
 function cellUpdate() {
   const on = inCell(), cc = C.cell;
-  $('#cCell').hidden = !on; $('#cInfo').hidden = !on;
+  $('#cCell').hidden = !on; $('#cInfo').hidden = !on; $('#cWrap').classList.toggle('cell', on);
   if (!on) return;
   if (!$('#cScheme').hidden) $('#cScheme').innerHTML = cellScheme(cc.chamber);
   if (document.activeElement !== $('#cDil')) $('#cDil').value = cc.dil;
@@ -1195,20 +1216,22 @@ $('#cViab').addEventListener('change', () => { C.cell.viab = $('#cViab').checked
 const typing = el => el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
 document.addEventListener('keydown', e => {
   if (e.metaKey || e.ctrlKey || e.altKey || typing(e.target)) return;
+  if (e.key === 'p' || e.key === 'P') { pToggle(); return; }
+  if (curTab !== 'counter') return; // counting keys only while the counter is shown
   if (e.code === 'Space' || e.key === ' ') { e.preventDefault(); if (!e.repeat) cBump(C.active, 1); return; }
   if (e.key === 'Backspace') { e.preventDefault(); cUndo(); return; }
   if (e.key === '-' || e.key === '_') { cBump(C.active, -1); return; }
   if (/^[1-9]$/.test(e.key) && +e.key <= C.list.length) { cBump(+e.key - 1, 1); return; }
   if (e.key === 'ArrowDown' && C.list.length > 1) { e.preventDefault(); C.active = (C.active + 1) % C.list.length; cSave(); cRender(); return; }
   if (e.key === 'ArrowUp' && C.list.length > 1) { e.preventDefault(); C.active = (C.active - 1 + C.list.length) % C.list.length; cSave(); cRender(); return; }
-  if (e.key === 'p' || e.key === 'P') { pToggle(); return; }
   if (e.key === 'Enter' && inCell() && e.target.tagName !== 'BUTTON') { e.preventDefault(); cellNext(); return; }
 });
 // stop the space bar from also "clicking" whichever button has focus
-document.addEventListener('keyup', e => { if ((e.code === 'Space' || e.key === ' ') && !typing(e.target)) e.preventDefault(); });
+document.addEventListener('keyup', e => { if ((e.code === 'Space' || e.key === ' ') && !typing(e.target) && curTab === 'counter') e.preventDefault(); });
 
 /* ---------- tabs ---------- */
-function setTab(t) { $$('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t)); $$('.pane').forEach(p => p.classList.toggle('on', p.dataset.pane === t)); store.set('tab', t); if (t === 'tz') tzRender(true); }
+let curTab = '';
+function setTab(t) { curTab = t; $$('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t)); $$('.pane').forEach(p => p.classList.toggle('on', p.dataset.pane === t)); store.set('tab', t); if (t === 'tz') tzRender(true); }
 $$('#tabs button').forEach(b => b.onclick = () => setTab(b.dataset.tab));
 
 /* ---------- CONCENTRATION ---------- */
@@ -1791,6 +1814,23 @@ $('#tpHours').value = TP.hours;
   window.__tank = { get polyps() { return polyps; }, get food() { return food; }, st, addFood, fouled }; // for tests
 })();
 
+/* ---------- timer tabs ---------- */
+// Pomodoro, countdowns and stopwatch keep running whichever tab is shown; inactive tabs show their status.
+let curTTab = '';
+function setTTab(t) {
+  if (!$(`#ttabs button[data-ttab="${t}"]`)) t = 'pomo';
+  curTTab = t; $$('#ttabs button').forEach(b => b.classList.toggle('on', b.dataset.ttab === t));
+  $$('.tpane').forEach(p => p.classList.toggle('on', p.dataset.tpane === t)); store.set('ttab', t); ttStatus();
+}
+$$('#ttabs button').forEach(b => b.onclick = () => setTTab(b.dataset.ttab));
+function ttStatus() {
+  const set = (id, txt, ring = false) => { const el = $(id); if (el.textContent !== txt) el.textContent = txt; el.classList.toggle('ring', ring); };
+  set('#tsPomo', curTTab !== 'pomo' && P.st.running ? mmss(pRemaining(), false) : '');
+  const ringing = T.some(t => t.state === 'ringing'), run = T.filter(t => t.state === 'running').sort((a, b) => a.endAt - b.endAt);
+  set('#tsCd', ringing ? '⏰' : curTTab !== 'cd' && run.length ? mmss(tRem(run[0])) + (run.length > 1 ? ` +${run.length - 1}` : '') : '', ringing);
+  set('#tsSw', curTTab !== 'sw' && SW.running ? swFmt(swEl())[0] : '');
+}
+
 /* ---------- main loop ---------- */
 function updateTitle() {
   const ring = T.find(t => t.state === 'ringing'); if (ring) { document.title = `⏰ ${ring.label}`; return; } // a ringing timer wins: it is what you need to see from another tab
@@ -1805,7 +1845,7 @@ function soundHint() {
 $('#sndBtn').onclick = () => { audio(); setTimeout(() => { syncSched(); soundHint(); }, 100); };
 let lastSync = 0;
 function loop() {
-  pTick(); tTick(); tzRender(false); updateTitle(); soundHint();
+  pTick(); tTick(); tzRender(false); updateTitle(); soundHint(); ttStatus();
   if (Date.now() - lastSync > 5000) { lastSync = Date.now(); syncSched(); } // self-check: every running alarm is scheduled
 }
 setInterval(loop, 250);
@@ -1814,7 +1854,8 @@ document.addEventListener('visibilitychange', loop);
 /* ---------- init ---------- */
 pRender(); tRender(); cRender(); ccUpdate(); wUpdate(); rUpdate();
 swRender(); txRender(); mmRows(); mmCompute(); mmPlate(); tpSyncInputs(); tpRender();
-{ const t = store.get('tab', 'conc'); setTab($(`#tabs button[data-tab="${t}"]`) ? t : 'conc'); }
+{ const t = store.get('tab', 'text'); setTab($(`#tabs button[data-tab="${t}"]`) ? t : 'text'); }
+setTTab(T.some(t => t.state === 'ringing') ? 'cd' : store.get('ttab', 'pomo'));
 loop();
 </script>
 </body>
